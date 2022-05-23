@@ -8,6 +8,7 @@ from ..node import Node
 from ..port import Port
 from ..scope import SisalScope
 
+
 class Function(Node):
     """Class for functions"""
 
@@ -54,10 +55,6 @@ class Function(Node):
     def ir_(self) -> dict:
         """Returns this function as a standard dictionary
         suitable for export"""
-        retval = deepcopy(self.__dict__)
-        retval["in_ports"] = [i_p.ir_() for i_p in retval["in_ports"]]
-        retval["out_ports"] = [o_p.ir_() for o_p in retval["out_ports"]]
-        retval["nodes"] = [n__.ir_() for n__ in retval["nodes"]]
-        retval["edges"] = [edge.ir_() for edge in retval["edges"]]
+        retval = super().ir_()
 
         return retval

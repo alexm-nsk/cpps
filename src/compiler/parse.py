@@ -21,10 +21,6 @@ from .edge import Edge
 from .type import SingularType, MultiType
 
 
-grammar_file_name = os.path.dirname(
-    os.path.realpath(__file__)) + "/module_grammar.ini"
-
-
 class ModuleVisitor(NodeVisitor):
     """ Walks the parsed syntax tree
     """
@@ -112,6 +108,12 @@ class ModuleVisitor(NodeVisitor):
         return if_.If(condition_nodes, then_nodes, elseif,
                       else_nodes, self.get_location(node))
 
+    def visit_algebraic(self, node, vc_):
+        """algebraic visitor"""
+
+    def visit_opernad(self, node, vc_):
+        """operand visitor"""
+
     @staticmethod
     def visit_module(_, vc_):
         """module visitor"""
@@ -134,6 +136,9 @@ class ModuleVisitor(NodeVisitor):
         return visited_children or node
 
 
+grammar_file_name = os.path.dirname(
+    os.path.realpath(__file__)) + "/module_grammar.ini"
+
 with open(grammar_file_name, "r", encoding='UTF-8') as gr_file:
     grammar_text = gr_file.read()
     grammar = Grammar(grammar_text)
@@ -149,13 +154,3 @@ def parse(src_code: str) -> dict:
     ir_ = module_visitor.visit(grammar.parse(src_code))
 
     return ir_
-
-
-def main(args):
-    """This module isn't supposed to be run
-    """
-    print("This module is not meant to be run on it's own, import it instead", args)
-
-
-if __name__ == "__main__":
-    sys.exit(main(sys.argv))

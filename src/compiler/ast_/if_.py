@@ -3,10 +3,11 @@
 """
 If IR node
 """
-from copy import deepcopy
+# from copy import deepcopy
 from ..node import Node
-from ..port import Port
+# from ..port import Port
 from ..scope import SisalScope
+from ..sub_ir import SubIr
 
 
 class If(Node):
@@ -32,21 +33,10 @@ class If(Node):
 
     def build(self, scope: SisalScope):
         """this recursively rebuilds the if's ir into a dataflow graph"""
-        scope = deepcopy(SisalScope(self))
-        new_nodes = []
-        for out_port, out_node in zip(self.out_ports, self.nodes):
-            built_data = out_node.build(out_port, scope)
-            new_nodes += built_data.nodes
-            self.edges += built_data.edges
-        self.nodes = new_nodes
 
     def ir_(self) -> dict:
         """This returns this if as a standard dictionary
         suitable for export"""
-        retval = deepcopy(self.__dict__)
-        retval["in_ports"] = [i_p.ir_() for i_p in retval["in_ports"]]
-        retval["out_ports"] = [o_p.ir_() for o_p in retval["out_ports"]]
-        retval["nodes"] = [n__.ir_() for n__ in retval["nodes"]]
-        retval["edges"] = [edge.ir_() for edge in retval["edges"]]
+        retval = super().ir_(extra=["branches"])
 
         return retval

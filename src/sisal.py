@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-"""This is the main application that is used from command line as a stand-alone.
-Use the parse module in other cases.
+"""This is the main application that is used from command line as a
+stand-alone. Use the parse module in other cases.
 """
 
 import sys
