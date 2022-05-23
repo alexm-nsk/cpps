@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Identifier IR node
+"""
+from ..node import Node
+from ..port import Port
+from ..edge import Edge
+from ..scope import SisalScope
+from ..sub_ir import SubIr
+
+
+class Identifier(Node):
+    """This is an intermediate node, it's deleted in the second pass"""
+
+    no_id = True
+
+    def __init__(self, identifier_name, location: str = None):
+        self.name = identifier_name
+        super().__init__(location)
+
+    def __repr__(self):
+        return str({"name": self.name, "location": self.location})
+
+    def build(self, target_port: Port, scope: SisalScope):
+        edge = Edge(scope.resolve_by_name(self.name),
+                    target_port)
+
+        return SubIr(nodes=[], output_edges=[edge], internal_edges=[])
