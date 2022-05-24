@@ -91,6 +91,26 @@ class ModuleVisitor(NodeVisitor):
         """identifier visitor"""
         return identifier.Identifier(node.text, self.get_location(node))
 
+    def visit_number_literal(self, node, vc_):
+        """literl visitor (passthrough)"""
+        return vc_[0]
+
+    def visit_number_literal_int(self, node, vc_):
+        """literl visitor"""
+        return literal.Literal(
+            type_=SingularType(name="Integer"),
+            value=node.text,
+            location=self.get_location(node),
+        )
+
+    def visit_number_literal_real(self, node, vc_):
+        """literal visitor"""
+        return literal.Literal(
+            type_=SingularType(name="Real"),
+            value=node.text,
+            location=self.get_location(node),
+        )
+
     def visit_if(self, node, vc_):
         """if visitor"""
         condition_nodes = vc_[2]

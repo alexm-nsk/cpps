@@ -13,8 +13,7 @@ class Function(Node):
     """Class for functions"""
 
     def __init__(
-        self, function_name: str,  args: list, retvals: list,
-        body: list, location: str
+        self, function_name: str, args: list, retvals: list, body: list, location: str
     ):
         super().__init__(location)
         self.function_name = function_name
@@ -26,14 +25,14 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index)
-            for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
         ]
 
         if len(self.out_ports) != len(body):
             raise Exception(
                 f"""Function's number of return values doesn't match the """
-                f"""number of expected return values: {function_name}, {location}"""
+                f"""number of expected return values: {function_name},
+                {location}"""
             )
 
         self.nodes = body
@@ -46,6 +45,7 @@ class Function(Node):
         """Recursively rebuilds the function's ir into a dataflow graph"""
         scope = SisalScope(self)
         new_nodes = []
+        print(self.nodes)
         for out_port, out_node in zip(self.out_ports, self.nodes):
             built_data = out_node.build(out_port, scope)
             new_nodes += built_data.nodes
