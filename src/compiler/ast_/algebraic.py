@@ -52,21 +52,21 @@ class Algebraic(Node):
     def build(self, target_port: Port, scope: SisalScope) -> SubIr:
         """Turn algebraic int nodes and edges"""
         # by design we get alternating operands and binary operators
-        print(self.expression)
         low_priority = ["+", "-"]
-        for n, item in enumerate(self.expression):
-            if type(item) == Bin and item.operator in low_priority:
-                left = self.expression[:n]
-                left = (
-                    Algebraic(expression=left)
-                    if len(left) > 1
-                    else left[0]
-                )
-                right = self.expression[n + 1 :]
-                right = (
-                    Algebraic(expression=right)
-                    if len(right) > 1
-                    else right[0]
-                )
-                break
-            return item.build(scope)
+
+        def process(operators: list = []):
+            for n, item in enumerate(self.expression):
+                if type(item) == Bin and (
+                    item.operator in operators or operators == []
+                ):
+                    left = self.expression[:n]
+                    left = Algebraic(left) if len(left) > 1 else left[0]
+                    right = self.expression[n + 1:]
+                    right = Algebraic(right) if len(right) > 1 else right[0]
+                    return (
+                        item.build(target_port, scope)
+                        + left.build(item.in_ports[0], scope)
+                        + right.build(item.in_ports[1], scope)
+                    )
+
+        return process(low_priority) or process()
