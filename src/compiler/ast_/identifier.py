@@ -20,7 +20,7 @@ class Identifier(Node):
         super().__init__(location)
 
     def __repr__(self):
-        return str({"name": self.name, "location": self.location})
+        return f"<Identifier: \"{self.name}\" {self.location}"
 
     def build(self, target_port: Port, scope: SisalScope):
         edge = Edge(scope.resolve_by_name(self.name),

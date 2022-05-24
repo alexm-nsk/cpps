@@ -45,7 +45,7 @@ class Function(Node):
         """Recursively rebuilds the function's ir into a dataflow graph"""
         scope = SisalScope(self)
         new_nodes = []
-        print(self.nodes)
+        self.edges = []
         for out_port, out_node in zip(self.out_ports, self.nodes):
             built_data = out_node.build(out_port, scope)
             new_nodes += built_data.nodes

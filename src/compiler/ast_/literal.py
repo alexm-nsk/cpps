@@ -19,7 +19,8 @@ class Literal(Node):
     def __init__(self, type_: Type, value=None, location: str = None):
         super().__init__(location)
         self.type = type_
-        self.value = value
+        self.value = int(value)
+        self.name = "Literal"
 
     def build(self, target_port: Port, scope: SisalScope = None) -> SubIr:
         """Turn literal into nodes and edges"""
@@ -27,6 +28,10 @@ class Literal(Node):
         self.out_ports = [port]
         output_edge = Edge(port, target_port)
         return SubIr(nodes=[self], internal_edges=[], output_edges=[output_edge])
+
+    def __repr__(self):
+        # return str(self.ir_())
+        return f"<Literal: {self.value}>"
 
     def ir_(self) -> dict:
         """Returns this function as a standard dictionary

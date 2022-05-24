@@ -27,7 +27,6 @@ class Node:
             self.location = location
         else:
             self.location = "not applicable"
-        self.edges = []
 
     @classmethod
     def node(cls, id_: str):

@@ -19,10 +19,12 @@ def check_piped():
 
 
 json_re = re.compile("_([a-z])")
+re_remove_ = re.compile("_(?=$)")
 
 
 def json_names(obj):
-    """Converts snake_case to camelCase in a dictionary"""
+    """Converts snake_case to camelCase in a dictionary
+    and removes '_' at the end"""
     new_object = {}
 
     def convert(value):
@@ -34,6 +36,7 @@ def json_names(obj):
 
     for key, value in obj.items():
         new_key = re.sub(json_re, lambda m: m.group(1).upper(), key)
+        new_key = re.sub(re_remove_, "", new_key)
         new_object[new_key] = convert(value)
 
     return new_object

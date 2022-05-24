@@ -97,16 +97,18 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_number_literal_int(self, node, vc_):
         """literl visitor"""
+        location = self.get_location(node)
         return literal.Literal(
-            type_=SingularType(name="Integer"),
+            type_=SingularType(name="Integer", location=location),
             value=node.text,
-            location=self.get_location(node),
+            location=location,
         )
 
     def visit_number_literal_real(self, node, vc_):
         """literal visitor"""
+        location = self.get_location(node)
         return literal.Literal(
-            type_=SingularType(name="Real"),
+            type_=SingularType(name="Real", location=location),
             value=node.text,
             location=self.get_location(node),
         )
@@ -133,9 +135,21 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_algebraic(self, node, vc_):
         """algebraic visitor"""
+        expression = [vc_[0]]
+        if len(vc_):
+            for n, v in enumerate(vc_[1]):
+                expression += [v[1]] + [v[3]]
+        return algebraic.Algebraic(
+            expression=expression, location=self.get_location(node)
+        )
 
-    def visit_opernad(self, node, vc_):
+    def visit_operand(self, node, vc_):
         """operand visitor"""
+        return vc_[0]
+
+    def visit_bin_op(self, node, vc_):
+        """operand visitor"""
+        return algebraic.Bin(operator=node.text, location=self.get_location(node))
 
     @staticmethod
     def visit_module(_, vc_):
@@ -146,7 +160,7 @@ class ModuleVisitor(NodeVisitor):
     @staticmethod
     def visit_exp(_, vc_):
         """exp visitor"""
-        return vc_[0] + [v[3][0] for v in vc_[1]]
+        return [vc_[0]] + [v[3] for v in vc_[1]]
 
     @staticmethod
     def visit_exp_singular(_, vc_):

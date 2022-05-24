@@ -11,7 +11,7 @@ from .edge import Edge
 
 @dataclass
 class SubIr:
-    """holds nodes and edges created by 'build' function of nodes"""
+    """holds nodes and edges created by 'build' method of nodes"""
 
     nodes: list[Node]
     internal_edges: list[Edge]
@@ -23,3 +23,10 @@ class SubIr:
     def edges(self):
         """returns both internal and output edges"""
         return self.output_edges + self.internal_edges
+
+    def __add__(self, other):
+        return SubIr(
+            nodes=self.nodes + other.nodes,
+            output_edges=self.output_edges + other.output_edges,
+            internal_edges=self.internal_edges + other.internal_edges,
+        )

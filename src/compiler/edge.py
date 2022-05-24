@@ -14,7 +14,7 @@ class Edge:
     """Class for edges"""
 
     from_: Port
-    to_: Port
+    to: Port
 
     # "global" index for all the edges
     __edges__ = []
@@ -31,9 +31,9 @@ class Edge:
     def __post_init__(self):
         Edge.__edges__.append(self)
         Edge.__edges_from__[self.from_.node_id] = self
-        Edge.__edges_to__[self.to_.node_id] = self
+        Edge.__edges_to__[self.to.node_id] = self
 
     def ir_(self):
         """An IR form of this edge as a dict"""
         return dict(from_=(self.from_.node_id, self.from_.index),
-                    to_=(self.to_.node_id, self.to_.index))
+                    to=(self.to.node_id, self.to.index))

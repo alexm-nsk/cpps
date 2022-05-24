@@ -1,5 +1,5 @@
 function test(a,b,c: integer; d:real returns integer)
-    1
+    1+a
 end function
 
 function test1(a,b: integer returns integer, integer)
