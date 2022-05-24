@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-""" this describes sisal types"""
+""" Describes sisal types"""
 from __future__ import annotations
 from dataclasses import dataclass
 
@@ -24,10 +24,12 @@ class Type:
 @dataclass
 class SingularType(Type):
     """Class for describing singular sisal types (integer, real, etc.)"""
+
     name: str = None
 
 
 @dataclass
 class MultiType(Type):
     """Class for describing arrays, streams, etc."""
+
     element: Type = None

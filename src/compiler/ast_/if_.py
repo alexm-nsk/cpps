@@ -5,6 +5,7 @@ If IR node
 """
 # from copy import deepcopy
 from ..node import Node
+
 # from ..port import Port
 from ..scope import SisalScope
 from ..sub_ir import SubIr
@@ -14,10 +15,12 @@ class If(Node):
     """Class for Ifs"""
 
     def __init__(
-        self,  condition: Node,  then_: list[Node],
+        self,
+        condition: Node,
+        then_: list[Node],
         elseifs: list[list[[Node]]],
         else_: list[Node],
-        location: str = None
+        location: str = None,
     ):
         super().__init__(location)
         self.condition = condition

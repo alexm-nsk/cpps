@@ -12,11 +12,13 @@ from .edge import Edge
 @dataclass
 class SubIr:
     """holds nodes and edges created by 'build' function of nodes"""
+
     nodes: list[Node]
     internal_edges: list[Edge]
     output_edges: list[Edge]
 
     """contains returned nodes and edges"""
+
     @property
     def edges(self):
         """returns both internal and output edges"""

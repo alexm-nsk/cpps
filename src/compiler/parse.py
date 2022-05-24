@@ -10,8 +10,10 @@ import os
 import sys
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
+
 # from parsimonious.exceptions import ParseError
 from .node import Node
+
 # from .ast_.function import Function
 # from .ast_.identifier import Identifier
 # from .ast_ import function.Function, identifier.Identifier
@@ -22,18 +24,18 @@ from .type import SingularType, MultiType
 
 
 class ModuleVisitor(NodeVisitor):
-    """ Walks the parsed syntax tree
-    """
+    """Walks the parsed syntax tree"""
+
     @staticmethod
     def get_location(node):
         """Returns formatted location of a syntax-node"""
         text = node.full_text
 
-        start_row = text[:node.start].count("\n") + 1
-        start_column = len((text[:node.start].split("\n"))[-1])
+        start_row = text[: node.start].count("\n") + 1
+        start_column = len((text[: node.start].split("\n"))[-1])
 
-        end_row = text[:node.end].count("\n") + 1
-        end_column = len((text[:node.end].split("\n"))[-1])
+        end_row = text[: node.end].count("\n") + 1
+        end_column = len((text[: node.end].split("\n"))[-1])
 
         return f"{start_row}:{start_column}-{end_row}:{end_column}"
 
@@ -57,7 +59,7 @@ class ModuleVisitor(NodeVisitor):
 
     @staticmethod
     def visit_args_groups_list(_, vc_):
-        """ visitor"""
+        """visitor"""
         args = []
         for group in [vc_[0]] + [v[3] for v in vc_[1]]:
             for arg in group[0]:
@@ -66,7 +68,7 @@ class ModuleVisitor(NodeVisitor):
 
     @staticmethod
     def visit_arg_def_group(_, vc_):
-        """ visitor"""
+        """visitor"""
         return [vc_[0], vc_[4]]
 
     @staticmethod
@@ -105,8 +107,9 @@ class ModuleVisitor(NodeVisitor):
             condition_nodes.append(e[2][0])
             elseif.append(e[6])
 
-        return if_.If(condition_nodes, then_nodes, elseif,
-                      else_nodes, self.get_location(node))
+        return if_.If(
+            condition_nodes, then_nodes, elseif, else_nodes, self.get_location(node)
+        )
 
     def visit_algebraic(self, node, vc_):
         """algebraic visitor"""
@@ -136,10 +139,9 @@ class ModuleVisitor(NodeVisitor):
         return visited_children or node
 
 
-grammar_file_name = os.path.dirname(
-    os.path.realpath(__file__)) + "/module_grammar.ini"
+grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_grammar.ini"
 
-with open(grammar_file_name, "r", encoding='UTF-8') as gr_file:
+with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
     grammar = Grammar(grammar_text)
     module_visitor = ModuleVisitor()
@@ -147,7 +149,7 @@ with open(grammar_file_name, "r", encoding='UTF-8') as gr_file:
 
 def parse(src_code: str) -> dict:
     """Parses provided source code and returns an IR.
-       The returned value is a dict that can be exported as JSON"""
+    The returned value is a dict that can be exported as JSON"""
 
     Edge.reset()
     Node.reset()

@@ -12,8 +12,7 @@ from compiler import parse
 
 
 def check_piped():
-    """Checks if source code is provided via pipe
-    """
+    """Checks if source code is provided via pipe"""
     src_code = ""
     src_code = "".join(sys.stdin)
     return src_code
@@ -41,13 +40,12 @@ def json_names(obj):
 
 
 def main(args):
-    """The main function
-    """
+    """The main function"""
     # check if there is piped-in src_code
     # otherwise load it from specified file
     src_code = ""  # check_piped()
     if src_code == "":
-        with open(args[1], "r", encoding='UTF-8') as src_file:
+        with open(args[1], "r", encoding="UTF-8") as src_file:
             src_code = src_file.read()
             ir_ = parse.parse(src_code)
             if "--ir" in args:
