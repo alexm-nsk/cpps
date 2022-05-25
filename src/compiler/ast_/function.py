@@ -30,8 +30,8 @@ class Function(Node):
 
         if len(self.out_ports) != len(body):
             raise Exception(
-                f"""Function's number of return values doesn't match the """
-                f"""number of expected return values: {function_name},
+                f"""Number of function's return values doesn't match the """
+                f"""expected number return values: {function_name},
                 {location}"""
             )
 

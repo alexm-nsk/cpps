@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-describes a class that holds nodes and edges created by 'build' function of nodes
+Describes a class that holds nodes and edges
+created by 'build' function of nodes
 """
 
 from dataclasses import dataclass
@@ -11,13 +12,13 @@ from .edge import Edge
 
 @dataclass
 class SubIr:
-    """holds nodes and edges created by 'build' method of nodes"""
+    """Contains nodes and edges created by 'build' method of nodes
+    A sum ('+') operator can be used with two instances to build one that
+    contains nodes and edges from both"""
 
     nodes: list[Node]
     internal_edges: list[Edge]
     output_edges: list[Edge]
-
-    """contains returned nodes and edges"""
 
     @property
     def edges(self):

@@ -24,10 +24,10 @@ class Bin(Node):
             Port(self.id, type_, 0, "left"),
             Port(self.id, type_, 1, "right"),
         ]
-        self.out_ports = [Port(self.id, type_, 0, "bin_output")]
 
     def build(self, target_port: Port, scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
+        self.out_ports = [Port(self.id, target_port.type, 0, "bin_output")]
         edge = Edge(self.out_ports[0], target_port)
         return SubIr(nodes=[self], internal_edges=[], output_edges=[edge])
 
