@@ -34,7 +34,7 @@ class IntegerType(Type):
     """Class for describing singular sisal types
     (integer, real, boolean etc.)"""
 
-    name = "Integer"
+    name: str = "Integer"
 
 
 @dataclass
@@ -42,7 +42,7 @@ class BooleanType(Type):
     """Class for describing singular sisal types
     (integer, real, boolean etc.)"""
 
-    name = "Boolean"
+    name: str = "Boolean"
 
 
 @dataclass
@@ -50,7 +50,7 @@ class RealType(Type):
     """Class for describing singular sisal types
     (integer, real, boolean etc.)"""
 
-    name = "Real"
+    name: str = "Real"
 
 
 @dataclass

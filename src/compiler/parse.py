@@ -159,6 +159,10 @@ class ModuleVisitor(NodeVisitor):
             expression=expression, location=self.get_location(node)
         )
 
+    def visit_brackets_algebraic(self, node, vc_):
+        """algebraic visitor"""
+        return vc_[2]
+
     def visit_operand(self, node, vc_):
         """operand visitor"""
         return vc_[0]

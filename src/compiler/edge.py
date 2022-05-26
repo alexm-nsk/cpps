@@ -32,6 +32,7 @@ class Edge:
         """Runs after dataclasses __init__"""
         if self.to.type is None:
             self.to.type = self.from_.type
+            # TODO put it into a log
         Edge.__edges__.append(self)
         Edge.__edges_from__[self.from_.node_id] = self
         Edge.__edges_to__[self.to.node_id] = self
