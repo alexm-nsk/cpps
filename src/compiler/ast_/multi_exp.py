@@ -18,12 +18,11 @@ class MultiExp(Node):
         self.expressions = expressions
         super().__init__(location)
 
-    def build(self):
-        """Recursively rebuilds the function's ir into a dataflow graph"""
-        scope = SisalScope(self)
-        new_nodes = []
+    def build(self, target_ports: list[Port], scope):
+        """Build contained expressions and pass their outputs to
+        parent node"""
         self.edges = []
-        for out_port, out_node in zip(self.out_ports, self.nodes):
+        for out_port, out_node in zip(target_ports, self.expressions):
             built_data = out_node.build([out_port], scope)
             new_nodes += built_data.nodes
             self.edges += built_data.edges

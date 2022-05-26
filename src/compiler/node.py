@@ -28,27 +28,39 @@ class Node:
         else:
             self.location = "not applicable"
 
+    def add_sub_ir(self, sub_ir):
+        """Add contents of a SubIr to this node's nodes and edges"""
+
+        if sub_ir.nodes:
+            if not hasattr(self, "nodes"):
+                self.nodes = []
+            self.nodes += sub_ir.nodes
+        if sub_ir.edges:
+            if not hasattr(self, "edges"):
+                self.edges = []
+            self.edges += sub_ir.edges
+
     @classmethod
     def node(cls, id_: str):
         """Returns a node with the specified ID"""
         print(cls.__nodes__[id_])
         return cls.__nodes__[id_]
 
-    @ classmethod
+    @classmethod
     def reset(cls):
         """Resets node indices for recompiling"""
         cls.__nodes__ = {}
         cls.__ids__ = count()
 
-    @ classmethod
+    @classmethod
     def get_id(cls):
         """Returns the id in string form"""
         return "node" + str(next(cls.__ids__))
 
     def ir_(self, extra_fields: list = [str]) -> dict:
         """Common for all nodes, converts the fields to export-ready dict
-           extra _fields is a list of strings - names of fields special to
-           inherited node.
+        extra _fields is a list of strings - names of fields special to
+        inherited node.
         """
         retval = deepcopy(self.__dict__)
         for key in ["in_ports", "out_ports", "nodes", "edges"] + extra_fields:

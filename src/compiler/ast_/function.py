@@ -37,7 +37,7 @@ class Function(Node):
                 {location}"""
             )
 
-        self.nodes = body
+        self.body = body
         self.build()
 
     def __repr__(self) -> str:
@@ -46,13 +46,9 @@ class Function(Node):
     def build(self):
         """Recursively rebuilds the function's ir into a dataflow graph"""
         scope = SisalScope(self)
-        new_nodes = []
-        self.edges = []
-        for out_port, out_node in zip(self.out_ports, self.nodes):
-            built_data = out_node.build([out_port], scope)
-            new_nodes += built_data.nodes
-            self.edges += built_data.edges
-        self.nodes = new_nodes
+        for out_port, out_node in zip(self.out_ports, self.body):
+            self.add_sub_ir(out_node.build([out_port], scope))
+        del self.body
 
     def ir_(self) -> dict:
         """Returns this function as a standard dictionary
