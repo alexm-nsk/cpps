@@ -20,7 +20,7 @@ from .node import Node
 from .ast_ import *
 
 from .edge import Edge
-from .type import SingularType, MultiType
+from .type import SingularType, IntegerType, BooleanType, RealType, MultiType
 
 
 class ModuleVisitor(NodeVisitor):
@@ -78,9 +78,25 @@ class ModuleVisitor(NodeVisitor):
             return vc_[0][2]
         return None
 
-    def visit_type(self, node, _):
+    def visit_type(self, node, vc_):
         """type visitor"""
-        return SingularType(self.get_location(node), node.text)
+        return vc_[0]
+
+    def visit_std_type(self, node, vc_):
+        """type visitor"""
+        return vc_[0]
+
+    def visit_integer_type(self, node, _):
+        """type visitor"""
+        return IntegerType(self.get_location(node))
+
+    def visit_real_type(self, node, _):
+        """type visitor"""
+        return RealType(self.get_location(node))
+
+    def visit_boolean_type(self, node, _):
+        """type visitor"""
+        return BooleanType(self.get_location(node))
 
     @staticmethod
     def visit_arg_def_list(_, vc_):
@@ -99,7 +115,7 @@ class ModuleVisitor(NodeVisitor):
         """literl visitor"""
         location = self.get_location(node)
         return literal.Literal(
-            type_=SingularType(name="Integer", location=location),
+            type_=IntegerType(location=location),
             value=node.text,
             location=location,
         )
@@ -108,7 +124,7 @@ class ModuleVisitor(NodeVisitor):
         """literal visitor"""
         location = self.get_location(node)
         return literal.Literal(
-            type_=SingularType(name="Real", location=location),
+            type_=RealType(location=location),
             value=node.text,
             location=self.get_location(node),
         )

@@ -7,7 +7,9 @@ Algebraic operations, bin node and various tools for those
 from ..node import Node
 from ..port import Port
 from ..edge import Edge
-from ..type import SingularType
+from ..type import SingularType, Type, IntegerType, RealType
+
+# , BooleanType
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 
@@ -16,18 +18,34 @@ class Bin(Node):
     """Binary operation node. Only processed within Algebraic's 'build'
     method"""
 
+    type_map = {
+        "Integer": {"Real": RealType, "Integer": IntegerType},
+        "Real": {"Real": RealType, "Integer": RealType},
+    }
+
+    def result_type(self):
+        """Returns result type when processing two given types"""
+        try:
+            left_name = self.in_ports[0].type.name
+            right_name = self.in_ports[1].type.name
+            return Bin.type_map[left_name][right_name]()
+        except KeyError:
+            raise Exception(f"Operations between {left_name} and "\
+                            f"{right_name} not implemented")
+
     def __init__(self, operator: str, location: str):
         super().__init__(location)
         self.operator = operator
-        type_ = SingularType(name="integer")
+        type_ = IntegerType()
         self.in_ports = [
-            Port(self.id, type_, 0, "left"),
-            Port(self.id, type_, 1, "right"),
+            Port(self.id, None, 0, "left"),
+            Port(self.id, None, 1, "right"),
         ]
 
     def build(self, target_port: Port, scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
-        self.out_ports = [Port(self.id, target_port.type, 0, "bin_output")]
+        out_type = self.result_type()
+        self.out_ports = [Port(self.id, out_type, 0, "bin_output")]
         edge = Edge(self.out_ports[0], target_port)
         return SubIr(nodes=[self], internal_edges=[], output_edges=[edge])
 
@@ -63,12 +81,12 @@ class Algebraic(Node):
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1:]
+                    right = self.expression[n + 1 :]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     return (
-                        item.build(target_port, scope)
-                        + left.build(item.in_ports[0], scope)
+                        left.build(item.in_ports[0], scope)
                         + right.build(item.in_ports[1], scope)
+                        + item.build(target_port, scope)
                     )
 
         return process(low_priority) or process()

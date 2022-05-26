@@ -23,9 +23,34 @@ class Type:
 
 @dataclass
 class SingularType(Type):
-    """Class for describing singular sisal types (integer, real, etc.)"""
+    """Class for describing singular sisal types
+    (integer, real, boolean etc.)"""
 
     name: str = None
+
+
+@dataclass
+class IntegerType(Type):
+    """Class for describing singular sisal types
+    (integer, real, boolean etc.)"""
+
+    name = "Integer"
+
+
+@dataclass
+class BooleanType(Type):
+    """Class for describing singular sisal types
+    (integer, real, boolean etc.)"""
+
+    name = "Boolean"
+
+
+@dataclass
+class RealType(Type):
+    """Class for describing singular sisal types
+    (integer, real, boolean etc.)"""
+
+    name = "Real"
 
 
 @dataclass
