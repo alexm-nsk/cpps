@@ -4,7 +4,6 @@
 Algebraic operations, bin node and various tools for those
 """
 
-from copy import deepcopy
 from ..node import Node
 from ..port import Port
 from ..edge import Edge
@@ -14,7 +13,8 @@ from ..sub_ir import SubIr
 
 
 class Bin(Node):
-    """Binary operation node. Only processed within Algebraic's build"""
+    """Binary operation node. Only processed within Algebraic's 'build'
+    method"""
 
     def __init__(self, operator: str, location: str):
         super().__init__(location)
@@ -55,6 +55,8 @@ class Algebraic(Node):
         low_priority = ["+", "-"]
 
         def process(operators: list = []):
+            """recursively processes parts of algebraic, until only single
+            operands left"""
             for n, item in enumerate(self.expression):
                 if type(item) == Bin and (
                     item.operator in operators or operators == []

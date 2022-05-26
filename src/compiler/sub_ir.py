@@ -25,6 +25,10 @@ class SubIr:
         """returns both internal and output edges"""
         return self.output_edges + self.internal_edges
 
+    def output_types(self):
+        """returns Type objects from target ports"""
+        return [edge.from_.type for edge in self.output_edges]
+
     def __add__(self, other):
         return SubIr(
             nodes=self.nodes + other.nodes,

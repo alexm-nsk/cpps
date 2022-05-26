@@ -9,9 +9,11 @@ from .type import Type
 from .settings import DONT_ADD_EMPTY_LABELS
 from .node import Node
 
+
 @dataclass
 class Port:
     """Describes a sisal port"""
+
     node_id: str
     type: Type
     index: int
@@ -19,7 +21,7 @@ class Port:
 
     def node(self):
         """Get the node this port belongs to"""
-        Node.node(self.node_id)
+        return Node.node(self.node_id)
 
     def ir_(self):
         """Exports port's IR form as a dict"""

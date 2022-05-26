@@ -31,6 +31,7 @@ class Node:
     @classmethod
     def node(cls, id_: str):
         """Returns a node with the specified ID"""
+        print(cls.__nodes__[id_])
         return cls.__nodes__[id_]
 
     @ classmethod

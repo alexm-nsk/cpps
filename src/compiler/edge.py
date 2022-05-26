@@ -29,11 +29,19 @@ class Edge:
         cls.__edges_to__ = {}
 
     def __post_init__(self):
+        #if self.to.type is None:
+            #self.to.type = self.from_.type
+        # print(self.to.type, self.from_.type)
+        # from .node import Node
+        # print("nodes", self.to.node(), self.from_.node())
+        # print("nodes", self.to.label, self.from_.label)
         Edge.__edges__.append(self)
         Edge.__edges_from__[self.from_.node_id] = self
         Edge.__edges_to__[self.to.node_id] = self
 
     def ir_(self):
         """An IR form of this edge as a dict"""
-        return dict(from_=(self.from_.node_id, self.from_.index),
-                    to=(self.to.node_id, self.to.index))
+        return dict(
+            from_=(self.from_.node_id, self.from_.index),
+            to=(self.to.node_id, self.to.index),
+        )
