@@ -30,16 +30,16 @@ class Bin(Node):
             right_name = self.in_ports[1].type.name
             return Bin.type_map[left_name][right_name]()
         except KeyError:
-            raise Exception(f"Operations between {left_name} and "\
-                            f"{right_name} not implemented")
+            raise Exception(
+                f"Operations between {left_name} and " f"{right_name} not implemented"
+            )
 
     def __init__(self, operator: str, location: str):
         super().__init__(location)
         self.operator = operator
-        type_ = IntegerType()
         self.in_ports = [
-            Port(self.id, None, 0, "left"),
-            Port(self.id, None, 1, "right"),
+            Port(self.id, None, 0, "left"),  # port types will
+            Port(self.id, None, 1, "right"),  # be set later
         ]
 
     def build(self, target_port: Port, scope) -> SubIr:
@@ -83,6 +83,10 @@ class Algebraic(Node):
                     left = Algebraic(left) if len(left) > 1 else left[0]
                     right = self.expression[n + 1 :]
                     right = Algebraic(right) if len(right) > 1 else right[0]
+                    # note the order of 'builds' in 'return':
+                    # we first need to get left and right built,
+                    # then we can set in-port types of bins UserWarning
+                    # the out-port types of left and right
                     return (
                         left.build(item.in_ports[0], scope)
                         + right.build(item.in_ports[1], scope)
