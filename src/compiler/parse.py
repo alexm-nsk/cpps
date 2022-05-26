@@ -178,8 +178,8 @@ class ModuleVisitor(NodeVisitor):
         return {"functions": functions}
 
     @staticmethod
-    def visit_exp(_, vc_):
-        """exp visitor"""
+    def visit_multi_exp(_, vc_):
+        """multi_exp visitor"""
         return [vc_[0]] + [v[3] for v in vc_[1]]
 
     @staticmethod

@@ -10,10 +10,11 @@ from ..scope import SisalScope
 
 
 class Function(Node):
-    """Class for functions"""
+    """Class for function nodes"""
 
     def __init__(
-        self, function_name: str, args: list, retvals: list, body: list, location: str
+        self, function_name: str, args: list, retvals: list, body: list,
+        location: str
     ):
         super().__init__(location)
         self.function_name = function_name
@@ -25,7 +26,8 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index)
+            for port_index, type_ in enumerate(retvals)
         ]
 
         if len(self.out_ports) != len(body):

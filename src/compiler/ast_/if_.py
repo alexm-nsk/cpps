@@ -38,7 +38,7 @@ class If(Node):
         """this recursively rebuilds the if's ir into a dataflow graph"""
 
     def ir_(self) -> dict:
-        """This returns this if as a standard dictionary
+        """Returns this IF as a standard dictionary
         suitable for export"""
         retval = super().ir_(extra=["branches"])
 
