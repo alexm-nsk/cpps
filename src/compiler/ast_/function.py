@@ -49,7 +49,7 @@ class Function(Node):
         new_nodes = []
         self.edges = []
         for out_port, out_node in zip(self.out_ports, self.nodes):
-            built_data = out_node.build(out_port, scope)
+            built_data = out_node.build([out_port], scope)
             new_nodes += built_data.nodes
             self.edges += built_data.edges
         self.nodes = new_nodes

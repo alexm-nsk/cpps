@@ -7,7 +7,6 @@ Node module methods are called to make class instances.
 """
 
 import os
-import sys
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 

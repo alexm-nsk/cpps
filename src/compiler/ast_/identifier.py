@@ -22,8 +22,8 @@ class Identifier(Node):
     def __repr__(self):
         return f"<Identifier: \"{self.name}\" {self.location}"
 
-    def build(self, target_port: Port, scope: SisalScope):
+    def build(self, target_ports: list[Port], scope: SisalScope):
         edge = Edge(scope.resolve_by_name(self.name),
-                    target_port)
+                    target_ports[0])
 
         return SubIr(nodes=[], output_edges=[edge], internal_edges=[])

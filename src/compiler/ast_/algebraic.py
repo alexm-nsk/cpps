@@ -43,13 +43,13 @@ class Bin(Node):
             Port(self.id, None, 1, "right"),  # be set later
         ]
 
-    def build(self, target_port: Port, scope) -> SubIr:
+    def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
         out_type = self.result_type()
         self.out_ports = [
                 Port(self.id, out_type, 0, f"binary output ({self.operator})")
             ]
-        edge = Edge(self.out_ports[0], target_port)
+        edge = Edge(self.out_ports[0], target_ports[0])
         return SubIr(nodes=[self], internal_edges=[], output_edges=[edge])
 
     def ir_(self):
@@ -70,7 +70,7 @@ class Algebraic(Node):
         super().__init__(location)
         self.expression = expression
 
-    def build(self, target_port: Port, scope: SisalScope) -> SubIr:
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Turn algebraic int nodes and edges"""
         # by design we get alternating operands and binary operators
         low_priority = ["+", "-"]
@@ -91,9 +91,9 @@ class Algebraic(Node):
                     # then we can set in-port types of bins UserWarning
                     # the out-port types of left and right
                     return (
-                        left.build(item.in_ports[0], scope)
-                        + right.build(item.in_ports[1], scope)
-                        + item.build(target_port, scope)
+                        left.build([item.in_ports[0]], scope)
+                        + right.build([item.in_ports[1]], scope)
+                        + item.build([target_ports[0]], scope)
                     )
 
         return process(low_priority) or process()
