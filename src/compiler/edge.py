@@ -4,7 +4,6 @@
 """
 This module describes an edge
 """
-
 from dataclasses import dataclass
 from .port import Port
 
@@ -31,8 +30,11 @@ class Edge:
     def __post_init__(self):
         """Runs after dataclasses __init__"""
         if self.to.type is None:
-            self.to.type = self.from_.type
+            #if type(self.to.node()) != Bin:
+                #raise Exception(
+                    #"port type should only be defined on the fly for Bin")
             # TODO put it into a log
+            self.to.type = self.from_.type
         Edge.__edges__.append(self)
         Edge.__edges_from__[self.from_.node_id] = self
         Edge.__edges_to__[self.to.node_id] = self

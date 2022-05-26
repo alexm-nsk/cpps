@@ -7,7 +7,7 @@ Algebraic operations, bin node and various tools for those
 from ..node import Node
 from ..port import Port
 from ..edge import Edge
-from ..type import SingularType, Type, IntegerType, RealType
+from ..type import IntegerType, RealType
 
 # , BooleanType
 from ..scope import SisalScope
@@ -31,7 +31,8 @@ class Bin(Node):
             return Bin.type_map[left_name][right_name]()
         except KeyError:
             raise Exception(
-                f"Operations between {left_name} and " f"{right_name} not implemented"
+                f"Operations between {left_name} and "
+                f"{right_name} not implemented"
             )
 
     def __init__(self, operator: str, location: str):
