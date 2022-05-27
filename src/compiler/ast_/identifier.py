@@ -16,8 +16,8 @@ class Identifier(Node):
     no_id = True
 
     def __init__(self, identifier_name, location: str = None):
-        self.name = identifier_name
         super().__init__(location)
+        self.name = identifier_name
 
     def __repr__(self):
         return f"<Identifier: \"{self.name}\" {self.location}"
@@ -27,6 +27,7 @@ class Identifier(Node):
         return 1
 
     def build(self, target_ports: list[Port], scope: SisalScope):
+        super().build(target_ports, scope)
         edge = Edge(scope.resolve_by_name(self.name),
                     target_ports[0])
 

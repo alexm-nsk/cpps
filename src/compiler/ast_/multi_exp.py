@@ -34,12 +34,7 @@ class MultiExp(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Build contained expressions and pass their outputs
         to parent node"""
-
-        if len(target_ports) != self.num_out_ports():
-            raise Exception(
-                f"Error: {len(target_ports)} expressions expected,"
-                f"got {len(self.expressions)} at {self.location}"
-            )
+        super().build(target_ports, scope)
 
         # split target ports to spread them around corresponging child nodes
         # example: (3 output ports and 2 expressions, exp1 has 2 output ports)

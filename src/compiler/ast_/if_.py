@@ -4,6 +4,7 @@
 If IR node
 """
 from __future__ import annotations
+
 # from copy import deepcopy
 from ..node import Node
 
@@ -30,8 +31,6 @@ class If(Node):
         self.else_ = else_
         self.name = "If"
 
-        self.build()
-
     def __repr__(self) -> str:
         return str(f"<If {self.location})>")
 
@@ -39,8 +38,7 @@ class If(Node):
         n_then = self.then.num_out_ports()
         n_else = self.else_.num_out_ports()
         num_elses_ports = [elseif.num_out_ports for elseif in self.elseifs]
-        if n_then != n_else or \
-           num_elses_ports.count(n_then) == len(num_elses_ports):
+        if n_then != n_else or num_elses_ports.count(n_then) == len(num_elses_ports):
             raise Exception(
                 f"Error: number of output ports should be equal "
                 f"in all branches of an 'if' ({self.location}) "
@@ -51,9 +49,10 @@ class If(Node):
         n_then = self.then.num_out_ports()
         return n_then
 
-    def build(self, scope: SisalScope):
+    def build(self, target_ports: list[Port], scope: SisalScope):
         """this recursively rebuilds the if's ir into a dataflow graph"""
-        # TODO check if conditions put out a Boolean each
+        # TODO check conditions put out a Boolean each
+        super().build(target_ports, scope)
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary

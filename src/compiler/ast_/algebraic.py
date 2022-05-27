@@ -79,6 +79,7 @@ class Algebraic(Node):
         return 1
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        super().build(target_ports, scope)
         """Turn algebraic int nodes and edges"""
         # by design we get alternating operands and binary operators
         low_priority = ["+", "-"]

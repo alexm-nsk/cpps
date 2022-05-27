@@ -4,7 +4,7 @@
 """
 Describes IR-nodes base class
 """
-
+from __future__ import annotations
 from itertools import count
 from copy import deepcopy
 
@@ -61,7 +61,7 @@ class Node:
         if hasattr(self, "out_ports"):
             return len(self.out_ports)
         raise Exception(
-            f"number of output ports requested, but node {self.id}"
+            f"Number of output ports requested, but node {self.id}"
             f"doesn't have out_ports"
         )
 
@@ -70,7 +70,7 @@ class Node:
         if hasattr(self, "in_ports"):
             return len(self.in_ports)
         raise Exception(
-            f"number of input ports requested, but node {self.id}"
+            f"Number of input ports requested, but node {self.id}"
             f"doesn't have in_ports"
         )
 
@@ -84,3 +84,12 @@ class Node:
             if key in retval:
                 retval[key] = [item.ir_() for item in retval[key]]
         return retval
+
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        """supposed to be run before any 'build' in any inherited classes
+        as a super().build(target_ports, scope)"""
+        if len(target_ports) != self.num_out_ports():
+            raise Exception(
+                f"Error: {len(target_ports)} expressions expected,"
+                f"got {len(self.expressions)} at {self.location}"
+            )
