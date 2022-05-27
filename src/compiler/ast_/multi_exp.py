@@ -25,7 +25,7 @@ class MultiExp(Node):
 
     @property
     def num_expressions(self):
-        return len(self.expressions)
+        return sum(map(lambda x: x.num_out_ports(), self.expressions))
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Build contained expressions and pass their outputs
