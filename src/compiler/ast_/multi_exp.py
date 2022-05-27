@@ -44,10 +44,9 @@ class MultiExp(Node):
         port_index = 0
         for n, exp in enumerate(self.expressions):
             length = exp.num_out_ports()
-            built_data = exp.build(
-                target_ports[port_index: port_index + length], scope
+            self.add_sub_ir(
+                exp.build(target_ports[port_index: port_index + length], scope)
             )
-            self.add_sub_ir(built_data)
             port_index += length
 
         return SubIr(self.nodes, self.edges, [])

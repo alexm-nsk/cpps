@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """
-Describes node
+Describes IR-nodes base class
 """
 
 from itertools import count
