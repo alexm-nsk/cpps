@@ -25,13 +25,18 @@ class MultiExp(Node):
 
     @property
     def num_expressions(self):
+        """Returns number of expressions"""
+        return len(self.expressions)
+
+    def num_out_ports(self):
+        """Returns number of output ports"""
         return sum(map(lambda x: x.num_out_ports(), self.expressions))
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Build contained expressions and pass their outputs
         to parent node"""
 
-        if len(target_ports) != self.num_expressions:
+        if len(target_ports) != self.num_out_ports():
             raise Exception(
                 f"Error: {len(target_ports)} expressions expected,"
                 f"got {len(self.expressions)} at {self.location}"
