@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Function IR node
+MultiExp IR node
 """
-# from copy import deepcopy
 from ..node import Node
 from ..port import Port
 from ..scope import SisalScope
@@ -19,22 +18,26 @@ class MultiExp(Node):
     no_id = True
 
     def __init__(self, expressions: list[Node], location: str):
-        self.expressions = expressions
         super().__init__(location)
+        self.expressions = expressions
 
+    @property
     def num_expressions(self):
         return len(self.expressions)
 
-    def build(self, target_ports: list[Port], scope: SisalScope):
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Build contained expressions and pass their outputs
         to parent node"""
         self.nodes = []
-        if len(target_ports) != len(self.expressions):
+        self.edges = []
+        if len(target_ports) != self.num_expressions:
             raise Exception(
                 f"{len(target_ports)} expressions expected"
-                f"got{len(self.expressions)}"
+                f"got {len(self.expressions)} at {self.location}"
             )
+
         for out_port, out_node in zip(target_ports, self.expressions):
             built_data = out_node.build([out_port], scope)
             self.add_sub_ir(built_data)
+
         return SubIr(self.nodes, self.edges, [])

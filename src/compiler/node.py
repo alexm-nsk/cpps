@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """
-This module describes node and it's subclasses
+Describes node
 """
 
 from itertools import count
