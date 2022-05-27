@@ -23,7 +23,6 @@ class MultiExp(Node):
         self.nodes = []
         self.edges = []
 
-    @property
     def num_expressions(self):
         """Returns number of expressions"""
         return len(self.expressions)

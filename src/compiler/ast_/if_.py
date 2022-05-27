@@ -35,17 +35,20 @@ class If(Node):
     def __repr__(self) -> str:
         return str(f"<If {self.location})>")
 
-    def num_out_ports(self):
+    def check_ports_consistency(self):
         n_then = self.then.num_out_ports()
         n_else = self.else_.num_out_ports()
         num_elses_ports = [elseif.num_out_ports for elseif in self.elseifs]
         if n_then != n_else or \
            num_elses_ports.count(n_then) == len(num_elses_ports):
             raise Exception(
-                f"Error: number of expressions should be equal "
+                f"Error: number of output ports should be equal "
                 f"in all branches of an 'if' ({self.location}) "
-                f"and equal to expected number of expressions."
+                f"and equal to expected number of output ports."
             )
+
+    def num_out_ports(self):
+        n_then = self.then.num_out_ports()
         return n_then
 
     def build(self, scope: SisalScope):
