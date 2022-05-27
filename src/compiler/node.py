@@ -60,15 +60,19 @@ class Node:
         """Returns the number of output ports"""
         if hasattr(self, "out_ports"):
             return len(self.out_ports)
-        raise Exception(f"number of output ports requested, but node {node.id}"
-                        f"doesn't have out_ports")
+        raise Exception(
+            f"number of output ports requested, but node {self.id}"
+            f"doesn't have out_ports"
+        )
 
     def num_in_ports(self):
         """Returns the number of input ports"""
         if hasattr(self, "in_ports"):
             return len(self.in_ports)
-        raise Exception(f"number of input ports requested, but node {node.id}"
-                        f"doesn't have in_ports")
+        raise Exception(
+            f"number of input ports requested, but node {self.id}"
+            f"doesn't have in_ports"
+        )
 
     def ir_(self, extra_fields: list = [str]) -> dict:
         """Common for all nodes, converts the fields to export-ready dict

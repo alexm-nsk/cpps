@@ -13,8 +13,12 @@ class Function(Node):
     """Class for function nodes"""
 
     def __init__(
-        self, function_name: str, args: list, retvals: list, body: MultiExp,
-        location: str
+        self,
+        function_name: str,
+        args: list,
+        retvals: list,
+        body: MultiExp,
+        location: str,
     ):
         super().__init__(location)
         self.function_name = function_name
@@ -26,8 +30,7 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index)
-            for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
         ]
 
         if len(self.out_ports) != len(body.expressions):
@@ -46,11 +49,7 @@ class Function(Node):
     def build(self):
         """Recursively rebuilds the function's ir into a dataflow graph"""
         scope = SisalScope(self)
-        self.add_sub_ir(
-                self.body.build(self.in_ports, scope)
-            )
-        #for out_port, out_node in zip(self.out_ports, self.body.expressions):
-            #self.add_sub_ir(out_node.build([out_port], scope))
+        self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
 
     def ir_(self) -> dict:
