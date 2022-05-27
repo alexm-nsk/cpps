@@ -30,7 +30,6 @@ class Node:
 
     def add_sub_ir(self, sub_ir):
         """Add contents of a SubIr to this node's nodes and edges"""
-
         if sub_ir.nodes:
             if not hasattr(self, "nodes"):
                 self.nodes = []
@@ -56,6 +55,20 @@ class Node:
     def get_id(cls):
         """Returns the id in string form"""
         return "node" + str(next(cls.__ids__))
+
+    def num_out_ports(self):
+        """Returns the number of output ports"""
+        if hasattr(self, "out_ports"):
+            return len(self.out_ports)
+        raise Exception(f"number of output ports requested, but node {node.id}"
+                        f"doesn't have out_ports")
+
+    def num_in_ports(self):
+        """Returns the number of input ports"""
+        if hasattr(self, "in_ports"):
+            return len(self.in_ports)
+        raise Exception(f"number of input ports requested, but node {node.id}"
+                        f"doesn't have in_ports")
 
     def ir_(self, extra_fields: list = [str]) -> dict:
         """Common for all nodes, converts the fields to export-ready dict

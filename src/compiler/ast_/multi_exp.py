@@ -3,10 +3,11 @@
 """
 Function IR node
 """
-from copy import deepcopy
+# from copy import deepcopy
 from ..node import Node
 from ..port import Port
 from ..scope import SisalScope
+from ..sub_ir import SubIr
 
 
 class MultiExp(Node):
@@ -18,12 +19,11 @@ class MultiExp(Node):
         self.expressions = expressions
         super().__init__(location)
 
-    def build(self, target_ports: list[Port], scope):
+    def build(self, target_ports: list[Port], scope: SisalScope):
         """Build contained expressions and pass their outputs to
         parent node"""
-        self.edges = []
+        self.nodes = []
         for out_port, out_node in zip(target_ports, self.expressions):
             built_data = out_node.build([out_port], scope)
-            new_nodes += built_data.nodes
-            self.edges += built_data.edges
-        self.nodes = new_nodes
+            self.add_sub_ir(built_data)
+        return SubIr(self.nodes, self.edges, [])

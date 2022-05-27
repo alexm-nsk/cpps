@@ -33,7 +33,7 @@ class Edge:
             #if type(self.to.node()) != Bin:
                 #raise Exception(
                     #"port type should only be defined on the fly for Bin")
-            # TODO put it into a log
+            # TODO put it into a log, add a check if its Bin
             self.to.type = self.from_.type
         Edge.__edges__.append(self)
         Edge.__edges_from__[self.from_.node_id] = self

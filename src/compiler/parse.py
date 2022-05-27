@@ -176,10 +176,12 @@ class ModuleVisitor(NodeVisitor):
         functions = [def_[0][1].ir_() for def_ in vc_]
         return {"functions": functions}
 
-    @staticmethod
-    def visit_multi_exp(_, vc_):
+    def visit_multi_exp(self, node, vc_):
         """multi_exp visitor"""
-        return [vc_[0]] + [v[3] for v in vc_[1]]
+        return multi_exp.MultiExp(
+            expressions=[vc_[0]] + [v[3] for v in vc_[1]],
+            location=self.get_location(node)
+        )
 
     @staticmethod
     def visit_exp_singular(_, vc_):
