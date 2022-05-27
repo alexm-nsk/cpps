@@ -20,6 +20,8 @@ class MultiExp(Node):
     def __init__(self, expressions: list[Node], location: str):
         super().__init__(location)
         self.expressions = expressions
+        self.nodes = []
+        self.edges = []
 
     @property
     def num_expressions(self):
@@ -28,16 +30,24 @@ class MultiExp(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Build contained expressions and pass their outputs
         to parent node"""
-        self.nodes = []
-        self.edges = []
+
         if len(target_ports) != self.num_expressions:
             raise Exception(
-                f"{len(target_ports)} expressions expected"
+                f"Error: {len(target_ports)} expressions expected,"
                 f"got {len(self.expressions)} at {self.location}"
             )
 
-        for out_port, out_node in zip(target_ports, self.expressions):
-            built_data = out_node.build([out_port], scope)
+        # split target ports to spread them around corresponging child nodes
+        # example: (3 output ports and 2 expressions, exp1 has 2 output ports)
+        # ports: |p1 |p2 |  p3  |
+        # exps:  \ exp1 / \exp2/
+        port_index = 0
+        for n, exp in enumerate(self.expressions):
+            length = exp.num_out_ports()
+            built_data = exp.build(
+                target_ports[port_index: port_index + length], scope
+            )
             self.add_sub_ir(built_data)
+            port_index += length
 
         return SubIr(self.nodes, self.edges, [])

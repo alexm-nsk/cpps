@@ -30,7 +30,8 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index)
+            for port_index, type_ in enumerate(retvals)
         ]
 
         if len(self.out_ports) != len(body.expressions):
@@ -56,5 +57,4 @@ class Function(Node):
         """Returns this function as a standard dictionary
         suitable for export"""
         retval = super().ir_()
-
         return retval

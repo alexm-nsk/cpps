@@ -43,6 +43,10 @@ class Bin(Node):
             Port(self.id, None, 1, "right"),  # be set later
         ]
 
+    def num_out_ports(self):
+        """override Node's num_out_ports in case we don't have out_ports yet"""
+        return 1
+
     def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
         out_type = self.result_type()
@@ -70,6 +74,10 @@ class Algebraic(Node):
         super().__init__(location)
         self.expression = expression
 
+    def num_out_ports(self):
+        """override Node's num_out_ports in case we don't have out_ports yet"""
+        return 1
+
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Turn algebraic int nodes and edges"""
         # by design we get alternating operands and binary operators
@@ -84,7 +92,7 @@ class Algebraic(Node):
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1 :]
+                    right = self.expression[n + 1:]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,
