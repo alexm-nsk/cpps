@@ -50,6 +50,7 @@ class If(Node):
 
     def build(self, scope: SisalScope):
         """this recursively rebuilds the if's ir into a dataflow graph"""
+        # TODO check if conditions put out a Boolean each
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary
