@@ -3,6 +3,7 @@
 """
 If IR node
 """
+from __future__ import annotations
 # from copy import deepcopy
 from ..node import Node
 
@@ -17,9 +18,9 @@ class If(Node):
     def __init__(
         self,
         condition: Node,
-        then_: list[Node],
-        elseifs: list[list[[Node]]],
-        else_: list[Node],
+        then_: MultiExp,
+        elseifs: list[MultiExp],
+        else_: MultiExp,
         location: str = None,
     ):
         super().__init__(location)
@@ -45,7 +46,7 @@ class If(Node):
                 f"in all branches of an 'if' ({self.location}) "
                 f"and equal to expected number of expressions."
             )
-        return len(self.then)
+        return n_then
 
     def build(self, scope: SisalScope):
         """this recursively rebuilds the if's ir into a dataflow graph"""
