@@ -38,11 +38,12 @@ class If(Node):
         n_then = self.then.num_out_ports()
         n_else = self.else_.num_out_ports()
         num_elses_ports = [elseif.num_out_ports for elseif in self.elseifs]
-        if n_then == n_else and \
+        if n_then != n_else or \
            num_elses_ports.count(n_then) == len(num_elses_ports):
             raise Exception(
-                f"number of expressions should be equal"
-                f"in all branches of an 'if'{self.location}"
+                f"Error: number of expressions should be equal "
+                f"in all branches of an 'if' ({self.location}) "
+                f"and equal to expected number of expressions."
             )
         return len(self.then)
 
