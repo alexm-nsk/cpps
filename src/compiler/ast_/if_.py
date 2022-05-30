@@ -61,6 +61,7 @@ class If(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
         # TODO check that conditions put out a Boolean each
+        self.in_ports = self.copy_ports(scope)
         super().build(target_ports, scope)
         return SubIr([],[],[])
 

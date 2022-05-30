@@ -39,6 +39,15 @@ class Node:
                 self.edges = []
             self.edges += sub_ir.edges
 
+    def copy_ports(self, src_node: Node):
+        """Copies ports from specified node"""
+        self.in_ports = deepcopy(src_node.node.in_ports)
+        self.out_ports = deepcopy(src_node.node.in_ports)
+        for i_p in self.in_ports:
+            i_p.node_id = self.id
+        for o_p in self.out_ports:
+            o_p.node_id = self.id
+
     @classmethod
     def node(cls, id_: str):
         """Returns a node with the specified ID"""
