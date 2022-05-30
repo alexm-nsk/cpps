@@ -5,7 +5,7 @@ If IR node
 """
 from __future__ import annotations
 
-# from copy import deepcopy
+from copy import deepcopy
 from ..node import Node
 
 from ..port import Port
@@ -35,7 +35,7 @@ class Condition(Node):
             for index in range(self.conditions.num_out_ports())
         ]
         scope = SisalScope(self)
-        self.conditions.build(self.out_ports, scope)
+        self.add_sub_ir(self.conditions.build(self.out_ports, scope))
 
 
 class If(Node):
@@ -79,11 +79,11 @@ class If(Node):
         # TODO check that conditions put out a Boolean each
         super().build(target_ports, scope)
         self.condition.build(scope)
-        return SubIr([], [], [])
+        return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary
         suitable for export"""
-        retval = super().ir_(extra=["branches"])
-
+        retval = super().ir_(extra_fields=["condition", "branches"])
+        #retval = deepcopy(self.__dict__)
         return retval
