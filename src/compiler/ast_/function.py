@@ -12,6 +12,9 @@ from ..scope import SisalScope
 class Function(Node):
     """Class for function nodes"""
 
+    # TODO add a reset
+    functions = {}
+
     def __init__(
         self,
         function_name: str,
@@ -35,13 +38,15 @@ class Function(Node):
         ]
 
         if len(self.out_ports) != len(body.expressions):
+            # TODO add Error Exception
             raise Exception(
                 f"""Number of function's return values doesn't match the """
-                f"""expected number return values: {function_name},
-                {location}"""
+                f"""expected number return values:{len(self.in_ports)}, """
+                f"""{function_name}, {location}"""
             )
 
         self.body = body
+        Function.functions[self.function_name] = self
         self.build()
 
     def __repr__(self) -> str:

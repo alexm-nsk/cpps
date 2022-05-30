@@ -40,11 +40,13 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_function(self, node, vc_):
         """function visitor"""
-        name = vc_[2].name
-        args = vc_[6]  # go as pairs [identifier, type_name]
-        retvals = vc_[8]
-        body = vc_[12]
-        return function.Function(name, args, retvals, body, self.get_location(node))
+        return function.Function(
+            function_name=vc_[2].name,
+            args=vc_[6],
+            retvals=vc_[8],
+            body=vc_[12],
+            location=self.get_location(node),
+        )
 
     def visit_call(self, node, vc_):
         """function call visitor"""

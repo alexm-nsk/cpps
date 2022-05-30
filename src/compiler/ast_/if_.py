@@ -8,9 +8,18 @@ from __future__ import annotations
 # from copy import deepcopy
 from ..node import Node
 
-# from ..port import Port
+from ..port import Port
 from ..scope import SisalScope
 from ..sub_ir import SubIr
+from .multi_exp import MultiExp
+
+
+class Branch(Node):
+    """Handles if's branches"""
+
+
+class Condition(Node):
+    """Handles if's condition"""
 
 
 class If(Node):
@@ -49,10 +58,11 @@ class If(Node):
         n_then = self.then.num_out_ports()
         return n_then
 
-    def build(self, target_ports: list[Port], scope: SisalScope):
-        """this recursively rebuilds the if's ir into a dataflow graph"""
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        """Recursively rebuilds the if's ir into a dataflow graph"""
         # TODO check that conditions put out a Boolean each
         super().build(target_ports, scope)
+        return SubIr([],[],[])
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary

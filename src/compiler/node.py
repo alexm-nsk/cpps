@@ -62,7 +62,7 @@ class Node:
             return len(self.out_ports)
         raise Exception(
             f"Number of output ports requested, but node {self.id}"
-            f"doesn't have out_ports"
+            f" doesn't have out_ports"
         )
 
     def num_in_ports(self):
@@ -71,7 +71,7 @@ class Node:
             return len(self.in_ports)
         raise Exception(
             f"Number of input ports requested, but node {self.id}"
-            f"doesn't have in_ports"
+            f" doesn't have in_ports"
         )
 
     def ir_(self, extra_fields: list = [str]) -> dict:
