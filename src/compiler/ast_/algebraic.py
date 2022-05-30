@@ -100,7 +100,7 @@ class Algebraic(Node):
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,
-                    # then we can set in-port types of bins UserWarning
+                    # then we can set in-port types of bins
                     # the out-port types of left and right
                     return (
                         left.build([item.in_ports[0]], scope)
