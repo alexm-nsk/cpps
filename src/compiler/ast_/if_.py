@@ -21,6 +21,14 @@ class Branch(Node):
 class Condition(Node):
     """Handles if's condition"""
 
+    def __init__(self, condition: MultiExp):
+        """Condition node"""
+        super().__init__(condition.location)
+
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        """ """
+        self.copy_ports(scope)
+
 
 class If(Node):
     """Class for Ifs"""
@@ -34,7 +42,7 @@ class If(Node):
         location: str = None,
     ):
         super().__init__(location)
-        self.condition = condition
+        self.condition = Condition(condition)
         self.then = then_
         self.elseifs = elseifs
         self.else_ = else_
@@ -61,9 +69,10 @@ class If(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
         # TODO check that conditions put out a Boolean each
-        self.in_ports = self.copy_ports(scope)
         super().build(target_ports, scope)
-        return SubIr([],[],[])
+        self.copy_ports(scope)
+        # self.condition.build(scope)
+        return SubIr([], [], [])
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary

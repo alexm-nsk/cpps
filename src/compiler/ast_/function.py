@@ -47,7 +47,6 @@ class Function(Node):
 
         self.body = body
         Function.functions[self.function_name] = self
-        #self.build()
 
     def __repr__(self) -> str:
         return str(f"<function ({self.function_name})>")

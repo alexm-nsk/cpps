@@ -138,7 +138,7 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_if(self, node, vc_):
         """if visitor"""
-        condition_nodes = vc_[2]
+        condition_nodes = [vc_[2]]
         then_nodes = vc_[6]
 
         if type(vc_[9]) == list:
@@ -152,8 +152,14 @@ class ModuleVisitor(NodeVisitor):
             condition_nodes.append(e[2][0])
             elseif.append(e[6])
 
+        locations = ", ".join([condition.location for condition in condition_nodes])
+
         return if_.If(
-            condition_nodes, then_nodes, elseif, else_nodes, self.get_location(node)
+            multi_exp.MultiExp(condition_nodes, locations),
+            then_nodes,
+            elseif,
+            else_nodes,
+            self.get_location(node),
         )
 
     def visit_algebraic(self, node, vc_):

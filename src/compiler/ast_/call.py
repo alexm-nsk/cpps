@@ -23,11 +23,13 @@ class Call(Node):
         self.args = args
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        print ("call called")
-        pass
+        return SubIr([], [], [])
 
     def called_function(self):
         return Function.functions[self.callee]
 
     def num_out_ports(self):
         return self.called_function().num_out_ports()
+
+    def num_out_ports(self):
+        return self.called_function().num_in_ports()
