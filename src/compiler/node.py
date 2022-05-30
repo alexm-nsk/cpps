@@ -85,15 +85,20 @@ class Node:
             f" doesn't have in_ports"
         )
 
-    def ir_(self, extra_fields: list = [str]) -> dict:
+    def ir_(self, extra_fields: list[str]=[]) -> dict:
         """Common for all nodes, converts the fields to export-ready dict
         extra _fields is a list of strings - names of fields special to
         inherited node.
         """
         retval = deepcopy(self.__dict__)
-        for key in ["in_ports", "out_ports", "nodes", "edges"] + extra_fields:
+        for key in ["in_ports", "out_ports", "nodes", "edges"]:
             if key in retval:
                 retval[key] = [item.ir_() for item in retval[key]]
+        #return retval
+        for key in extra_fields:
+            print(key)
+            if key in retval:
+                retval[key] = retval[key].ir_()
         return retval
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:

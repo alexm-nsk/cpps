@@ -36,6 +36,10 @@ class Condition(Node):
         ]
         scope = SisalScope(self)
         self.add_sub_ir(self.conditions.build(self.out_ports, scope))
+        del self.conditions
+
+    def ir_(self):
+        return super().ir_()
 
 
 class If(Node):
@@ -51,9 +55,9 @@ class If(Node):
     ):
         super().__init__(location)
         self.condition = Condition(condition)
-        self.then = then_
-        self.elseifs = elseifs
-        self.else_ = else_
+        #self.then = then_
+        #self.elseifs = elseifs
+        #self.else_ = else_
         self.name = "If"
 
     def __repr__(self) -> str:
@@ -71,6 +75,7 @@ class If(Node):
             )
 
     def num_out_ports(self):
+        return 1
         n_then = self.then.num_out_ports()
         return n_then
 
@@ -85,5 +90,4 @@ class If(Node):
         """Returns this IF as a standard dictionary
         suitable for export"""
         retval = super().ir_(extra_fields=["condition", "branches"])
-        #retval = deepcopy(self.__dict__)
         return retval
