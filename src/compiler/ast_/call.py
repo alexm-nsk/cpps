@@ -25,3 +25,9 @@ class Call(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         print ("call called")
         pass
+
+    def called_function(self):
+        return Function.functions[self.callee]
+
+    def num_out_ports(self):
+        return self.called_function().num_out_ports()

@@ -27,7 +27,7 @@ class If(Node):
 
     def __init__(
         self,
-        condition: Node,
+        condition: MultiExp,
         then_: MultiExp,
         elseifs: list[MultiExp],
         else_: MultiExp,

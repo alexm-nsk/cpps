@@ -70,7 +70,7 @@ class Node:
         if hasattr(self, "out_ports"):
             return len(self.out_ports)
         raise Exception(
-            f"Number of output ports requested, but node {self.id}"
+            f"Number of output ports requested, but node {self.id, type(self)}"
             f" doesn't have out_ports"
         )
 
