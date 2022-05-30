@@ -48,7 +48,9 @@ class Function(Node):
         return str(f"<function ({self.function_name})>")
 
     def build(self):
-        """Recursively rebuilds the function's ir into a dataflow graph"""
+        """Recursively rebuilds the function's ir into a dataflow graph.
+        Because it's a top level node it doesn't run the 'super' from Node
+        and doesn't take any arguments"""
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
