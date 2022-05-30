@@ -28,9 +28,13 @@ class Call(Node):
         output_edges = [
             Edge(from_, to) for from_, to in zip(self.out_ports, target_ports)
         ]
-        args = self.args.build(target_ports, scope)
+        args_ir = self.args.build(self.in_ports, scope)
         del self.args
-        return SubIr([self] + args.nodes, internal_edges=args.edges, output_edges=output_edges)
+        return SubIr(
+            [self] + args_ir.nodes,
+            internal_edges=args_ir.edges,
+            output_edges=output_edges
+        )
 
     def called_function(self):
         return Function.functions[self.callee]
