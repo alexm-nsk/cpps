@@ -26,10 +26,10 @@ class Bin(Node):
     def result_type(self):
         """Returns result type when processing two given types"""
         try:
-            left_name = self.in_ports[0].type.name
-            right_name = self.in_ports[1].type.name
             if self.operator in ["<", ">", ">=", "<="]:
                 return BooleanType()
+            left_name = self.in_ports[0].type.name
+            right_name = self.in_ports[1].type.name
             return Bin.alg_type_map[left_name][right_name]()
         except KeyError:
             raise Exception(
@@ -53,8 +53,8 @@ class Bin(Node):
         """returns an IR form of this node (Bin)"""
         out_type = self.result_type()
         self.out_ports = [
-                Port(self.id, out_type, 0, f"binary output ({self.operator})")
-            ]
+            Port(self.id, out_type, 0, f"binary output ({self.operator})")
+        ]
         edge = Edge(self.out_ports[0], target_ports[0])
         return SubIr(nodes=[self], internal_edges=[], output_edges=[edge])
 
@@ -96,7 +96,7 @@ class Algebraic(Node):
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1:]
+                    right = self.expression[n + 1: ]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,

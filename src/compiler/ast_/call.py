@@ -21,9 +21,11 @@ class Call(Node):
         super().__init__(location)
         self.callee = name
         self.args = args
+        self.name = "Call"
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        return SubIr([], [], [])
+        return self.args.build(target_ports, scope)
+        #return SubIr([], [], [])
 
     def called_function(self):
         return Function.functions[self.callee]
@@ -31,5 +33,5 @@ class Call(Node):
     def num_out_ports(self):
         return self.called_function().num_out_ports()
 
-    def num_out_ports(self):
+    def num_in_ports(self):
         return self.called_function().num_in_ports()

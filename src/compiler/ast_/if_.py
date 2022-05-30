@@ -29,7 +29,7 @@ class Condition(Node):
 
     def build(self, scope: SisalScope) -> SubIr:
         """ """
-        self.copy_ports(scope, out=False)
+        self.copy_ports(scope.node, out=False)
         self.out_ports = [
             Port(self.id, BooleanType(), index, str(index))
             for index in range(self.conditions.num_out_ports())
@@ -55,9 +55,9 @@ class If(Node):
     ):
         super().__init__(location)
         self.condition = Condition(condition)
-        #self.then = then_
-        #self.elseifs = elseifs
-        #self.else_ = else_
+        # self.then = then_
+        # self.elseifs = elseifs
+        # self.else_ = else_
         self.name = "If"
 
     def __repr__(self) -> str:
