@@ -24,8 +24,13 @@ class Call(Node):
         self.name = "Call"
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        return self.args.build(target_ports, scope)
-        #return SubIr([], [], [])
+        self.copy_ports(self.called_function())
+        output_edges = [
+            Edge(from_, to) for from_, to in zip(self.out_ports, target_ports)
+        ]
+        args = self.args.build(target_ports, scope)
+        del self.args
+        return SubIr([self] + args.nodes, internal_edges=args.edges, output_edges=output_edges)
 
     def called_function(self):
         return Function.functions[self.callee]

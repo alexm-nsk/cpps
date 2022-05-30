@@ -46,7 +46,7 @@ class Node:
             for i_p in self.in_ports:
                 i_p.node_id = self.id
         if out:
-            self.out_ports = deepcopy(src_node.in_ports)
+            self.out_ports = deepcopy(src_node.out_ports)
             for o_p in self.out_ports:
                 o_p.node_id = self.id
 
