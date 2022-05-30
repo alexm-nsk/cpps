@@ -46,6 +46,12 @@ class ModuleVisitor(NodeVisitor):
         body = vc_[12]
         return function.Function(name, args, retvals, body, self.get_location(node))
 
+    def visit_call(self, node, vc_):
+        """function call visitor"""
+        return call.Call(
+            name=vc_[1].name, args=vc_[5], location=self.get_location(node)
+        )
+
     @staticmethod
     def visit_function_arguments(_, vc_):
         """function_arguments visitor"""
@@ -180,7 +186,7 @@ class ModuleVisitor(NodeVisitor):
         """multi_exp visitor"""
         return multi_exp.MultiExp(
             expressions=[vc_[0]] + [v[3] for v in vc_[1]],
-            location=self.get_location(node)
+            location=self.get_location(node),
         )
 
     @staticmethod
