@@ -173,7 +173,7 @@ class ModuleVisitor(NodeVisitor):
         )
 
     def visit_brackets_algebraic(self, node, vc_):
-        """algebraic visitor"""
+        """brackets algebraic visitor"""
         return vc_[2]
 
     def visit_operand(self, node, vc_):

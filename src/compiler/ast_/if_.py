@@ -31,6 +31,12 @@ class Branch(Node):
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
 
+    def num_out_ports(self):
+        return self.body.num_out_ports()
+
+    def num_in_ports(self):
+        return self.body.num_in_ports()
+
     def ir_(self):
         return super().ir_()
 
@@ -93,18 +99,15 @@ class If(Node):
             )
 
     def num_out_ports(self):
-        return 1
-        n_then = self.then.num_out_ports()
+        n_then = self.branches[0].num_out_ports()
         return n_then
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
-        # TODO check that conditions put out a Boolean each
         super().build(target_ports, scope)
         self.condition.build(scope)
         for branch in self.branches:
             branch.build(scope)
-        # self.then
         return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
     def ir_(self) -> dict:
