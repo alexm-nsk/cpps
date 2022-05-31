@@ -13,6 +13,7 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .multi_exp import MultiExp
 from ..type import BooleanType
+from ..edge import Edge
 
 
 class Branch(Node):
@@ -25,7 +26,7 @@ class Branch(Node):
         self.name = name
 
     def build(self, scope: SisalScope) -> SubIr:
-        """ """
+        """Convert parsed data to IR"""
         self.copy_ports(scope.node)
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))
@@ -50,7 +51,7 @@ class Condition(Node):
         self.conditions = conditions
 
     def build(self, scope: SisalScope) -> SubIr:
-        """ """
+        """Convert parsed data to IR"""
         self.copy_ports(scope.node, out=False)
         self.out_ports = [
             Port(self.id, BooleanType(), index, str(index))
@@ -59,6 +60,12 @@ class Condition(Node):
         scope = SisalScope(self)
         self.add_sub_ir(self.conditions.build(self.out_ports, scope))
         del self.conditions
+
+    def num_out_ports(self):
+        return self.conditions.num_out_ports()
+
+    def num_in_ports(self):
+        return self.conditions.num_in_ports()
 
     def ir_(self):
         return super().ir_()
@@ -88,15 +95,14 @@ class If(Node):
         return str(f"<If {self.location})>")
 
     def check_ports_consistency(self):
-        n_then = self.then.num_out_ports()
-        n_else = self.else_.num_out_ports()
-        num_elses_ports = [elseif.num_out_ports for elseif in self.elseifs]
-        if n_then != n_else or num_elses_ports.count(n_then) != len(num_elses_ports):
-            raise Exception(
-                f"Error: number of output ports should be equal "
-                f"in all branches of an 'if' ({self.location}) "
-                f"and equal to expected number of output ports."
-            )
+        num_out_ports = self.branches[0].num_out_ports()
+        for branch in self.branches[1:]:
+            if branch.num_out_ports() != num_out_ports:
+                raise Exception(
+                    f"Error: number of output ports should be equal "
+                    f"in all branches of an 'if' ({self.location}) "
+                    f"and equal to expected number of output ports."
+                )
 
     def num_out_ports(self):
         n_then = self.branches[0].num_out_ports()
@@ -105,10 +111,16 @@ class If(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
         super().build(target_ports, scope)
+        self.copy_ports(scope.node)
+        self.check_ports_consistency()
         self.condition.build(scope)
         for branch in self.branches:
             branch.build(scope)
-        return SubIr(nodes=[self], internal_edges=[], output_edges=[])
+        edges = [
+            Edge(out_port, target_port)
+            for out_port, target_port in zip(self.out_ports, target_ports)
+        ]
+        return SubIr(nodes=[self], internal_edges=[], output_edges=edges)
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary
