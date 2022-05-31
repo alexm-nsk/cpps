@@ -18,6 +18,22 @@ from ..type import BooleanType
 class Branch(Node):
     """Handles if's branches"""
 
+    def __init__(self, body: MultiExp, name: str = "ElseIf"):
+        """Condition node"""
+        super().__init__(body.location)
+        self.body = body
+        self.name = name
+
+    def build(self, scope: SisalScope) -> SubIr:
+        """ """
+        self.copy_ports(scope.node)
+        scope = SisalScope(self)
+        self.add_sub_ir(self.body.build(self.out_ports, scope))
+        del self.body
+
+    def ir_(self):
+        return super().ir_()
+
 
 class Condition(Node):
     """Handles if's condition"""
@@ -55,9 +71,11 @@ class If(Node):
     ):
         super().__init__(location)
         self.condition = Condition(condition)
-        # self.then = then_
-        # self.elseifs = elseifs
-        # self.else_ = else_
+        self.branches = (
+            [Branch(then_, "Then")]
+            + [Branch(elseif, "ElseIf") for elseif in elseifs]
+            + [Branch(else_, "Else")]
+        )
         self.name = "If"
 
     def __repr__(self) -> str:
@@ -84,10 +102,14 @@ class If(Node):
         # TODO check that conditions put out a Boolean each
         super().build(target_ports, scope)
         self.condition.build(scope)
+        for branch in self.branches:
+            branch.build(scope)
+        # self.then
         return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary
         suitable for export"""
-        retval = super().ir_(extra_fields=["condition", "branches"])
+        retval = super().ir_(extra_fields=["condition"])
+        retval["branches"] = [branch.ir_() for branch in retval["branches"]]
         return retval
