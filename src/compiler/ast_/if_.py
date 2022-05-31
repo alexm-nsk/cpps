@@ -95,8 +95,8 @@ class If(Node):
         return str(f"<If {self.location})>")
 
     def check_ports_consistency(self):
-        num_out_ports = self.branches[0].num_out_ports()
-        for branch in self.branches[1:]:
+        num_out_ports = self.num_out_ports()
+        for branch in self.branches:
             if branch.num_out_ports() != num_out_ports:
                 raise Exception(
                     f"Error: number of output ports should be equal "
