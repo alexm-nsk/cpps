@@ -61,9 +61,3 @@ class Function(Node):
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
-
-    def ir_(self) -> dict:
-        """Returns this function as a standard dictionary
-        suitable for export"""
-        retval = super().ir_()
-        return retval
