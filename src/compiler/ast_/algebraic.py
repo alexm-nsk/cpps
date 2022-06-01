@@ -4,7 +4,7 @@
 Algebraic operations, bin node and various tools for those
 """
 
-from ..node import Node
+from ..node import Node, build_method
 from ..port import Port
 from ..edge import Edge
 from ..type import IntegerType, RealType, BooleanType
@@ -48,14 +48,13 @@ class Bin(Node):
         """override Node's num_out_ports in case we don't have out_ports yet"""
         return 1
 
+    @build_method
     def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
-        out_type = self.result_type()
         self.out_ports = [
-            Port(self.id, out_type, 0, f"binary output ({self.operator})")
+            Port(self.id, self.result_type(), 0, f"binary output ({self.operator})")
         ]
-        edge = Edge(self.out_ports[0], target_ports[0])
-        return SubIr(nodes=[self], internal_edges=[], output_edges=[edge])
+        return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
     def ir_(self):
         retval = super().ir_()
@@ -95,7 +94,7 @@ class Algebraic(Node):
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1:]
+                    right = self.expression[n + 1 :]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,

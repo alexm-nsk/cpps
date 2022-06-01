@@ -4,7 +4,7 @@
 Describes literals
 """
 
-from ..node import Node
+from ..node import Node, build_method
 from ..port import Port
 from ..type import Type
 from ..scope import SisalScope
@@ -23,11 +23,10 @@ class Literal(Node):
         self.name = "Literal"
         self.out_ports = [Port(self.id, self.type, index=0)]
 
+    @build_method
     def build(self, target_ports: list[Port], scope: SisalScope = None) -> SubIr:
         """Turn literal into nodes and edges"""
-        super().build(target_ports, scope)
-        output_edge = Edge(self.out_ports[0], target_ports[0])
-        return SubIr(nodes=[self], internal_edges=[], output_edges=[output_edge])
+        return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
     def __repr__(self):
         # return str(self.ir_())

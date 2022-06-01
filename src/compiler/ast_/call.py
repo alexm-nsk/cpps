@@ -4,12 +4,10 @@
 """
 This module describes a function call node
 """
-from __future__ import annotations
 from ..node import Node, build_method
 from .function import Function
 from .multi_exp import MultiExp
 from ..port import Port
-from ..edge import Edge
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 
@@ -25,14 +23,16 @@ class Call(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        super().build(target_ports, scope)
         self.copy_ports(self.called_function())
         args_ir = self.args.build(self.in_ports, scope)
         del self.args
-        return SubIr(
-            [self] + args_ir.nodes,
-            internal_edges=args_ir.edges,
-            output_edges=[],
+        return (
+            SubIr(
+                [self],
+                internal_edges=[],
+                output_edges=[],
+            )
+            + args_ir
         )
 
     def called_function(self):
