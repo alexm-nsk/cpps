@@ -12,8 +12,11 @@ from ..scope import SisalScope
 class Function(Node):
     """Class for function nodes"""
 
-    # TODO add a reset
     functions = {}
+
+    @classmethod
+    def reset(cls):
+        cls.functions = {}
 
     def __init__(
         self,

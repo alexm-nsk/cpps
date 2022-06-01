@@ -225,6 +225,7 @@ def parse(src_code: str) -> dict:
 
     Edge.reset()
     Node.reset()
+    function.Function.reset()
     ir_ = module_visitor.visit(grammar.parse(src_code))
 
     return ir_

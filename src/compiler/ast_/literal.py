@@ -9,7 +9,6 @@ from ..port import Port
 from ..type import Type
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-from ..edge import Edge
 
 
 class Literal(Node):
@@ -24,7 +23,9 @@ class Literal(Node):
         self.out_ports = [Port(self.id, self.type, index=0)]
 
     @build_method
-    def build(self, target_ports: list[Port], scope: SisalScope = None) -> SubIr:
+    def build(self,
+              target_ports: list[Port],
+              scope: SisalScope = None) -> SubIr:
         """Turn literal into nodes and edges"""
         return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
