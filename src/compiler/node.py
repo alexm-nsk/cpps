@@ -9,6 +9,7 @@ from itertools import count
 from copy import deepcopy
 from .edge import Edge
 
+
 class Node:
     """Class for nodes"""
 
@@ -16,6 +17,7 @@ class Node:
     # "global" index for all the nodes
     __nodes__ = {}
     no_id = False
+    connect_parent = False
 
     def __init__(self, location):
         """Not meant to be run on it's own, it adds to child classes'

@@ -9,7 +9,6 @@ from ..port import Port
 from ..edge import Edge
 from ..type import IntegerType, RealType, BooleanType
 
-# , BooleanType
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 
