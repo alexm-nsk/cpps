@@ -12,7 +12,9 @@ from .sub_ir import SubIr
 
 
 def build_method(fn):
-    def wrapped(self, target_ports: list[Port], scope: SisalScope):
+    def wrapped(self,
+                target_ports: list[Port],
+                scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
             raise Exception(
                 f"Error: {len(target_ports)} expressions expected,"
@@ -29,7 +31,8 @@ def build_method(fn):
         in_edges = (
             [
                 Edge(scope_port, in_port)
-                for scope_port, in_port in zip(scope.node.in_ports, self.in_ports)
+                for scope_port, in_port in zip(scope.node.in_ports,
+                                               self.in_ports)
             ]
             if self.connect_parent
             else []
