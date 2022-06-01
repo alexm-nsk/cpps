@@ -3,7 +3,7 @@
 """
 Identifier IR node
 """
-from ..node import Node
+from ..node import Node, build_method
 from ..port import Port
 from ..edge import Edge
 from ..scope import SisalScope
@@ -26,9 +26,7 @@ class Identifier(Node):
         """override Node's num_out_ports because we don't need any ports"""
         return 1
 
+    @build_method
     def build(self, target_ports: list[Port], scope: SisalScope):
-        super().build(target_ports, scope)
-        edge = Edge(scope.resolve_by_name(self.name),
-                    target_ports[0])
-
-        return SubIr(nodes=[], output_edges=[edge], internal_edges=[])
+        self.out_ports = [scope.resolve_by_name(self.name)]
+        return SubIr(nodes=[], output_edges=[], internal_edges=[])
