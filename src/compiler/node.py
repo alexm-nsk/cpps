@@ -19,6 +19,8 @@ def build_method(fn):
                 f"got {len(self.expressions)} at {self.location}"
             )
 
+        node_sub_ir = fn(self, target_ports, scope)
+
         out_edges = [
             Edge(out_port, target_port)
             for out_port, target_port in zip(self.out_ports, target_ports)
@@ -33,7 +35,7 @@ def build_method(fn):
             else []
         )
 
-        return fn(target_ports, scope) + SubIr([], in_edges, out_edges)
+        return node_sub_ir + SubIr([], in_edges, out_edges)
 
     return wrapped
 

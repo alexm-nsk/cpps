@@ -6,7 +6,7 @@ If IR node
 from __future__ import annotations
 
 from copy import deepcopy
-from ..node import Node
+from ..node import Node, build_method
 
 from ..port import Port
 from ..scope import SisalScope
@@ -67,6 +67,7 @@ class Condition(Node):
 
 class If(Node):
     """Class for Ifs"""
+    connect_parent = True
 
     def __init__(
         self,
@@ -102,9 +103,10 @@ class If(Node):
         n_then = self.branches[0].num_out_ports()
         return n_then
 
+    @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
-        super().build(target_ports, scope)
+        #super().build(target_ports, scope)
         self.copy_ports(scope.node)
         self.check_ports_consistency()
         self.condition.build(scope)
