@@ -6,7 +6,6 @@ Algebraic operations, bin node and various tools for those
 
 from ..node import Node, build_method
 from ..port import Port
-from ..edge import Edge
 from ..type import IntegerType, RealType, BooleanType
 
 from ..scope import SisalScope
