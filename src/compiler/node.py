@@ -134,11 +134,11 @@ class Node:
                 retval[key] = retval[key].ir_()
         return retval
 
-    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        """supposed to be run before any 'build' in any inherited classes
-        as a super().build(target_ports, scope)"""
-        if len(target_ports) != self.num_out_ports():
-            raise Exception(
-                f"Error: {len(target_ports)} expressions expected,"
-                f"got {len(self.expressions)} at {self.location}"
-            )
+    #def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        #"""supposed to be run before any 'build' in any inherited classes
+        #as a super().build(target_ports, scope)"""
+        #if len(target_ports) != self.num_out_ports():
+            #raise Exception(
+                #f"Error: {len(target_ports)} expressions expected,"
+                #f"got {len(self.expressions)} at {self.location}"
+            #)
