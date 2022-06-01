@@ -81,13 +81,14 @@ class Algebraic(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Turn algebraic int nodes and edges"""
         # by design we get alternating operands and binary operators
-        super().build(target_ports, scope)
+        # super().build(target_ports, scope)
 
         low_priority = ["+", "-"]
 
         def process(operators: list = []):
             """recursively processes parts of algebraic, until only single
-            operands left"""
+            operands left, it's done in reverse,
+            so we don't have to flip + and -"""
             for n, item in reversed(list(enumerate(self.expression))):
                 if type(item) == Bin and (
                     item.operator in operators or operators == []

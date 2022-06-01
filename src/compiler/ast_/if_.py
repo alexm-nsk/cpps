@@ -51,7 +51,7 @@ class Condition(Node):
         """Convert parsed data to IR"""
         self.copy_ports(scope.node, out=False)
         self.out_ports = [
-            Port(self.id, BooleanType(), index, str(index))
+            Port(self.id, BooleanType(), index, "cond: " + str(index))
             for index in range(self.conditions.num_out_ports())
         ]
         scope = SisalScope(self)
@@ -67,6 +67,7 @@ class Condition(Node):
 
 class If(Node):
     """Class for Ifs"""
+
     connect_parent = True
 
     def __init__(
