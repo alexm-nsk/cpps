@@ -4,8 +4,8 @@
 """
 This module describes an edge
 """
+from __future__ import annotations
 from dataclasses import dataclass
-from .port import Port
 
 
 @dataclass
