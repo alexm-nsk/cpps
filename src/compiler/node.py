@@ -7,7 +7,7 @@ Describes IR-nodes base class
 from __future__ import annotations
 from itertools import count
 from copy import deepcopy
-
+from .edge import Edge
 
 class Node:
     """Class for nodes"""
