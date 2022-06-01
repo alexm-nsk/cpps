@@ -3,7 +3,7 @@
 """
 MultiExp IR node
 """
-from ..node import Node
+from ..node import Node, build_method
 from ..port import Port
 from ..scope import SisalScope
 from ..sub_ir import SubIr
@@ -22,6 +22,7 @@ class MultiExp(Node):
         self.expressions = expressions
         self.nodes = []
         self.edges = []
+        self.out_ports = []
 
     def num_expressions(self):
         """Returns number of expressions"""
@@ -31,10 +32,10 @@ class MultiExp(Node):
         """Returns number of output ports"""
         return sum(map(lambda x: x.num_out_ports(), self.expressions))
 
+    @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Build contained expressions and pass their outputs
         to parent node"""
-        super().build(target_ports, scope)
 
         # split target ports to spread them around corresponging child nodes
         # example: (3 output ports and 2 expressions, exp1 has 2 output ports)
@@ -44,7 +45,7 @@ class MultiExp(Node):
         for n, exp in enumerate(self.expressions):
             length = exp.num_out_ports()
             self.add_sub_ir(
-                exp.build(target_ports[port_index: port_index + length], scope)
+                exp.build(target_ports[port_index : port_index + length], scope)
             )
             port_index += length
 
