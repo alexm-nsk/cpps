@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """ Describes sisal types"""
-#from __future__ import annotations
 from dataclasses import dataclass
 
 

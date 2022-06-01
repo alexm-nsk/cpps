@@ -5,7 +5,6 @@ Identifier IR node
 """
 from ..node import Node, build_method
 from ..port import Port
-from ..edge import Edge
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 

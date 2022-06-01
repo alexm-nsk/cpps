@@ -5,7 +5,6 @@ If IR node
 """
 from __future__ import annotations
 
-from copy import deepcopy
 from ..node import Node, build_method
 
 from ..port import Port
@@ -13,7 +12,6 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .multi_exp import MultiExp
 from ..type import BooleanType
-from ..edge import Edge
 
 
 class Branch(Node):

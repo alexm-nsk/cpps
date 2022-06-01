@@ -30,9 +30,6 @@ class Edge:
     def __post_init__(self):
         """Runs after dataclasses __init__"""
         if self.to.type is None:
-            #if type(self.to.node()) != Bin:
-                #raise Exception(
-                    #"port type should only be defined on the fly for Bin")
             # TODO put it into a log, add a check if its Bin
             self.to.type = self.from_.type
         Edge.__edges__.append(self)

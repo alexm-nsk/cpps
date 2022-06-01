@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """
-This module describes a function call node
+Describes a function call node
 """
 from ..node import Node, build_method
 from .function import Function
