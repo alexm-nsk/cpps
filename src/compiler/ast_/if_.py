@@ -38,9 +38,6 @@ class Branch(Node):
     def num_in_ports(self):
         return self.body.num_in_ports()
 
-    def ir_(self):
-        return super().ir_()
-
 
 class Condition(Node):
     """Handles if's condition"""
@@ -66,9 +63,6 @@ class Condition(Node):
 
     def num_in_ports(self):
         return self.conditions.num_in_ports()
-
-    def ir_(self):
-        return super().ir_()
 
 
 class If(Node):

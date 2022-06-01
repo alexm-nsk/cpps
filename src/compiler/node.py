@@ -8,6 +8,26 @@ from __future__ import annotations
 from itertools import count
 from copy import deepcopy
 from .edge import Edge
+from .sub_ir import SubIr
+
+def build_method(fn):
+    def wrapped(self, target_ports: list[Port], scope: SisalScope):
+        if len(target_ports) != self.num_out_ports():
+            raise Exception(
+                f"Error: {len(target_ports)} expressions expected,"
+                f"got {len(self.expressions)} at {self.location}"
+            )
+        if self.connect_parent:
+            pass
+
+        edges = [
+            Edge(out_port, target_port)
+            for out_port, target_port in zip(self.out_ports, target_ports)
+        ]
+
+        return fn(target_ports, scope) + SubIr([], edges, out_edges)
+
+    return wrapped
 
 
 class Node:

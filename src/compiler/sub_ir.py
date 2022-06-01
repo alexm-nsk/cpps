@@ -4,10 +4,8 @@
 Describes a class that holds nodes and edges
 created by 'build' function of nodes
 """
-
+from __future__ import annotations
 from dataclasses import dataclass
-from .node import Node
-from .edge import Edge
 
 
 @dataclass
