@@ -106,17 +106,12 @@ class If(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
-        #super().build(target_ports, scope)
         self.copy_ports(scope.node)
         self.check_ports_consistency()
         self.condition.build(scope)
         for branch in self.branches:
             branch.build(scope)
-        edges = [
-            Edge(out_port, target_port)
-            for out_port, target_port in zip(self.out_ports, target_ports)
-        ]
-        return SubIr(nodes=[self], internal_edges=[], output_edges=edges)
+        return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary

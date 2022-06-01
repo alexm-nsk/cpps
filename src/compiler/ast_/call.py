@@ -5,7 +5,7 @@
 This module describes a function call node
 """
 from __future__ import annotations
-from ..node import Node
+from ..node import Node, build_method
 from .function import Function
 from .multi_exp import MultiExp
 from ..port import Port
@@ -23,18 +23,16 @@ class Call(Node):
         self.args = args
         self.name = "Call"
 
+    @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         super().build(target_ports, scope)
         self.copy_ports(self.called_function())
-        output_edges = [
-            Edge(from_, to) for from_, to in zip(self.out_ports, target_ports)
-        ]
         args_ir = self.args.build(self.in_ports, scope)
         del self.args
         return SubIr(
             [self] + args_ir.nodes,
             internal_edges=args_ir.edges,
-            output_edges=output_edges,
+            output_edges=[],
         )
 
     def called_function(self):
