@@ -10,6 +10,7 @@ from copy import deepcopy
 from .edge import Edge
 from .sub_ir import SubIr
 
+
 def build_method(fn):
     def wrapped(self, target_ports: list[Port], scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
@@ -17,15 +18,22 @@ def build_method(fn):
                 f"Error: {len(target_ports)} expressions expected,"
                 f"got {len(self.expressions)} at {self.location}"
             )
-        if self.connect_parent:
-            pass
 
-        edges = [
+        out_edges = [
             Edge(out_port, target_port)
             for out_port, target_port in zip(self.out_ports, target_ports)
         ]
 
-        return fn(target_ports, scope) + SubIr([], edges, out_edges)
+        in_edges = (
+            [
+                Edge(scope_port, in_port)
+                for scope_port, in_port in zip(scope.node.in_ports, self.in_ports)
+            ]
+            if self.connect_parent
+            else []
+        )
+
+        return fn(target_ports, scope) + SubIr([], in_edges, out_edges)
 
     return wrapped
 
