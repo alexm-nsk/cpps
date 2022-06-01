@@ -89,13 +89,13 @@ class Algebraic(Node):
         def process(operators: list = []):
             """recursively processes parts of algebraic, until only single
             operands left"""
-            for n, item in enumerate(self.expression):
+            for n, item in reversed(list(enumerate(self.expression))):
                 if type(item) == Bin and (
                     item.operator in operators or operators == []
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1: ]
+                    right = self.expression[n + 1:]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,
