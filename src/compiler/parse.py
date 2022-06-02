@@ -186,10 +186,6 @@ class ModuleVisitor(NodeVisitor):
     @staticmethod
     def visit_module(_, vc_):
         """module visitor"""
-        for n, v in enumerate(vc_):
-            print(n, v)
-        #functions = [def_[0][1] for def_ in vc_]
-        # [vc_[0]] + [v[3] for v in vc_[1]]
         functions = [vc_[1]] + [v[1] for v in vc_[2]]
         for function in functions:
             function.build()
