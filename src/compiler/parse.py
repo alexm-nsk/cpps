@@ -6,7 +6,7 @@
 Node module methods are called to make class instances.
 """
 
-import os
+import os, re
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError, IncompleteParseError
@@ -23,6 +23,15 @@ from .type import SingularType, IntegerType, BooleanType, RealType, MultiType
 
 class ModuleVisitor(NodeVisitor):
     """Walks the parsed syntax tree"""
+    __offset__ = 0
+
+    @property
+    def offset(self):
+        return self.__offset__
+
+    @offset.setter
+    def offset(self, offset):
+        self.__offset__ = offset
 
     @staticmethod
     def get_location(node):
@@ -38,6 +47,7 @@ class ModuleVisitor(NodeVisitor):
         return f"{start_row}:{start_column}-{end_row}:{end_column}"
 
     def visit_function(self, node, vc_):
+        print(self.offset)
         """function visitor"""
         return function.Function(
             function_name=vc_[2].name,
@@ -231,31 +241,33 @@ def parse(src_code: str) -> dict:
     Edge.reset()
     Node.reset()
     function.Function.reset()
-    import re
-    matches = re.findall("function.*?end function", src_code, re.DOTALL)
-    functions = {"functions" : []}
-    for n,match in enumerate(matches):
+
+    matches = re.finditer("function.*?end function", src_code, re.DOTALL)
+    functions = {"functions": []}
+    for n, match in enumerate(matches):
 
         try:
-            parsed = grammar.parse(match)
+            parsed = grammar.parse(match.group(0))
+            module_visitor.offset = match.start()
             ir_ = module_visitor.visit(parsed)
             functions["functions"].append(ir_)
         except Exception as e:
             if type(e) == ParseError:
-                wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
+                wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
                 print(
                     "Syntax error: ",
-                    e.expr.name, e.expr.as_rule(),
+                    e.expr.name,
+                    e.expr.as_rule(),
                     f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                     + '"'
-                    + e.text[int(e.pos): e.pos + 20].split("\n")[0]
+                    + e.text[int(e.pos) : e.pos + 20].split("\n")[0]
                     + '"',
                 )
             else:
-                print ("unknown error")
+                print("unknown error")
                 raise Exception(e)
             return {}
-    for f in functions["functions"]:f.build()
-    functions["functions"] = [f.ir_()
-        for f in functions["functions"] ]
+    for f in functions["functions"]:
+        f.build()
+    functions["functions"] = [f.ir_() for f in functions["functions"]]
     return functions
