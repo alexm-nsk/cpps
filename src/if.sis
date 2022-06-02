@@ -1,8 +1,8 @@
 function Fib(M: integer returns integer)
     if (M < 2) then
         M
-    elseif (M > 2) then
-        t
+    elseif M > 2 then
+        6 +6*M
     else
         Fib(M-1) + Fib(M-1) + 3 + 4 + 2 + 3
 

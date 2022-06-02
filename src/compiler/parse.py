@@ -255,5 +255,7 @@ def parse(src_code: str) -> dict:
                 print ("unknown error")
                 raise Exception(e)
             return {}
-
+    for f in functions["functions"]:f.build()
+    functions["functions"] = [f.ir_()
+        for f in functions["functions"] ]
     return functions
