@@ -243,7 +243,7 @@ def parse(src_code: str) -> dict:
         if type(e) == ParseError:
             wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
             print(
-                "syntax error: ",
+                "Syntax error: ",
                 e.expr.name, e.expr.as_rule(),
                 f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
