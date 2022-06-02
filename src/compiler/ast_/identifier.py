@@ -28,4 +28,6 @@ class Identifier(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope):
         self.out_ports = [scope.resolve_by_name(self.name)]
+        if self.out_ports == [None]:
+            raise Exception (f"identidier {self.name, self.location} was not defined")
         return SubIr(nodes=[], output_edges=[], internal_edges=[])
