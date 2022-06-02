@@ -186,7 +186,11 @@ class ModuleVisitor(NodeVisitor):
     @staticmethod
     def visit_module(_, vc_):
         """module visitor"""
-        functions = [def_[0][1] for def_ in vc_]
+        for n, v in enumerate(vc_):
+            print(n, v)
+        #functions = [def_[0][1] for def_ in vc_]
+        # [vc_[0]] + [v[3] for v in vc_[1]]
+        functions = [vc_[1]] + [v[1] for v in vc_[2]]
         for function in functions:
             function.build()
         functions = [function.ir_() for function in functions]
@@ -201,6 +205,11 @@ class ModuleVisitor(NodeVisitor):
 
     @staticmethod
     def visit_exp_singular(_, vc_):
+        """exp_singular visitor"""
+        return vc_[0]
+
+    @staticmethod
+    def visit_def(_, vc_):
         """exp_singular visitor"""
         return vc_[0]
 
@@ -228,6 +237,8 @@ def parse(src_code: str) -> dict:
     function.Function.reset()
     try:
         parsed = grammar.parse(src_code)
+        ir_ = module_visitor.visit(parsed)
+        return ir_
     except Exception as e:
         if type(e) == ParseError:
             wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
@@ -239,10 +250,6 @@ def parse(src_code: str) -> dict:
                 + e.text[int(e.pos): e.pos + 20].split("\n")[0]
                 + '"',
             )
-        else:
-            print ("not parse error")
             return {}
+        else:
             raise Exception(e)
-
-    ir_ = module_visitor.visit(parsed)
-    return ir_
