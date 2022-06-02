@@ -244,12 +244,13 @@ def parse(src_code: str) -> dict:
             wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
             print(
                 "syntax error: ",
-                e.expr.name,
-                f'expected instead of "{wrong}" at {e.column()}:{e.line()}: '
+                e.expr.name, e.expr.as_rule(),
+                f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
                 + e.text[int(e.pos): e.pos + 20].split("\n")[0]
                 + '"',
             )
-            return {}
         else:
+            print ("unknown error")
             raise Exception(e)
+        return {}
