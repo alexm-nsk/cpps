@@ -52,7 +52,7 @@ def main(args):
             src_code = src_file.read()
             ir_ = parse.parse(src_code)
             if "--ir" in args:
-                print(json.dumps(json_names(ir_), indent=2))
+                print(json.dumps(json_names(ir_), indent=1))
 
     return 0
 
