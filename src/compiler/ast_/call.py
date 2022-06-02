@@ -36,6 +36,8 @@ class Call(Node):
         )
 
     def called_function(self):
+        if not self.callee in Function.functions:
+            raise Exception(f"no function named {self.callee} found")
         return Function.functions[self.callee]
 
     def num_out_ports(self):

@@ -148,7 +148,7 @@ class ModuleVisitor(NodeVisitor):
         elseif = []
 
         for n, e in enumerate(vc_[8]):
-            condition_nodes.append(e[2][0])
+            condition_nodes.append(e[2])
             elseif.append(e[6])
 
         locations = ", ".join([condition.location for condition in condition_nodes])
@@ -231,22 +231,29 @@ def parse(src_code: str) -> dict:
     Edge.reset()
     Node.reset()
     function.Function.reset()
-    try:
-        parsed = grammar.parse(src_code)
-        ir_ = module_visitor.visit(parsed)
-        return ir_
-    except Exception as e:
-        if type(e) == ParseError:
-            wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
-            print(
-                "Syntax error: ",
-                e.expr.name, e.expr.as_rule(),
-                f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
-                + '"'
-                + e.text[int(e.pos): e.pos + 20].split("\n")[0]
-                + '"',
-            )
-        else:
-            print ("unknown error")
-            raise Exception(e)
-        return {}
+    import re
+    matches = re.findall("function.*?end function", src_code, re.DOTALL)
+    functions = {"functions" : []}
+    for n,match in enumerate(matches):
+
+        try:
+            parsed = grammar.parse(match)
+            ir_ = module_visitor.visit(parsed)
+            functions["functions"].append(ir_)
+        except Exception as e:
+            if type(e) == ParseError:
+                wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
+                print(
+                    "Syntax error: ",
+                    e.expr.name, e.expr.as_rule(),
+                    f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
+                    + '"'
+                    + e.text[int(e.pos): e.pos + 20].split("\n")[0]
+                    + '"',
+                )
+            else:
+                print ("unknown error")
+                raise Exception(e)
+            return {}
+
+    return functions
