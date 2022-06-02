@@ -9,8 +9,7 @@ Node module methods are called to make class instances.
 import os
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
-
-# from parsimonious.exceptions import ParseError
+from parsimonious.exceptions import ParseError, IncompleteParseError
 from .node import Node
 
 # from .ast_.function import Function
@@ -215,8 +214,9 @@ grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_gramm
 
 with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
-    grammar = Grammar(grammar_text)
-    module_visitor = ModuleVisitor()
+
+grammar = Grammar(grammar_text)
+module_visitor = ModuleVisitor()
 
 
 def parse(src_code: str) -> dict:
@@ -226,6 +226,23 @@ def parse(src_code: str) -> dict:
     Edge.reset()
     Node.reset()
     function.Function.reset()
-    ir_ = module_visitor.visit(grammar.parse(src_code))
+    try:
+        parsed = grammar.parse(src_code)
+    except Exception as e:
+        if type(e) == ParseError:
+            wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
+            print(
+                "syntax error: ",
+                e.expr.name,
+                f'expected instead of "{wrong}" at {e.column()}:{e.line()}: '
+                + '"'
+                + e.text[int(e.pos): e.pos + 20].split("\n")[0]
+                + '"',
+            )
+        else:
+            print ("not parse error")
+            return {}
+            raise Exception(e)
 
+    ir_ = module_visitor.visit(parsed)
     return ir_

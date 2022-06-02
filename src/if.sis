@@ -2,7 +2,7 @@ function Fib(M: integer returns integer)
     if (M < 2) then
         M
     else
-        Fib(M-1) + Fib(M-2)
+        Fib(M-1) + Fib(M-1a)
     end if
 end function
 
