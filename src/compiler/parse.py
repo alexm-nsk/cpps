@@ -23,21 +23,11 @@ from .type import SingularType, IntegerType, BooleanType, RealType, MultiType
 
 class ModuleVisitor(NodeVisitor):
     """Walks the parsed syntax tree"""
-    __offset__ = 0
-
-    #@property
-    #def offset(self):
-        #return self.__offset__
-
-    #@offset.setter
-    #def offset(self, offset):
-        #self.__offset__ = offset
 
     @staticmethod
     def get_location(node):
         """Returns formatted location of a syntax-node"""
         text = node.full_text
-        #column_offset = ModuleVisitor.offset
         start_row = text[: node.start].count("\n") + 1
         start_column = len((text[: node.start].split("\n"))[-1])
 
@@ -242,15 +232,11 @@ def parse(src_code: str) -> dict:
     Node.reset()
     function.Function.reset()
 
-    #matches = re.finditer("function.*?end function", src_code, re.DOTALL)
-    #functions = {"functions": []}
-    #for n, match in enumerate(matches):
-
     try:
         parsed = grammar.parse(src_code)
-        #module_visitor.offset = match.start()
+        # module_visitor.offset = match.start()
         ir_ = module_visitor.visit(parsed)
-        #functions["functions"].append(ir_)
+        # functions["functions"].append(ir_)
         return ir_
     except Exception as e:
         if type(e) == ParseError:
@@ -268,7 +254,4 @@ def parse(src_code: str) -> dict:
             print("unknown error")
             raise Exception(e)
         return {}
-    #for f in functions["functions"]:
-        #f.build()
-    #functions["functions"] = [f.ir_() for f in functions["functions"]]
     return functions
