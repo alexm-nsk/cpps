@@ -9,7 +9,8 @@ Node module methods are called to make class instances.
 import os, re
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
-from parsimonious.exceptions import ParseError, IncompleteParseError
+from parsimonious.exceptions import ParseError
+# from parsimonious.exceptions import IncompleteParseError
 from .node import Node
 
 from .ast_.function import Function
@@ -214,13 +215,25 @@ class ModuleVisitor(NodeVisitor):
         return visited_children or node
 
 
-grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_grammar.ini"
+grammar_file_name = os.path.dirname(os.path.realpath(__file__)) +\
+                    "/module_grammar.ini"
 
 with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
 
 grammar = Grammar(grammar_text)
 module_visitor = ModuleVisitor()
+
+rule_annotations = {
+    "def": "function definition or function import"
+}
+
+
+def rule_annotation(rule_name: str):
+    if rule_name in rule_annotations:
+        return rule_annotations[rule_name]
+    else:
+        return rule_name
 
 
 def parse(src_code: str) -> dict:
@@ -243,8 +256,8 @@ def parse(src_code: str) -> dict:
             wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
             print(
                 f"Syntax error ({e.line()}:{e.column()}): ",
-                e.expr.name,
-                e.expr.as_rule(),
+                rule_annotation(e.expr.name),
+                #e.expr.as_rule(),
                 f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
                 + e.text[int(e.pos): e.pos + 20].split("\n")[0]
