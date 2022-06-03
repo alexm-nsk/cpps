@@ -25,19 +25,19 @@ class ModuleVisitor(NodeVisitor):
     """Walks the parsed syntax tree"""
     __offset__ = 0
 
-    @property
-    def offset(self):
-        return self.__offset__
+    #@property
+    #def offset(self):
+        #return self.__offset__
 
-    @offset.setter
-    def offset(self, offset):
-        self.__offset__ = offset
+    #@offset.setter
+    #def offset(self, offset):
+        #self.__offset__ = offset
 
     @staticmethod
     def get_location(node):
         """Returns formatted location of a syntax-node"""
         text = node.full_text
-        column_offset = ModuleVisitor.offset
+        #column_offset = ModuleVisitor.offset
         start_row = text[: node.start].count("\n") + 1
         start_column = len((text[: node.start].split("\n"))[-1])
 
@@ -195,7 +195,8 @@ class ModuleVisitor(NodeVisitor):
     @staticmethod
     def visit_module(_, vc_):
         """module visitor"""
-        functions = [vc_[1]] + [v[1] for v in vc_[2]]
+        functions = [func[1] for func in vc_[0]]
+        print(functions)
         for function in functions:
             function.build()
         functions = [function.ir_() for function in functions]
@@ -241,32 +242,33 @@ def parse(src_code: str) -> dict:
     Node.reset()
     function.Function.reset()
 
-    matches = re.finditer("function.*?end function", src_code, re.DOTALL)
-    functions = {"functions": []}
-    for n, match in enumerate(matches):
+    #matches = re.finditer("function.*?end function", src_code, re.DOTALL)
+    #functions = {"functions": []}
+    #for n, match in enumerate(matches):
 
-        try:
-            parsed = grammar.parse(match.group(0))
-            module_visitor.offset = match.start()
-            ir_ = module_visitor.visit(parsed)
-            functions["functions"].append(ir_)
-        except Exception as e:
-            if type(e) == ParseError:
-                wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
-                print(
-                    "Syntax error: ",
-                    e.expr.name,
-                    e.expr.as_rule(),
-                    f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
-                    + '"'
-                    + e.text[int(e.pos) : e.pos + 20].split("\n")[0]
-                    + '"',
-                )
-            else:
-                print("unknown error")
-                raise Exception(e)
-            return {}
-    for f in functions["functions"]:
-        f.build()
-    functions["functions"] = [f.ir_() for f in functions["functions"]]
+    try:
+        parsed = grammar.parse(src_code)
+        #module_visitor.offset = match.start()
+        ir_ = module_visitor.visit(parsed)
+        #functions["functions"].append(ir_)
+        return ir_
+    except Exception as e:
+        if type(e) == ParseError:
+            wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
+            print(
+                "Syntax error: ",
+                e.expr.name,
+                e.expr.as_rule(),
+                f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
+                + '"'
+                + e.text[int(e.pos) : e.pos + 20].split("\n")[0]
+                + '"',
+            )
+        else:
+            print("unknown error")
+            raise Exception(e)
+        return {}
+    #for f in functions["functions"]:
+        #f.build()
+    #functions["functions"] = [f.ir_() for f in functions["functions"]]
     return functions
