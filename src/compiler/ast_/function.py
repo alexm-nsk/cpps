@@ -9,6 +9,7 @@ from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
 
+
 class Function(Node):
     """Class for function nodes"""
 
@@ -36,8 +37,7 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index)
-            for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
         ]
 
         self.body = body
@@ -54,8 +54,9 @@ class Function(Node):
             # TODO add Error Exception
             raise SisalError(
                 f"""Number of function's return values doesn't match the """
-                f"""expected number return values:{len(self.in_ports)}, """
-                f"""{self.function_name}, {self.location}"""
+                f"""expected number return values: {len(self.in_ports)}, """
+                f"""name: \"{self.function_name}\".""",
+                self.location,
             )
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))

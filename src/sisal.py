@@ -51,8 +51,9 @@ def main(args):
         with open(args[1], "r", encoding="UTF-8") as src_file:
             src_code = src_file.read()
             ir_ = parse.parse(src_code)
-            if "--ir" in args:
-                print(json.dumps(json_names(ir_), indent=1))
+            if ir_:
+                if "--ir" in args:
+                    print(json.dumps(json_names(ir_), indent=1))
 
     return 0
 

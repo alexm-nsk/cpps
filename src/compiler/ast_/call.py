@@ -10,6 +10,7 @@ from .multi_exp import MultiExp
 from ..port import Port
 from ..scope import SisalScope
 from ..sub_ir import SubIr
+from ..error import SisalError
 
 
 class Call(Node):
@@ -36,8 +37,11 @@ class Call(Node):
         )
 
     def called_function(self):
-        if not self.callee in Function.functions:
-            raise Exception(f"no function named {self.callee} found")
+        if self.callee not in Function.functions:
+            raise SisalError(
+                f'No function named "{self.callee}".',
+                self.location,
+            )
         return Function.functions[self.callee]
 
     def num_out_ports(self):

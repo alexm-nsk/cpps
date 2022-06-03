@@ -13,9 +13,11 @@ from parsimonious.exceptions import ParseError, IncompleteParseError
 from .node import Node
 
 from .ast_.function import Function
+
 # from .ast_.identifier import Identifier
 # from .ast_ import function.Function, identifier.Identifier
 from .ast_ import *
+from .error import SisalError
 
 from .edge import Edge
 from .type import SingularType, IntegerType, BooleanType, RealType, MultiType
@@ -231,31 +233,26 @@ def parse(src_code: str) -> dict:
 
     try:
         parsed = grammar.parse(src_code)
-        # module_visitor.offset = match.start()
         functions = module_visitor.visit(parsed)
-
+        for function in functions:
+            function.build()
+        functions = [function.ir_() for function in functions]
+        return {"functions": functions}
     except Exception as e:
         if type(e) == ParseError:
-            wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
+            wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
             print(
                 "Syntax error: ",
                 e.expr.name,
                 e.expr.as_rule(),
                 f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
-                + e.text[int(e.pos) : e.pos + 20].split("\n")[0]
+                + e.text[int(e.pos): e.pos + 20].split("\n")[0]
                 + '"',
             )
+        elif type(e) == SisalError:
+            print(e)
         else:
             print("unknown error")
             raise Exception(e)
-        return {}
-    try:
-        for function in functions:
-            function.build()
-        functions = [function.ir_() for function in functions]
-        return {"functions": functions}
-    except Exception as e:
-        print (e)
-        return {}
-    # functions["functions"].append(ir_)
+        return None
