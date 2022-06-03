@@ -233,11 +233,7 @@ def parse(src_code: str) -> dict:
         parsed = grammar.parse(src_code)
         # module_visitor.offset = match.start()
         functions = module_visitor.visit(parsed)
-        for function in functions:
-            function.build()
-        functions = [function.ir_() for function in functions]
-        # functions["functions"].append(ir_)
-        return {"functions": functions}
+
     except Exception as e:
         if type(e) == ParseError:
             wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
@@ -254,4 +250,12 @@ def parse(src_code: str) -> dict:
             print("unknown error")
             raise Exception(e)
         return {}
-    return functions
+    try:
+        for function in functions:
+            function.build()
+        functions = [function.ir_() for function in functions]
+        return {"functions": functions}
+    except Exception as e:
+        print (e)
+        return {}
+    # functions["functions"].append(ir_)
