@@ -7,7 +7,7 @@ from ..node import Node, build_method
 from ..port import Port
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-
+from ..error import SisalError
 
 class Identifier(Node):
     """This is an intermediate node, it's deleted in the second pass"""
@@ -29,5 +29,5 @@ class Identifier(Node):
     def build(self, target_ports: list[Port], scope: SisalScope):
         self.out_ports = [scope.resolve_by_name(self.name)]
         if self.out_ports == [None]:
-            raise Exception (f"identidier {self.name, self.location} was not defined")
+            raise SisalError (f"identidier {self.name} was not defined.", self.location)
         return SubIr(nodes=[], output_edges=[], internal_edges=[])

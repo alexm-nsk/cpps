@@ -37,8 +37,9 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
-        ]
+                            Port(self.id, type_, port_index)
+                            for port_index, type_ in enumerate(retvals)
+                         ]
 
         self.body = body
         Function.functions[self.function_name] = self
