@@ -186,7 +186,6 @@ class ModuleVisitor(NodeVisitor):
     def visit_module(_, vc_):
         """module visitor"""
         functions = [func[1] for func in vc_[0]]
-        print(functions)
         for function in functions:
             function.build()
         functions = [function.ir_() for function in functions]
