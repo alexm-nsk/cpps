@@ -52,7 +52,6 @@ class Function(Node):
         Because it's a top level node it doesn't run the 'super' from Node
         and doesn't take any arguments"""
         if len(self.out_ports) != len(self.body.expressions):
-            # TODO add Error Exception
             raise SisalError(
                 f"""Number of function's return values doesn't match the """
                 f"""expected number return values: {len(self.in_ports)}, """
