@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Describes syntax rules
+"""
+
 rule_annotations = {
     "def": "function definition or function import",
     "bin_op": "binary operation",

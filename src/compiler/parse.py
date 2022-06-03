@@ -6,7 +6,7 @@
 Node module methods are called to make class instances.
 """
 
-import os, re
+import os
 from .annotations import rule_annotation
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor

@@ -7,6 +7,6 @@ function Fib(M: integer returns integer)
 end function
 
 function main(M: integer returns integer)
-    Fib(M)
+    Fib(M) + M
 end function
 
