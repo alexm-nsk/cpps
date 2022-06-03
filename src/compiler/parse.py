@@ -37,7 +37,7 @@ class ModuleVisitor(NodeVisitor):
     def get_location(node):
         """Returns formatted location of a syntax-node"""
         text = node.full_text
-
+        column_offset = ModuleVisitor.offset
         start_row = text[: node.start].count("\n") + 1
         start_column = len((text[: node.start].split("\n"))[-1])
 
@@ -47,7 +47,6 @@ class ModuleVisitor(NodeVisitor):
         return f"{start_row}:{start_column}-{end_row}:{end_column}"
 
     def visit_function(self, node, vc_):
-        print(self.offset)
         """function visitor"""
         return function.Function(
             function_name=vc_[2].name,
