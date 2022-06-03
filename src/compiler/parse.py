@@ -7,6 +7,7 @@ Node module methods are called to make class instances.
 """
 
 import os, re
+from .annotations import rule_annotation
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError
@@ -223,18 +224,6 @@ with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
 
 grammar = Grammar(grammar_text)
 module_visitor = ModuleVisitor()
-
-rule_annotations = {
-    "def": "function definition or function import",
-    "bin_op": "binary operation",
-}
-
-
-def rule_annotation(rule_name: str):
-    if rule_name in rule_annotations:
-        return rule_annotations[rule_name]
-    else:
-        return rule_name
 
 
 def parse(src_code: str) -> dict:
