@@ -15,6 +15,8 @@ class Edge:
     from_: Port
     to: Port
 
+    # TODO add type match checks
+
     # "global" index for all the edges
     __edges__ = []
     __edges_from__ = {}

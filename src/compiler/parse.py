@@ -225,7 +225,8 @@ grammar = Grammar(grammar_text)
 module_visitor = ModuleVisitor()
 
 rule_annotations = {
-    "def": "function definition or function import"
+    "def": "function definition or function import",
+    "bin_op": "binary operation",
 }
 
 
