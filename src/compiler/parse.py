@@ -12,7 +12,7 @@ from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError, IncompleteParseError
 from .node import Node
 
-# from .ast_.function import Function
+from .ast_.function import Function
 # from .ast_.identifier import Identifier
 # from .ast_ import function.Function, identifier.Identifier
 from .ast_ import *
@@ -186,10 +186,8 @@ class ModuleVisitor(NodeVisitor):
     def visit_module(_, vc_):
         """module visitor"""
         functions = [func[1] for func in vc_[0]]
-        for function in functions:
-            function.build()
-        functions = [function.ir_() for function in functions]
-        return {"functions": functions}
+
+        return functions
 
     def visit_multi_exp(self, node, vc_):
         """multi_exp visitor"""
@@ -229,14 +227,17 @@ def parse(src_code: str) -> dict:
 
     Edge.reset()
     Node.reset()
-    function.Function.reset()
+    Function.reset()
 
     try:
         parsed = grammar.parse(src_code)
         # module_visitor.offset = match.start()
-        ir_ = module_visitor.visit(parsed)
+        functions = module_visitor.visit(parsed)
+        for function in functions:
+            function.build()
+        functions = [function.ir_() for function in functions]
         # functions["functions"].append(ir_)
-        return ir_
+        return {"functions": functions}
     except Exception as e:
         if type(e) == ParseError:
             wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
