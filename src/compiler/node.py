@@ -107,7 +107,7 @@ class Node:
         """Returns the number of output ports"""
         if hasattr(self, "out_ports"):
             return len(self.out_ports)
-        raise Exception(
+        raise SisalError(
             f"Number of output ports requested, but node {self.id, type(self)}"
             f" doesn't have out_ports"
         )
@@ -116,7 +116,7 @@ class Node:
         """Returns the number of input ports"""
         if hasattr(self, "in_ports"):
             return len(self.in_ports)
-        raise Exception(
+        raise SisalError(
             f"Number of input ports requested, but node {self.id}"
             f" doesn't have in_ports"
         )
@@ -134,12 +134,3 @@ class Node:
             if key in retval:
                 retval[key] = retval[key].ir_()
         return retval
-
-    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        """supposed to be run before any 'build' in any inherited classes
-        as a super().build(target_ports, scope)"""
-        if len(target_ports) != self.num_out_ports():
-            raise Exception(
-                f"Error: {len(target_ports)} expressions expected,"
-                f"got {len(self.expressions)} at {self.location}"
-            )
