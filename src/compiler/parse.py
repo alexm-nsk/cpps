@@ -195,6 +195,12 @@ class ModuleVisitor(NodeVisitor):
             location=self.get_location(node),
         )
 
+    def visit_array_index(self, node, vc_):
+        return vc_[0]
+
+    def visit_array_access(self, node, vc_):
+        return None
+
     @staticmethod
     def visit_exp_singular(_, vc_):
         """exp_singular visitor"""

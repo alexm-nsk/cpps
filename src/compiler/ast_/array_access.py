@@ -19,6 +19,9 @@ class ArrayAccess(Node):
         super().__init__(location)
         self.name = identifier_name
 
+    def num_out_ports(self):
+        return 1
+
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope):
         self.out_ports = [scope.resolve_by_name(self.name)]
