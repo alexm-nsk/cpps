@@ -9,6 +9,7 @@ from itertools import count
 from copy import deepcopy
 from .edge import Edge
 from .sub_ir import SubIr
+from .error import SisalError
 
 
 def build_method(fn):
@@ -16,8 +17,7 @@ def build_method(fn):
                 target_ports: list[Port],
                 scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
-            # TODO replace with SisalError
-            raise Exception(
+            raise SisalError(
                 f"Error: {len(target_ports)} expressions expected,"
                 f"got {len(self.expressions)} at {self.location}"
             )
