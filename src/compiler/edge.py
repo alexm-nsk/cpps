@@ -23,6 +23,18 @@ class Edge:
     __edges_to__ = {}
 
     @classmethod
+    def edges_to(cls, node_id: str):
+        return cls.__edges_to__[node_id]
+
+    @classmethod
+    def edges_from(cls, node_id: str):
+        return cls.__from__[node_id]
+
+    @classmethod
+    def edges(cls, node_id: str):
+        return cls.__edges__[node_id]
+
+    @classmethod
     def reset(cls):
         """Resets edge indices for recompiling"""
         cls.__edges__ = []

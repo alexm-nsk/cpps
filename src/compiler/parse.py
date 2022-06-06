@@ -14,7 +14,7 @@ from parsimonious.exceptions import ParseError
 # from parsimonious.exceptions import IncompleteParseError
 from .node import Node
 
-from .ast_.function import Function
+from .parser_state import reset
 
 # from .ast_.identifier import Identifier
 # from .ast_ import function.Function, identifier.Identifier
@@ -230,9 +230,7 @@ def parse(src_code: str) -> dict:
     """Parses provided source code and returns an IR.
     The returned value is a dict that can be exported as JSON"""
 
-    Edge.reset()
-    Node.reset()
-    Function.reset()
+    reset()
 
     try:
         parsed = grammar.parse(src_code)
