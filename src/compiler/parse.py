@@ -11,18 +11,13 @@ from .annotations import rule_annotation
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError
-# from parsimonious.exceptions import IncompleteParseError
-from .node import Node
 
 from .parser_state import reset
 
-# from .ast_.identifier import Identifier
-# from .ast_ import function.Function, identifier.Identifier
 from .ast_ import *
 from .error import SisalError
 
-from .edge import Edge
-from .type import SingularType, IntegerType, BooleanType, RealType, MultiType
+from .type import IntegerType, BooleanType, RealType
 
 
 class ModuleVisitor(NodeVisitor):
