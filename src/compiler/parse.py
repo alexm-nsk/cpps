@@ -247,7 +247,7 @@ def parse(src_code: str) -> dict:
             print(
                 f"Syntax error ({e.line()}:{e.column()}): ",
                 rule_annotation(e.expr.name),
-                #e.expr.as_rule(),
+                # e.expr.as_rule(),
                 f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
                 + e.text[int(e.pos): e.pos + 20].split("\n")[0]
