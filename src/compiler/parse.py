@@ -17,7 +17,7 @@ from .parser_state import reset
 from .ast_ import *
 from .error import SisalError
 
-from .type import IntegerType, BooleanType, RealType
+from .type import IntegerType, BooleanType, RealType, ArrayType
 
 
 class ModuleVisitor(NodeVisitor):
@@ -198,8 +198,14 @@ class ModuleVisitor(NodeVisitor):
     def visit_array_index(self, node, vc_):
         return vc_[0]
 
+    def visit_array(self, node, vc_):
+        return ArrayType(location=self.get_location(node), element=vc_[4])
+
     def visit_array_access(self, node, vc_):
-        return None
+        indices = [index[3] for index in vc_[1]]
+        return array_access.ArrayAccess(array_name=vc_[0],
+                                        indices=indices,
+                                        location=self.get_location(node))
 
     @staticmethod
     def visit_exp_singular(_, vc_):

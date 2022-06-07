@@ -57,3 +57,15 @@ class MultiType(Type):
     """Class for describing arrays, streams, etc."""
 
     element: Type = None
+
+
+@dataclass
+class ArrayType(MultiType):
+    """Class for describing arrays, streams, etc."""
+
+    #element: Type = None
+
+    def ir_(self):
+        retval = self.__dict__
+        retval["element"] = retval["element"].ir_()
+        return retval

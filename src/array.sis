@@ -1,0 +1,3 @@
+function arr(A: array of integer returns integer)
+    A[0]
+end function
