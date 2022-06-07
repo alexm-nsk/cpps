@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ Describes sisal types"""
 from dataclasses import dataclass
-
+from copy import deepcopy
 
 @dataclass
 class Type:
@@ -63,9 +63,7 @@ class MultiType(Type):
 class ArrayType(MultiType):
     """Class for describing arrays, streams, etc."""
 
-    #element: Type = None
-
     def ir_(self):
-        retval = self.__dict__
+        retval = deepcopy(self.__dict__)
         retval["element"] = retval["element"].ir_()
         return retval
