@@ -195,17 +195,19 @@ class ModuleVisitor(NodeVisitor):
             location=self.get_location(node),
         )
 
-    def visit_array_index(self, node, vc_):
-        return vc_[0]
-
     def visit_array(self, node, vc_):
         return ArrayType(location=self.get_location(node), element=vc_[4])
 
     def visit_array_access(self, node, vc_):
-        indices = [index[3] for index in vc_[1]]
         return array_access.ArrayAccess(array=vc_[0],
-                                        indices=indices,
+                                        index=vc_[4],
                                         location=self.get_location(node))
+
+    def visit_array_index(self, node, vc_):
+        return vc_[0]
+
+    def visit_array_exp(self, node, vc_):
+        return vc_[0]
 
     @staticmethod
     def visit_exp_singular(_, vc_):
