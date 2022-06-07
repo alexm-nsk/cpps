@@ -29,11 +29,14 @@ class ArrayAccess(Node):
         # port that corresponds to the array's variable
         identifier_port = scope.resolve_by_name(self.array_name.name)
         item_type = identifier_port.type.element
+
         self.out_ports = [Port(self.id, item_type, 0)]
+
         self.in_ports = [
                          Port(self.id, identifier_port.type, 0),
                          Port(self.id, IntegerType(self.location), 1),
                          ]
+
         index_ir = self.indices[0].build([self.in_ports[1]], scope)
         identifier_ir = self.array_name.build([self.in_ports[0]], scope)
         del self.array_name
