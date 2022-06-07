@@ -203,7 +203,7 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_array_access(self, node, vc_):
         indices = [index[3] for index in vc_[1]]
-        return array_access.ArrayAccess(array_name=vc_[0],
+        return array_access.ArrayAccess(array=vc_[0],
                                         indices=indices,
                                         location=self.get_location(node))
 

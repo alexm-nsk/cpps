@@ -15,10 +15,10 @@ from ..type import IntegerType
 
 class ArrayAccess(Node):
 
-    def __init__(self, array_name, indices: list[Node],
+    def __init__(self, array: Node, indices: list[Node],
                  location: str = None):
         super().__init__(location)
-        self.array_name = array_name
+        self.array = array
         self.indices = indices
 
     def num_out_ports(self) -> int:
@@ -27,7 +27,7 @@ class ArrayAccess(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         # port that corresponds to the array's variable
-        identifier_port = scope.resolve_by_name(self.array_name.name)
+        identifier_port = scope.resolve_by_name(self.array.name)
         item_type = identifier_port.type.element
 
         self.out_ports = [Port(self.id, item_type, 0)]
@@ -37,9 +37,13 @@ class ArrayAccess(Node):
                          Port(self.id, IntegerType(self.location), 1),
                          ]
 
+        #for index in self.indices:
+            #a = ArrayAccess.sub_array_access(None, [], "")
+            #index_ir = self.indices[0].build([self.in_ports[1]], scope)
+
         index_ir = self.indices[0].build([self.in_ports[1]], scope)
-        identifier_ir = self.array_name.build([self.in_ports[0]], scope)
-        del self.array_name
+        identifier_ir = self.array.build([self.in_ports[0]], scope)
+        del self.array
         del self.indices
 
         return (SubIr(nodes=[self], output_edges=[], internal_edges=[]) +
