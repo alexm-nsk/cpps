@@ -34,10 +34,11 @@ class ArrayAccess(Node):
                          Port(self.id, identifier_port.type, 0),
                          Port(self.id, IntegerType(self.location), 1),
                          ]
-
+        index_ir = self.indices[0].build([self.in_ports[1]], scope)
         identifier_ir = self.array_name.build([self.in_ports[0]], scope)
         del self.array_name
         del self.indices
 
         return (SubIr(nodes=[self], output_edges=[], internal_edges=[]) +
-                identifier_ir)
+                identifier_ir +
+                index_ir)
