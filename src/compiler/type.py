@@ -4,6 +4,7 @@
 from dataclasses import dataclass
 from copy import deepcopy
 
+
 @dataclass
 class Type:
     """describes a Sisal type"""
@@ -67,3 +68,8 @@ class ArrayType(MultiType):
         retval = deepcopy(self.__dict__)
         retval["element"] = retval["element"].ir_()
         return retval
+
+    def element_type(self):
+        return (
+            self.element.element_type() if hasattr(self.element, "element_type") else self.element
+        )

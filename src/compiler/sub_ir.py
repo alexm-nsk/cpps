@@ -27,6 +27,10 @@ class SubIr:
         """returns Type objects from target ports"""
         return [edge.from_.type for edge in self.output_edges]
 
+    def output_type(self):
+        """returns the first Type object from target ports"""
+        return self.output_edges[0].from_.type
+
     def __add__(self, other):
         return SubIr(
             nodes=self.nodes + other.nodes,
