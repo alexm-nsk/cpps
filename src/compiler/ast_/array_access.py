@@ -7,6 +7,7 @@ Array access node
 
 from ..node import Node, build_method
 from ..scope import SisalScope
+
 # from ..error import SisalError
 from ..sub_ir import SubIr
 from ..port import Port
@@ -14,16 +15,19 @@ from ..type import IntegerType
 
 
 class ArrayAccess(Node):
-
     def __init__(self, array: Node, index: Node, location: str = None):
         super().__init__(location)
-        self.array = array
-        self.index = index
+        if array:
+            self.array = array
+        if index:
+            self.index = index
+
         self.name = "ArrayAccess"
+
         self.in_ports = [
-                         Port(self.id, None, 0),  # Array
-                         Port(self.id, IntegerType(), 1),  # Index
-                         ]
+            Port(self.id, None, 0),  # Array
+            Port(self.id, IntegerType(), 1),  # Index
+        ]
 
         self.out_ports = [Port(self.id, None, 0)]
 
@@ -37,13 +41,15 @@ class ArrayAccess(Node):
 
         nodes = []
         for index in self.index:
-            #aa = ArrayAccess(None
+            aa = ArrayAccess(None, None, self.location)
             nodes.append(aa)
-            indices_ir = [index.build([self.in_ports[1]], scope) ]
+            indices_ir = [index.build([self.in_ports[1]], scope)]
 
         del self.array
         del self.index
 
-        return (SubIr(nodes=[self], output_edges=[], internal_edges=[]) +
-                identifier_ir +
-                index_ir)
+        return (
+            SubIr(nodes=[self], output_edges=[], internal_edges=[])
+            + identifier_ir
+            + index_ir
+        )
