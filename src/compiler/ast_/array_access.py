@@ -16,7 +16,6 @@ from ..type import IntegerType, ArrayType
 
 
 class ArrayAccess(Node):
-
     def __init__(self, array: Node, index: Node, location: str = None):
         super().__init__(location)
         if array:
@@ -46,6 +45,12 @@ class ArrayAccess(Node):
         edges = []
         for index in self.index:
             aa = ArrayAccess(None, None, self.location)
+
+            prev_type = nodes[-1].out_ports[0].type
+            aa.in_ports[0].type = (
+                prev_type.element if hasattr(prev_type, "element") else prev_type
+            )
+
             edges.append(Edge(nodes[-1].out_ports[0], aa.in_ports[0]))
             nodes.append(aa)
             indices_ir += index.build([aa.in_ports[1]], scope)
