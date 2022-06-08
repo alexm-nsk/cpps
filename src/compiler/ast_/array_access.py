@@ -48,8 +48,8 @@ class ArrayAccess(Node):
         indices_ir = SubIr([], [], [])
         edges = []
 
-        for index in self.index:
-            aa = ArrayAccess(None, None, self.location)
+        for n, index in enumerate(self.index):
+            aa = ArrayAccess(None, None, self.location) if n > 0 else self
 
             prev_type = nodes[-1].out_ports[0].type
 
