@@ -42,8 +42,10 @@ class ArrayAccess(Node):
         array_ir = self.array.build([self.in_ports[0]], scope)
         # TODO assert its actually an array and put out an error
         # if it isn't
+        # TODO assert there is one edge in array_ir's output_edges
+
         self.out_ports[0].type = array_ir.output_type().element_type()
-        #print("test")
+
         nodes = [self]
         indices_ir = SubIr([], [], [])
         edges = []
@@ -68,7 +70,7 @@ class ArrayAccess(Node):
         del self.index
 
         return (
-            SubIr(nodes=[self]+nodes, output_edges=[], internal_edges=edges)
+            SubIr(nodes=nodes, output_edges=[], internal_edges=edges)
             + array_ir
             + indices_ir
         )
