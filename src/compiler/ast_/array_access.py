@@ -27,7 +27,7 @@ class ArrayAccess(Node):
         self.name = "ArrayAccess"
 
         self.in_ports = [
-            Port(self.id, ArrayType(element = IntegerType()), 0),  # addressed array, type is set later
+            Port(self.id, None, 0),  # the array, type is set later by Edge
             Port(self.id, IntegerType(), 1),  # element's index
         ]
 
