@@ -199,8 +199,10 @@ class ModuleVisitor(NodeVisitor):
         return ArrayType(location=self.get_location(node), element=vc_[4])
 
     def visit_array_access(self, node, vc_):
+        # for number, index in enumerate(vc_[1]):
+            # print (number, index[3])
         return array_access.ArrayAccess(array=vc_[0],
-                                        index=vc_[4],
+                                        index=[index[3] for index in vc_[1]],
                                         location=self.get_location(node))
 
     def visit_array_index(self, node, vc_):

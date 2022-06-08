@@ -27,15 +27,16 @@ class ArrayAccess(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
 
-        self.out_ports = [Port(self.id, IntegerType(), 0)]
-
         self.in_ports = [
-                         Port(self.id, IntegerType(), 0),
-                         Port(self.id, IntegerType(self.location), 1),
+                         Port(self.id, IntegerType(), 0),  # Array
+                         Port(self.id, IntegerType(self.location), 1),  # Index
                          ]
 
-        index_ir = self.index.build([self.in_ports[1]], scope)
         identifier_ir = self.array.build([self.in_ports[0]], scope)
+
+        self.out_ports = [Port(self.id, None, 0)]
+        # print(self.index[0])
+        indices_ir = [index.build([self.in_ports[1]], scope) for index in self.index]
 
         del self.array
         del self.index
