@@ -23,6 +23,10 @@ class Port:
         """Get the node this port belongs to"""
         return Node.node(self.node_id)
 
+    @property
+    def port_type(self, port_type_: Type):
+        self.type = port_type_
+
     def ir_(self):
         """Exports port's IR form as a dict"""
         retval = deepcopy(self.__dict__)

@@ -20,6 +20,12 @@ class ArrayAccess(Node):
         self.array = array
         self.index = index
         self.name = "ArrayAccess"
+        self.in_ports = [
+                         Port(self.id, None, 0),  # Array
+                         Port(self.id, IntegerType(), 1),  # Index
+                         ]
+
+        self.out_ports = [Port(self.id, None, 0)]
 
     def num_out_ports(self) -> int:
         return 1
@@ -27,16 +33,13 @@ class ArrayAccess(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
 
-        self.in_ports = [
-                         Port(self.id, IntegerType(), 0),  # Array
-                         Port(self.id, IntegerType(self.location), 1),  # Index
-                         ]
-
         identifier_ir = self.array.build([self.in_ports[0]], scope)
 
-        self.out_ports = [Port(self.id, None, 0)]
-        # print(self.index[0])
-        indices_ir = [index.build([self.in_ports[1]], scope) for index in self.index]
+        nodes = []
+        for index in self.index:
+            #aa = ArrayAccess(None
+            nodes.append(aa)
+            indices_ir = [index.build([self.in_ports[1]], scope) ]
 
         del self.array
         del self.index
