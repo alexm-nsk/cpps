@@ -12,7 +12,7 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 from ..port import Port
 from ..edge import Edge
-from ..type import IntegerType  # , ArrayType
+from ..type import IntegerType, ArrayType
 from ..error import SisalError
 
 
@@ -45,9 +45,12 @@ class ArrayAccess(Node):
         # if it isn't
         # TODO assert there is one edge in array_ir's output_edges
         # perform access length check:
+        if (type(array_ir.output_type()) != ArrayType):
+            raise SisalError("Expression is not an array", self.location)
+
         if len(self.index) != array_ir.output_type().depth():
-            raise SisalError("Number of array's dimentions doesn't match"
-                             "the depth of array access", self.location)
+            raise SisalError("Number of array's dimensions doesn't match "
+                             "the depth of array access.", self.location)
 
         self.out_ports[0].type = array_ir.output_type().element_type()
 
