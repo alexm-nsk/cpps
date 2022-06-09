@@ -41,10 +41,12 @@ class ArrayAccess(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
 
         array_ir = self.array.build([self.in_ports[0]], scope)
-        # TODO assert its actually an array and put out an error
-        # if it isn't
-        # TODO assert there is one edge in array_ir's output_edges
+
         # perform access length check:
+        if (len(array_ir.edges) != 1):
+            raise SisalError("Expression must have exactly one output for "
+                             "array access", self.location)
+
         if (type(array_ir.output_type()) != ArrayType):
             raise SisalError("Expression is not an array", self.location)
 
