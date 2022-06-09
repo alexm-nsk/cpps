@@ -44,7 +44,7 @@ class ModuleVisitor(NodeVisitor):
             function_name=vc_[2].name,
             args=vc_[6],
             retvals=vc_[8],
-            body=vc_[12][0],
+            body=vc_[12],
             location=self.get_location(node),
         )
 
@@ -260,6 +260,11 @@ class ModuleVisitor(NodeVisitor):
     def visit_def(_, vc_):
         """exp_singular visitor"""
         return vc_[0]
+
+    # Other
+    def visit_empty(self, node, visited_children):
+        """empty visitor"""
+        raise SisalError("Empty expressions not allowed!", self.get_location(node))
 
     @staticmethod
     def generic_visit(node, visited_children):
