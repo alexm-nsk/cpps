@@ -12,7 +12,7 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 from ..port import Port
 from ..edge import Edge
-from ..type import IntegerType, ArrayType
+from ..type import IntegerType  # , ArrayType
 
 
 class ArrayAccess(Node):
@@ -44,27 +44,27 @@ class ArrayAccess(Node):
         # if it isn't
         # TODO assert there is one edge in array_ir's output_edges
 
-        self.out_ports[0].type = array_ir.output_type().element_type()
+        self.out_ports[0].type = array_ir.output_type().element
 
         nodes = [self]
         indices_ir = SubIr([], [], [])
         edges = []
 
-        for n, index in enumerate(self.index):
-            aa = ArrayAccess(None, None, self.location) if n > 0 else self
+        self.in_ports[0].type = array_ir.output_type()
 
+        for index in self.index[1:]:
+            aa = ArrayAccess(None, None, self.location)
             prev_type = nodes[-1].out_ports[0].type
-
-            aa.in_ports[0].type = prev_type
-
             aa.out_ports[0].type = (
                 prev_type.element
                 if hasattr(prev_type, "element") else prev_type
             )
 
+            aa.in_ports[0].type = prev_type
+
             edges.append(Edge(nodes[-1].out_ports[0], aa.in_ports[0]))
-            nodes.append(aa)
             indices_ir += index.build([aa.in_ports[1]], scope)
+            nodes.append(aa)
 
         del self.array
         del self.index

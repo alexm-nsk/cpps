@@ -1,3 +1,3 @@
-function arr(A: array of array of integer returns integer)
+function arr(A: array of array of array of integer returns integer)
     A[1][2][3]
 end function
