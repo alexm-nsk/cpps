@@ -37,8 +37,13 @@ class ArrayAccess(Node):
     def num_out_ports(self) -> int:
         return 1
 
-    @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+
+        if len(target_ports) != self.num_out_ports():
+            raise SisalError(
+                f"Error: {len(target_ports)} expressions expected,"
+                f"got {len(self.expressions)} at {self.location}"
+            )
 
         array_ir = self.array.build([self.in_ports[0]], scope)
 
@@ -80,8 +85,10 @@ class ArrayAccess(Node):
         del self.array
         del self.index
 
+        output_edge = Edge(nodes[-1].out_ports[0], target_ports[0])
+
         return (
-            SubIr(nodes=nodes, output_edges=[], internal_edges=edges)
+            SubIr(nodes=nodes, output_edges=[output_edge], internal_edges=edges)
             + array_ir
             + indices_ir
         )

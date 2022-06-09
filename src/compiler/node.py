@@ -12,7 +12,7 @@ from .sub_ir import SubIr
 from .error import SisalError
 
 
-def build_method(fn, check_only=False):
+def build_method(fn):
     def wrapped(self,
                 target_ports: list[Port],
                 scope: SisalScope):
@@ -23,25 +23,20 @@ def build_method(fn, check_only=False):
             )
         node_sub_ir = fn(self, target_ports, scope)
 
-        if not check_only:
+        out_edges = [
+            Edge(out_port, target_port)
+            for out_port, target_port in zip(self.out_ports, target_ports)
+        ]
 
-            out_edges = [
-                Edge(out_port, target_port)
-                for out_port, target_port in zip(self.out_ports, target_ports)
+        in_edges = (
+            [
+                Edge(scope_port, in_port)
+                for scope_port, in_port in zip(scope.node.in_ports,
+                                               self.in_ports)
             ]
-
-            in_edges = (
-                [
-                    Edge(scope_port, in_port)
-                    for scope_port, in_port in zip(scope.node.in_ports,
-                                                   self.in_ports)
-                ]
-                if self.connect_parent
-                else []
-            )
-        else:
-            out_edges = []
-            in_edges = []
+            if self.connect_parent
+            else []
+        )
 
         return node_sub_ir + SubIr([], in_edges, out_edges)
 
