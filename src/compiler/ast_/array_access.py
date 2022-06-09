@@ -18,6 +18,8 @@ from ..error import SisalError
 
 class ArrayAccess(Node):
 
+    """Array access node"""
+
     def __init__(self, array: Node, index: Node, location: str = None):
         super().__init__(location)
         if array:
