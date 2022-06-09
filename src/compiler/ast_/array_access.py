@@ -40,7 +40,7 @@ class ArrayAccess(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """ArrayAccess's build method
         note it's not decorated as build method because self isn't the
-        output node"""
+        output node and the decorator would connect that to the output"""
 
         # TODO put self at the end and return the decorator (don't forget to
         # remove the output edge
