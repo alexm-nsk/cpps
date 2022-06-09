@@ -42,14 +42,15 @@ class ArrayAccess(Node):
 
         array_ir = self.array.build([self.in_ports[0]], scope)
 
-        # perform access length check:
         if (len(array_ir.edges) != 1):
             raise SisalError("Expression must have exactly one output for "
                              "array access", self.location)
 
+        # check if expression is an array
         if (type(array_ir.output_type()) != ArrayType):
             raise SisalError("Expression is not an array", self.location)
 
+        # perform access length check:
         if len(self.index) != array_ir.output_type().depth():
             raise SisalError("Number of array's dimensions doesn't match "
                              "the depth of array access.", self.location)
