@@ -22,12 +22,12 @@ class ArrayAccess(Node):
 
     def __init__(self, array: Node, index: Node, location: str = None):
         super().__init__(location)
+        self.name = "ArrayAccess"
+
         if array:
             self.array = array
         if index:
             self.index = index
-
-        self.name = "ArrayAccess"
 
         self.in_ports = [
             Port(self.id, None, 0),  # the array, type is set later by Edge

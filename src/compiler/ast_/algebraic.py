@@ -38,6 +38,7 @@ class Bin(Node):
     def __init__(self, operator: str, location: str):
         super().__init__(location)
         self.operator = operator
+        self.name = "Binary"
         self.in_ports = [
             Port(self.id, None, 0, "left"),  # port types will
             Port(self.id, None, 1, "right"),  # be set later
