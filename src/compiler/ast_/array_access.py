@@ -75,7 +75,7 @@ class ArrayAccess(Node):
 
         # build the ArrayAccess chain:
         nodes = [self]
-        indices_ir = SubIr([], [], [])
+        indices_ir = self.index[0].build([self.in_ports[1]], scope)
         edges = []
         self.in_ports[0].type = array_ir.output_type()
         for index in self.index[1:]:
@@ -87,6 +87,7 @@ class ArrayAccess(Node):
             )
             aa.in_ports[0].type = prev_type
             edges.append(Edge(nodes[-1].out_ports[0], aa.in_ports[0]))
+
             indices_ir += index.build([aa.in_ports[1]], scope)
             nodes.append(aa)
 
@@ -96,7 +97,6 @@ class ArrayAccess(Node):
 
         # make the final edge that puts out array's element
         output_edge = Edge(nodes[-1].out_ports[0], target_ports[0])
-
         return (
             SubIr(nodes, output_edges=[output_edge], internal_edges=edges)
             + array_ir
