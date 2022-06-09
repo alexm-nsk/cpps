@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """
-Init node (shared by Loop and Let)
+Let node
 """
 
 from ..node import Node, build_method
