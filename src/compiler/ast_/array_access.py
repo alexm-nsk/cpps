@@ -41,6 +41,9 @@ class ArrayAccess(Node):
         """note it's not decorated as build method because self isn't the output node"""
         # TODO put self at the end and return the decorator (don't forget to
         # remove the output edge
+
+        # check if number of outputs matches the expected number
+        # this would have been done by the decorator
         if len(target_ports) != self.num_out_ports():
             raise SisalError(
                 f"Error: {len(target_ports)} expressions expected,"
@@ -49,6 +52,7 @@ class ArrayAccess(Node):
 
         array_ir = self.array.build([self.in_ports[0]], scope)
 
+        # check that array expression puts out exactly one value:
         if (len(array_ir.edges) != 1):
             raise SisalError("Expression must have exactly one output for "
                              "array access", self.location)
@@ -64,12 +68,11 @@ class ArrayAccess(Node):
 
         self.out_ports[0].type = array_ir.output_type().element_type()
 
+        # build the ArrayAccess chain:
         nodes = [self]
         indices_ir = SubIr([], [], [])
         edges = []
-
         self.in_ports[0].type = array_ir.output_type()
-
         for index in self.index[1:]:
             aa = ArrayAccess(None, None, self.location)
             prev_type = nodes[-1].out_ports[0].port_type()
@@ -77,16 +80,16 @@ class ArrayAccess(Node):
                 prev_type.element
                 if hasattr(prev_type, "element") else prev_type
             )
-
             aa.in_ports[0].type = prev_type
-
             edges.append(Edge(nodes[-1].out_ports[0], aa.in_ports[0]))
             indices_ir += index.build([aa.in_ports[1]], scope)
             nodes.append(aa)
 
+        # remove the no longer necessary fields:
         del self.array
         del self.index
 
+        # make the final edge that puts out array's element
         output_edge = Edge(nodes[-1].out_ports[0], target_ports[0])
 
         return (
