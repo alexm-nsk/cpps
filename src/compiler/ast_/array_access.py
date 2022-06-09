@@ -71,12 +71,11 @@ class ArrayAccess(Node):
             raise SisalError("Number of array's dimensions doesn't match "
                              "the depth of array access.", self.location)
 
-        self.out_ports[0].type = array_ir.output_type().element_type()
-
         # build the ArrayAccess chain:
         nodes = [self]
-        indices_ir = self.index[0].build([self.in_ports[1]], scope)
         edges = []
+        self.out_ports[0].type = array_ir.output_type().element_type()
+        indices_ir = self.index[0].build([self.in_ports[1]], scope)
         self.in_ports[0].type = array_ir.output_type()
         for index in self.index[1:]:
             aa = ArrayAccess(None, None, self.location)
