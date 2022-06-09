@@ -13,6 +13,7 @@ from ..sub_ir import SubIr
 from ..port import Port
 from ..edge import Edge
 from ..type import IntegerType  # , ArrayType
+from ..error import SisalError
 
 
 class ArrayAccess(Node):
@@ -43,8 +44,12 @@ class ArrayAccess(Node):
         # TODO assert its actually an array and put out an error
         # if it isn't
         # TODO assert there is one edge in array_ir's output_edges
+        # perform access length check:
+        if len(self.index) != array_ir.output_type().depth():
+            raise SisalError("Number of array's dimentions doesn't match"
+                             "the depth of array access", self.location)
 
-        self.out_ports[0].type = array_ir.output_type().element
+        self.out_ports[0].type = array_ir.output_type().element_type()
 
         nodes = [self]
         indices_ir = SubIr([], [], [])
@@ -54,7 +59,7 @@ class ArrayAccess(Node):
 
         for index in self.index[1:]:
             aa = ArrayAccess(None, None, self.location)
-            prev_type = nodes[-1].out_ports[0].type
+            prev_type = nodes[-1].out_ports[0].port_type()
             aa.out_ports[0].type = (
                 prev_type.element
                 if hasattr(prev_type, "element") else prev_type

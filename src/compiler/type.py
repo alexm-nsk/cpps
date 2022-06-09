@@ -20,6 +20,9 @@ class Type:
         retval = self.__dict__
         return retval
 
+    def is_array(self):
+        return hasattr(self, "element")
+
 
 @dataclass
 class SingularType(Type):
@@ -69,7 +72,18 @@ class ArrayType(MultiType):
         retval["element"] = retval["element"].ir_()
         return retval
 
+    def depth(self):
+        if self.element.is_array():
+            return 1 + self.element.depth()
+        else:
+            return 1
+
     def element_type(self):
+        return self.element
+
+    def bottom_element_type(self):
+        """returns the type of single element of an array"""
         return (
-            self.element.element_type() if hasattr(self.element, "element_type") else self.element
+            self.element.element_type() if self.element.is_array() else self.element
+            #self.element.element_type() if hasattr(self.element, "element_type") else self.element
         )
