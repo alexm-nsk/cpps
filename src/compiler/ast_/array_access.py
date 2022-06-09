@@ -38,7 +38,9 @@ class ArrayAccess(Node):
         return 1
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-
+        """note it's not decorated as build method because self isn't the output node"""
+        # TODO put self at the end and return the decorator (don't forget to
+        # remove the output edge
         if len(target_ports) != self.num_out_ports():
             raise SisalError(
                 f"Error: {len(target_ports)} expressions expected,"
