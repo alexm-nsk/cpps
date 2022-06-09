@@ -15,4 +15,10 @@ from ..sub_ir import SubIr
 
 class Init(Node):
 
-    name = "Init"
+    def __init__(self, statements: list):
+        self.name = "Init"
+        self.statements = statements
+
+    @build_method
+    def build(self, target_ports: list[Port], scope: SisalScope):
+        pass

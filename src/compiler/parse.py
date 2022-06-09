@@ -13,6 +13,7 @@ from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError
 
 from .parser_state import reset
+from .statement import Statement, Assignment
 
 from .ast_ import *
 from .error import SisalError
@@ -34,6 +35,8 @@ class ModuleVisitor(NodeVisitor):
         end_column = len((text[: node.end].split("\n"))[-1])
 
         return f"{start_row}:{start_column}-{end_row}:{end_column}"
+
+    # Function
 
     def visit_function(self, node, vc_):
         """function visitor"""
@@ -82,6 +85,13 @@ class ModuleVisitor(NodeVisitor):
             return vc_[0][2]
         return None
 
+    @staticmethod
+    def visit_arg_def_list(_, vc_):
+        """arg_def_list visitor"""
+        return [vc_[0]] + [v[3] for v in vc_[1]]
+
+    # Types:
+
     def visit_type(self, node, vc_):
         """type visitor"""
         return vc_[0]
@@ -102,14 +112,12 @@ class ModuleVisitor(NodeVisitor):
         """type visitor"""
         return BooleanType(self.get_location(node))
 
-    @staticmethod
-    def visit_arg_def_list(_, vc_):
-        """arg_def_list visitor"""
-        return [vc_[0]] + [v[3] for v in vc_[1]]
 
     def visit_identifier(self, node, _):
         """identifier visitor"""
         return identifier.Identifier(node.text, self.get_location(node))
+
+    # Number literals
 
     def visit_number_literal(self, node, vc_):
         """literl visitor (passthrough)"""
@@ -159,6 +167,8 @@ class ModuleVisitor(NodeVisitor):
             self.get_location(node),
         )
 
+    # Algebraic
+
     def visit_algebraic(self, node, vc_):
         """algebraic visitor"""
         expression = [vc_[0]]
@@ -195,18 +205,39 @@ class ModuleVisitor(NodeVisitor):
             location=self.get_location(node),
         )
 
+    # Arrays:
+
     def visit_array(self, node, vc_):
         return ArrayType(location=self.get_location(node), element=vc_[4])
 
     def visit_array_access(self, node, vc_):
-        return array_access.ArrayAccess(array=vc_[0],
-                                        index=[index[3] for index in vc_[1]],
-                                        location=self.get_location(node))
+        return array_access.ArrayAccess(
+            array=vc_[0],
+            index=[index[3] for index in vc_[1]],
+            location=self.get_location(node),
+        )
 
-    def visit_array_index(self, node, vc_):
+    # Statements:
+
+    @staticmethod
+    def visit_statement(_, vc_):
         return vc_[0]
 
-    def visit_array_exp(self, node, vc_):
+    def visit_statements(self, node, vc_):
+        statements = [statement[0] for statement in vc_]
+        return statements
+
+    def visit_assignment(self, node, vc_):
+        identifier = vc_[0]
+        value = vc_[4]
+        return Assignment(identifier=identifier, value=value)
+
+    @staticmethod
+    def visit_array_index(_, vc_):
+        return vc_[0]
+
+    @staticmethod
+    def visit_array_exp(_, vc_):
         return vc_[0]
 
     @staticmethod
@@ -225,8 +256,7 @@ class ModuleVisitor(NodeVisitor):
         return visited_children or node
 
 
-grammar_file_name = os.path.dirname(os.path.realpath(__file__)) +\
-                    "/module_grammar.ini"
+grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_grammar.ini"
 
 with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
