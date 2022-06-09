@@ -44,7 +44,7 @@ class ModuleVisitor(NodeVisitor):
             function_name=vc_[2].name,
             args=vc_[6],
             retvals=vc_[8],
-            body=vc_[12],
+            body=vc_[12][0],
             location=self.get_location(node),
         )
 
