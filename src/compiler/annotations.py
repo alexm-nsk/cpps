@@ -6,7 +6,7 @@ Describes syntax rules
 
 rule_annotations = {
     "def": "function definition or function import",
-    "bin_op": "binary operation",
+    "bin_op": "binary operation (do you have an empty expression?)",
 }
 
 
