@@ -13,7 +13,7 @@ from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError
 
 from .parser_state import reset
-from .statement import Statement, Assignment
+from .statement import Assignment
 
 from .ast_ import *
 from .error import SisalError
@@ -111,7 +111,6 @@ class ModuleVisitor(NodeVisitor):
     def visit_boolean_type(self, node, _):
         """type visitor"""
         return BooleanType(self.get_location(node))
-
 
     def visit_identifier(self, node, _):
         """identifier visitor"""
