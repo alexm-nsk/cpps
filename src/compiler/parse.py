@@ -36,7 +36,7 @@ class ModuleVisitor(NodeVisitor):
 
         return f"{start_row}:{start_column}-{end_row}:{end_column}"
 
-    # Function
+    # Functions:
 
     def visit_function(self, node, vc_):
         """function visitor"""
@@ -141,6 +141,8 @@ class ModuleVisitor(NodeVisitor):
             location=self.get_location(node),
         )
 
+    # If
+
     def visit_if(self, node, vc_):
         """if visitor"""
         condition_nodes = [vc_[2]]
@@ -157,7 +159,8 @@ class ModuleVisitor(NodeVisitor):
             condition_nodes.append(e[2])
             elseif.append(e[6])
 
-        locations = ", ".join([condition.location for condition in condition_nodes])
+        locations = ", ".join([condition.location
+                               for condition in condition_nodes])
 
         return if_.If(
             multi_exp.MultiExp(condition_nodes, locations),
@@ -217,6 +220,13 @@ class ModuleVisitor(NodeVisitor):
             location=self.get_location(node),
         )
 
+    # Let:
+
+    def visit_let(self, node, vc_):
+        init = vc_[2]
+        body = vc_[6]
+        return let.Let(init=init, body=body, location=self.get_location(node))
+
     # Statements:
 
     @staticmethod
@@ -230,7 +240,9 @@ class ModuleVisitor(NodeVisitor):
     def visit_assignment(self, node, vc_):
         identifier = vc_[0]
         value = vc_[4]
-        return Assignment(identifier=identifier, value=value)
+        return Assignment(identifier, value)
+
+    # Arrays:
 
     @staticmethod
     def visit_array_index(_, vc_):
@@ -256,7 +268,8 @@ class ModuleVisitor(NodeVisitor):
         return visited_children or node
 
 
-grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_grammar.ini"
+grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + \
+                    "/module_grammar.ini"
 
 with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
