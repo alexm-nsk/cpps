@@ -38,7 +38,10 @@ class ArrayAccess(Node):
         return 1
 
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        """note it's not decorated as build method because self isn't the output node"""
+        """ArrayAccess's build method
+        note it's not decorated as build method because self isn't the
+        output node"""
+
         # TODO put self at the end and return the decorator (don't forget to
         # remove the output edge
 
@@ -93,7 +96,7 @@ class ArrayAccess(Node):
         output_edge = Edge(nodes[-1].out_ports[0], target_ports[0])
 
         return (
-            SubIr(nodes=nodes, output_edges=[output_edge], internal_edges=edges)
+            SubIr(nodes, output_edges=[output_edge], internal_edges=edges)
             + array_ir
             + indices_ir
         )
