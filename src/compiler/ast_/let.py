@@ -13,6 +13,7 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .multi_exp import MultiExp
 
+# TODO add unwrapping the let
 
 class Let(Node):
 
@@ -22,11 +23,13 @@ class Let(Node):
         self.name = "Let"
         self.init = init
         self.body = body
-        self.copy_ports(self.body, in_=False)
 
     def num_out_ports(self):
         return self.body.num_out_ports()
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        self.copy_ports(scope.node)
+        scope =
+        body = Node
         return SubIr([],[],[])
