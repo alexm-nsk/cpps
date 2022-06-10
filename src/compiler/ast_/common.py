@@ -21,6 +21,9 @@ class Init(Node):
 
     def build(self, scope: SisalScope):
         self.copy_ports(scope.node, out=False)
+        self.out_ports = [ Port(self.id, None, exp.identifier.name)
+                            for exp in self.statements
+                         ]
         scope = SisalScope(self)
 
         del self.statements

@@ -39,6 +39,7 @@ class Let(Node):
         self.init.build(scope)
 
         self.body = Body(self.body)
+        self.body.copy_results_ports(self.init)
         self.body.build(scope)
 
         return SubIr([self], [], [])
