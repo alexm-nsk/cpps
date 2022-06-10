@@ -11,6 +11,7 @@ from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .multi_exp import MultiExp
+from .init import Init, Body
 
 # TODO add unwrapping the let
 
@@ -31,7 +32,11 @@ class Let(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-
         scope = SisalScope(self)
+        self.init = Init(self.init)
+        self.init.build(scope)
+        self.body = Body(self.init)
+        self.body.build(scope)
+
         # body = Node
-        return SubIr([], [], [])
+        return SubIr([self], [], [])

@@ -7,21 +7,32 @@ Init node (shared by Loop and Let)
 
 from ..node import Node, build_method
 from ..port import Port
-
+from .multi_exp import MultiExp
 from ..scope import SisalScope
-from ..sub_ir import SubIr
 
 
 class Init(Node):
-
-    copy_scope_ports = True
-    connect_to_parent = False
 
     def __init__(self, statements: list, location: str = None):
         super().__init__(location)
         self.name = "Init"
         self.statements = statements
 
-    @build_method
-    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        pass
+    def build(self, scope: SisalScope):
+        self.copy_ports(scope.node, out=False)
+        scope = SisalScope(self)
+
+        del self.statements
+
+
+class Body(Node):
+
+    def __init__(self, expressions: MultiExp, location: str = None):
+        super().__init__(location)
+        self.name = "Body"
+        self.expressions = expressions
+
+    def build(self, scope: SisalScope):
+        self.copy_ports(scope.node)
+        scope = SisalScope(self)
+        del self.expressions

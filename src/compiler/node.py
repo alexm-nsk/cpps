@@ -13,9 +13,7 @@ from .error import SisalError
 
 
 def build_method(fn):
-    def wrapped(self,
-                target_ports: list[Port],
-                scope: SisalScope):
+    def wrapped(self, target_ports: list[Port], scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
             raise SisalError(
                 f"Error: {len(target_ports)} expressions expected,"
@@ -27,18 +25,18 @@ def build_method(fn):
 
         node_sub_ir = fn(self, target_ports, scope)
 
-        out_edges = ([
-            Edge(out_port, target_port)
-            for out_port, target_port in zip(self.out_ports, target_ports)
-        ]
+        out_edges = (
+            [
+                Edge(out_port, target_port)
+                for out_port, target_port in zip(self.out_ports, target_ports)
+            ]
             if self.connect_to_parent
             else []
         )
         in_edges = (
             [
                 Edge(scope_port, in_port)
-                for scope_port, in_port in zip(scope.node.in_ports,
-                                               self.in_ports)
+                for scope_port, in_port in zip(scope.node.in_ports, self.in_ports)
             ]
             if self.connect_parent
             else []
@@ -95,8 +93,8 @@ class Node:
 
     def copy_results_ports(self, src_node: Node):
         """Prepends copies of output ports of src_node
-         to this node's in_ports. Used to transfer init's
-         results to body of a loop or a let"""
+        to this node's in_ports. Used to transfer init's
+        results to body of a loop or a let"""
         new_ports = deepcopy(src_node.out_ports)
         for o_p in new_ports:
             o_p.node_id = self.id
@@ -150,6 +148,9 @@ class Node:
         for key in ["in_ports", "out_ports", "nodes", "edges"]:
             if key in retval:
                 retval[key] = [item.ir_() for item in retval[key]]
+        for key in ["init", "body"]:
+            if key in retval:
+                retval[key] = retval[key].ir_()
         for key in extra_fields:
             if key in retval:
                 retval[key] = retval[key].ir_()
