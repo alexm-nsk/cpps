@@ -1,9 +1,9 @@
 function main(a,b:integer returns integer)
     let
         c := a + b;
-        b := a - b;
+        d := a - b;
     in
-        c + b
+        c + d
     end let
 
 end function
