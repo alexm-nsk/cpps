@@ -13,6 +13,10 @@ from ..sub_ir import SubIr
 
 
 class Init(Node):
+
+    copy_scope_ports = True
+    connect_to_parent = False
+
     def __init__(self, statements: list, location: str = None):
         super().__init__(location)
         self.name = "Init"

@@ -27,11 +27,13 @@ def build_method(fn):
 
         node_sub_ir = fn(self, target_ports, scope)
 
-        out_edges = [
+        out_edges = ([
             Edge(out_port, target_port)
             for out_port, target_port in zip(self.out_ports, target_ports)
         ]
-
+            if self.connect_to_parent
+            else []
+        )
         in_edges = (
             [
                 Edge(scope_port, in_port)
@@ -55,6 +57,7 @@ class Node:
     __nodes__ = {}
     no_id = False
     connect_parent = False
+    connect_to_parent = True
     copy_scope_ports = False
 
     def __init__(self, location):
