@@ -13,7 +13,6 @@ from ..scope import SisalScope
 
 
 class Init(Node):
-
     def __init__(self, statements: list, location: str = None):
         super().__init__(location)
         self.name = "Init"
@@ -21,16 +20,20 @@ class Init(Node):
 
     def build(self, scope: SisalScope):
         self.copy_ports(scope.node, out=False)
-        self.out_ports = [ Port(self.id, None, exp.identifier.name)
-                            for exp in self.statements
-                         ]
+
+        self.out_ports = [
+            Port(self.id, None, index, exp.identifier.name)
+            for index, exp in enumerate(self.statements)
+        ]
         scope = SisalScope(self)
+
+        for index, exp in enumerate(self.statements):
+            exp.value.build([self.out_ports[index]], scope)
 
         del self.statements
 
 
 class Body(Node):
-
     def __init__(self, expressions: MultiExp, location: str = None):
         super().__init__(location)
         self.name = "Body"
