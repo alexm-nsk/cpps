@@ -32,14 +32,14 @@ class Let(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+
         scope = SisalScope(self)
 
         self.init = Init(self.init)
         self.init.build(scope)
 
-        del self.body
-        #self.body = []Body(self.body)
-        #self.body.copy_results_ports(self.init)
-        #self.body.build(scope)
+        self.body = Body(self.body)
+
+        self.body.build(self.init, scope)
 
         return SubIr([self], [], [])

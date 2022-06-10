@@ -43,8 +43,9 @@ class Body(Node):
         self.name = "Body"
         self.expressions = expressions
 
-    def build(self, scope: SisalScope):
+    def build(self, init: Init,  scope: SisalScope):
         self.copy_ports(scope.node)
+        self.copy_results_ports(init)
         scope = SisalScope(self)
         self.add_sub_ir(self.expressions.build(self.out_ports, scope))
         del self.expressions
