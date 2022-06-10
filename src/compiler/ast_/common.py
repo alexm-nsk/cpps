@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-"""
-Init node (shared by Loop and Let)
-"""
 
-from ..node import Node, build_method
+"""Init and Body nodes (shared by Loop and Let)
+While they are inherited from Node class,
+they don't have standard (i.e. decorated "build" methods)"""
+
+from ..node import Node
 from ..port import Port
 from .multi_exp import MultiExp
 from ..scope import SisalScope
