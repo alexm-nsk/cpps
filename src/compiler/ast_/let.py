@@ -7,13 +7,13 @@ Let node
 
 from ..node import Node, build_method
 from ..port import Port
-from ..type import IntegerType, RealType, BooleanType
 from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .multi_exp import MultiExp
 
 # TODO add unwrapping the let
+
 
 class Let(Node):
 
@@ -32,4 +32,4 @@ class Let(Node):
         self.copy_ports(scope.node)
         scope = SisalScope(self)
         # body = Node
-        return SubIr([],[],[])
+        return SubIr([], [], [])
