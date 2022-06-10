@@ -36,4 +36,5 @@ class Body(Node):
     def build(self, scope: SisalScope):
         self.copy_ports(scope.node)
         scope = SisalScope(self)
+        self.add_sub_ir(self.expressions.build(self.out_ports, scope))
         del self.expressions

@@ -38,7 +38,7 @@ class Let(Node):
         self.init = Init(self.init)
         self.init.build(scope)
 
-        self.body = Body(self.init)
+        self.body = Body(self.body)
         self.body.build(scope)
 
         return SubIr([self], [], [])
