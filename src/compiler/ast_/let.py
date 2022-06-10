@@ -19,6 +19,7 @@ from .common import Init, Body
 class Let(Node):
 
     copy_scope_ports = True
+    connect_parent = True
 
     def __init__(self, init: list[Statement], body: MultiExp,
                  location: str = None):
@@ -32,14 +33,9 @@ class Let(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-
         scope = SisalScope(self)
-
         self.init = Init(self.init)
         self.init.build(scope)
-
         self.body = Body(self.body)
-
         self.body.build(self.init, scope)
-
         return SubIr([self], [], [])
