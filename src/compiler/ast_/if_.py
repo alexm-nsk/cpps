@@ -67,6 +67,7 @@ class If(Node):
     """Class for Ifs"""
 
     connect_parent = True
+    copy_scope_ports = True
 
     def __init__(
         self,
@@ -105,7 +106,6 @@ class If(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         """Recursively rebuilds the if's ir into a dataflow graph"""
-        self.copy_ports(scope.node)
         self.check_ports_consistency()
         self.condition.build(scope)
         for branch in self.branches:

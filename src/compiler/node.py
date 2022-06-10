@@ -21,6 +21,10 @@ def build_method(fn):
                 f"Error: {len(target_ports)} expressions expected,"
                 f"got {len(self.expressions)} at {self.location}"
             )
+
+        if self.copy_scope_ports:
+            self.copy_ports(scope.node)
+
         node_sub_ir = fn(self, target_ports, scope)
 
         out_edges = [
@@ -51,6 +55,7 @@ class Node:
     __nodes__ = {}
     no_id = False
     connect_parent = False
+    copy_scope_ports = False
 
     def __init__(self, location):
         """Not meant to be run on it's own, it adds to child classes'
@@ -85,7 +90,7 @@ class Node:
             for o_p in self.out_ports:
                 o_p.node_id = self.id
 
-    def out_to_in_ports(self, src_node: Node):
+    def copy_results_ports(self, src_node: Node):
         """Prepends copies of output ports of src_node
          to this node's in_ports. Used to transfer init's
          results to body of a loop or a let"""
@@ -97,7 +102,6 @@ class Node:
         # reset port indices
         for index, port in enumerate(self.in_ports):
             port.index = index
-
 
     @classmethod
     def node(cls, id_: str):

@@ -17,6 +17,8 @@ from .multi_exp import MultiExp
 
 class Let(Node):
 
+    copy_scope_ports = True
+
     def __init__(self, init: list[Statement], body: MultiExp,
                  location: str = None):
         super().__init__(location)
@@ -29,7 +31,7 @@ class Let(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        self.copy_ports(scope.node)
+
         scope = SisalScope(self)
         # body = Node
         return SubIr([], [], [])
