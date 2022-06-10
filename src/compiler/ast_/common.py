@@ -17,6 +17,7 @@ class Init(Node):
         super().__init__(location)
         self.name = "Init"
         self.statements = statements
+        self.edges = []
 
     def build(self, scope: SisalScope):
         self.copy_ports(scope.node, out=False)
@@ -25,10 +26,13 @@ class Init(Node):
             Port(self.id, None, index, exp.identifier.name)
             for index, exp in enumerate(self.statements)
         ]
+
         scope = SisalScope(self)
 
-        for index, exp in enumerate(self.statements):
-            exp.value.build([self.out_ports[index]], scope)
+        for index, definition in enumerate(self.statements):
+            self.add_sub_ir(
+                    definition.value.build([self.out_ports[index]], scope)
+                    )
 
         del self.statements
 
