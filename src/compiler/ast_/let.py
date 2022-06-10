@@ -17,6 +17,7 @@ from .common import Init, Body
 
 
 class Let(Node):
+    """ Let node. Uses Init and Body nodes"""
 
     copy_scope_ports = True
     connect_parent = True

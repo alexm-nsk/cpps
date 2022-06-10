@@ -5,7 +5,7 @@
 Array access node
 """
 
-from ..node import Node, build_method
+from ..node import Node
 from ..scope import SisalScope
 
 # from ..error import SisalError
