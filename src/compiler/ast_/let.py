@@ -11,7 +11,7 @@ from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .multi_exp import MultiExp
-from .init import Init, Body
+from .common import Init, Body
 
 # TODO add unwrapping the let
 
