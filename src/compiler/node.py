@@ -85,6 +85,20 @@ class Node:
             for o_p in self.out_ports:
                 o_p.node_id = self.id
 
+    def out_to_in_ports(self, src_node: Node):
+        """Prepends copies of output ports of src_node
+         to this node's in_ports. Used to transfer init's
+         results to body of a loop or a let"""
+        new_ports = deepcopy(src_node.out_ports)
+        for o_p in new_ports:
+            o_p.node_id = self.id
+        # prepend new ports to existing ports
+        self.in_ports = new_ports + self.in_ports
+        # reset port indices
+        for index, port in enumerate(self.in_ports):
+            port.index = index
+
+
     @classmethod
     def node(cls, id_: str):
         """Returns a node with the specified ID"""
