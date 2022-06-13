@@ -26,8 +26,9 @@ class Unary(Node):
     @build_method
     def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Unary)"""
-        print(self.value, self.operator)
         value_ir = self.value.build(self.in_ports, scope)
+        # set output port type to match in port
+        # TODO: check - it might depend on the operator!
         self.out_ports[0].type = self.in_ports[0].type
         del self.value
         return value_ir + SubIr([self], [], [])
