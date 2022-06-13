@@ -20,8 +20,12 @@ class Unary(Node):
         self.operator = operator
         self.value = value
         self.name = "Unary"
-        self.in_ports = [Port(self.id, None, 0)]
-        self.out_ports = [Port(self.id, None, 0)]
+        self.in_ports = [
+            Port(self.id, None, 0, label=f'unary ("{self.operator}") input')
+        ]
+        self.out_ports = [
+            Port(self.id, None, 0, label=f'unary ("{self.operator}") output')
+        ]
 
     @build_method
     def build(self, target_ports: list[Port], scope) -> SubIr:
@@ -74,10 +78,7 @@ class Bin(Node):
     def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
         self.out_ports = [
-            Port(self.id,
-                 self.result_type(),
-                 0,
-                 f"binary output ({self.operator})")
+            Port(self.id, self.result_type(), 0, f"binary output ({self.operator})")
         ]
         return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
@@ -120,7 +121,7 @@ class Algebraic(Node):
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1:]
+                    right = self.expression[n + 1 :]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,
