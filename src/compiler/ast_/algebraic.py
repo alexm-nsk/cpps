@@ -20,11 +20,9 @@ class Unary(Node):
         self.operator = operator
         self.value = value
         self.name = "Unary"
-        self.in_ports = [
-            Port(self.id, None, 0, label=f'unary ("{self.operator}") input')
-        ]
+        self.in_ports = [Port(self.id, None, 0, label=f"unary ({self.operator}) input")]
         self.out_ports = [
-            Port(self.id, None, 0, label=f'unary ("{self.operator}") output')
+            Port(self.id, None, 0, label=f"unary ({self.operator}) output")
         ]
 
     @build_method
