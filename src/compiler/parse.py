@@ -172,11 +172,11 @@ class ModuleVisitor(NodeVisitor):
     # Unary
 
     def visit_unary(self, node, vc_):
-        operator = vc_[0].text
+        operator = vc_[0]
         value = vc_[2]
-        return algebraic.Unary (operator,
+        return algebraic.Unary (operator.text,
                                 value,
-                                location = self.get_location(node))
+                                location = self.get_location(operator))
 
     # Algebraic
 
