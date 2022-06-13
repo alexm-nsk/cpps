@@ -12,6 +12,25 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 
 
+class Unary(Node):
+    """Unary operation node"""
+
+    def __init__(self, operator: str, value: Node, location: str):
+        super().__init__(location)
+        self.operator = operator
+        self.value = value
+        self.name = "Unary"
+        self.in_ports = [Port(self.id, None, 0)]
+        self.out_ports = [Port(self.id, None, 0)]
+
+    @build_method
+    def build(self, target_ports: list[Port], scope) -> SubIr:
+        """returns an IR form of this node (Unary)"""
+        value_ir = self.value.build([self.in_ports], scope)
+        del self.value
+        return value_ir + SubIr([self], [], [])
+
+
 class Bin(Node):
     """Binary operation node. Only processed within Algebraic's 'build'
     method"""
