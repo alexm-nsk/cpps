@@ -271,6 +271,9 @@ class ModuleVisitor(NodeVisitor):
         return vc_[0]
 
     # Other
+    def visit_exp(self, node, vc_):
+        return vc_[0]
+
     def visit_empty(self, node, visited_children):
         """empty visitor"""
         raise SisalError("Empty expressions not allowed!", self.get_location(node))
