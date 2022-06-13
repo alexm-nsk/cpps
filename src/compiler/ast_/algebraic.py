@@ -20,14 +20,15 @@ class Unary(Node):
         self.operator = operator
         self.value = value
         self.name = "Unary"
-        self.in_ports = [Port(self.id, IntegerType(), 0)]
-        self.out_ports = [Port(self.id, IntegerType(), 0)]
+        self.in_ports = [Port(self.id, None, 0)]
+        self.out_ports = [Port(self.id, None, 0)]
 
     @build_method
     def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Unary)"""
         print(self.value, self.operator)
         value_ir = self.value.build(self.in_ports, scope)
+        self.out_ports[0].type = self.in_ports[0].type
         del self.value
         return value_ir + SubIr([self], [], [])
 
