@@ -14,4 +14,13 @@ from .common import Init, Body
 
 
 class Loop(Node):
+    """Node describing loops"""
+
     name = "Loop Expression"
+
+    def __init__(self, range, init, body, reduction, location):
+        super().__init__(location)
+
+    @build_method
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        pass
