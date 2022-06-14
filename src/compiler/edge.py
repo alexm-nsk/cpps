@@ -23,6 +23,18 @@ class Edge:
     __edges_to__ = {}
 
     @classmethod
+    def edge_to_port(cls, port: Port):
+        """should be not more than one"""
+        for e in cls.__edges__:
+            if e.to == port:
+                return e
+
+    @classmethod
+    def src_port(cls, target_port: Port):
+        edge = cls.edge_to_port(target_port)
+        return edge.from_
+
+    @classmethod
     def edges_to(cls, node_id: str):
         return cls.__edges_to__[node_id]
 

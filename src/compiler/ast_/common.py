@@ -7,6 +7,7 @@ While they are inherited from Node class,
 they don't have standard (i.e. decorated "build" methods)"""
 
 from ..node import Node
+from ..edge import Edge
 from ..port import Port
 from .multi_exp import MultiExp
 from ..scope import SisalScope
@@ -37,6 +38,7 @@ class Init(Node):
             self.add_sub_ir(
                     definition.value.build([self.out_ports[index]], scope)
                     )
+            scope.add_port(Edge.src_port(self.out_ports[index]))
 
         del self.statements
 
