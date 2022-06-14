@@ -38,8 +38,10 @@ class Init(Node):
             self.add_sub_ir(
                     definition.value.build([self.out_ports[index]], scope)
                     )
-            scope.add_port(Edge.src_port(self.out_ports[index]))
-
+            value_port = Edge.src_port(self.out_ports[index])
+            value_port.label = definition.identifier.name
+            scope.add_port(value_port)
+            print(scope.extra_ports)
         del self.statements
 
 
