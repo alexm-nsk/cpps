@@ -38,7 +38,12 @@ class Init(Node):
             self.add_sub_ir(
                     definition.value.build([self.out_ports[index]], scope)
                     )
+            # here we add newly defined value to the scope
+            # so it's avalable to later init statements
             value_port = Edge.src_port(self.out_ports[index])
+            # we find the port that puts out the defined value
+            # and label it with identifier name
+            # (so it can be found in the cope)
             value_port.label = definition.identifier.name
             scope.add_port(value_port)
 
