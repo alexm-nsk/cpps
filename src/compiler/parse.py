@@ -178,6 +178,9 @@ class ModuleVisitor(NodeVisitor):
                                 value,
                                 location = self.get_location(operator))
 
+    def visit_unary_op(self, node, vc_):
+        return vc_[0]
+
     # Algebraic
 
     def visit_algebraic(self, node, vc_):

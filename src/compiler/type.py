@@ -84,6 +84,5 @@ class ArrayType(MultiType):
     def bottom_element_type(self):
         """returns the type of single element of an array"""
         return (
-            self.element.element_type() if self.element.is_array() else self.element
-            #self.element.element_type() if hasattr(self.element, "element_type") else self.element
+            self.element.bottom_element_type() if self.element.is_array() else self.element
         )
