@@ -44,6 +44,8 @@ class Init(Node):
             # we find the port that puts out the defined value
             # and label it with identifier name
             # (so it can be found in the cope)
+            # TODO add option to not change port's label and rather
+            # change it in the scope's copy of the port
             value_port.label = definition.identifier.name
             scope.add_port(value_port)
 
