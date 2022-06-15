@@ -1,0 +1,8 @@
+function main( M, N, K : integer returns integer)
+    let 
+       A := M;
+       B := N
+    in
+       A + B
+    end let
+end function
