@@ -253,6 +253,37 @@ class ModuleVisitor(NodeVisitor):
         value = vc_[4]
         return Assignment(identifier, value)
 
+    # Loops:
+    def optional_node(self, node):
+        return node[0] if type(node) == list else None
+
+    def visit_loop(self, node, vc_):
+        range_ = self.optional_node(vc_[2])
+        init = self.optional_node(vc_[4])
+        while_ = self.optional_node(vc_[6])
+        returns = self.optional_node(vc_[8])
+
+        return Loop(
+            range=range_,
+            init=init,
+            while_=while_,
+            returns=returns,
+            location=self.get_location(node),
+        )
+
+    def visit_reduction(self, node, vc_):
+        what = vc_[0]
+        of_what = vc_[4]
+        optional = self.optional_node(vc_[5])
+        when = optional[3] if optional else None
+        return Reduction(
+            type=what, of_what=of_what, when=when, location=self.get_location(node)
+        )
+
+    def visit_returns(self, node, vc_):
+        reduction = vc_[2]
+        return reduction
+
     # Arrays:
 
     @staticmethod
@@ -277,14 +308,14 @@ class ModuleVisitor(NodeVisitor):
     def visit_exp(self, node, vc_):
         return vc_[0]
 
-    def visit_empty(self, node, visited_children):
+    def visit_empty(self, node, _):
         """empty visitor"""
         raise SisalError("Empty expressions not allowed!", self.get_location(node))
 
     @staticmethod
-    def generic_visit(node, visited_children):
+    def generic_visit(node, vc_):
         """generic visitor"""
-        return visited_children or node
+        return vc_ or node
 
 
 grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + \
