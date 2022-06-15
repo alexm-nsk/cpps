@@ -43,7 +43,7 @@ class Init(Node):
             value_port = Edge.src_port(self.out_ports[index])
             # we find the port that puts out the defined value
             # and label it with identifier name
-            # (so it can be found in the cope)
+            # (so it can be found in the scope)
             # TODO add option to not change port's label and rather
             # change it in the scope's copy of the port
             value_port.label = definition.identifier.name
