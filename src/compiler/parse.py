@@ -284,6 +284,15 @@ class ModuleVisitor(NodeVisitor):
         reduction = vc_[2]
         return reduction
 
+    def visit_ranges(self, node, vc_):
+        return [vc_[0]] + [r[2] for r in vc_[2]]
+
+    def visit_range(self, node, vc_):
+        return vc_[0]
+
+    def visit_body(self, node, vc_):
+        return vc_[0]
+
     # Arrays:
 
     @staticmethod
