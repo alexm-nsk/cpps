@@ -254,6 +254,25 @@ class ModuleVisitor(NodeVisitor):
         return Assignment(identifier, value)
 
     # Loops:
+
+    # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
+
+    # ranges             = range _ ("," _  range)*
+    # range              = range_numeric / range_scatter
+    # range_scatter      = identifier _ "in" _ exp
+    # range_numeric      = identifier _ "in" _ exp _ "," _ exp
+
+    # initial            = "let" _ statements
+    # body               = while_do / do_while / repeat
+    # repeat             = "repeat" _ statements
+    # while_do           = "while" _ exp _ "do" _ statements
+    # do_while           = "do" _ statements _ "while" _ exp
+
+    # returns            = "returns" _ reduction
+
+    # reduction          = reduction_type _ "of" _ multi_exp (_ "when" _ exp)?
+    # reduction_type     = "array" / "value" / "sum"
+
     def optional_node(self, node):
         return node[0] if type(node) == list else None
 
