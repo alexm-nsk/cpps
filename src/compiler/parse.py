@@ -275,6 +275,9 @@ class ModuleVisitor(NodeVisitor):
     def optional_node(self, node):
         return node[0] if type(node) == list else None
 
+    def visit_initial(self, node, vc_):
+        return common.Init(vc_[2], self.get_location(node))
+
     def visit_loop(self, node, vc_):
         ranges = self.optional_node(vc_[2])
         init = self.optional_node(vc_[4])
