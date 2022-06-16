@@ -16,10 +16,11 @@ from .common import Init, Body
 class Loop(Node):
     """Node describing loops"""
 
-    name = "Loop Expression"
+    connect_parent = True
 
     def __init__(self, ranges, init, body, reduction, location):
         super().__init__(location)
+        self.name = "Loop Expression"
 
     def num_in_ports(self):
         pass
@@ -30,7 +31,7 @@ class Loop(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         self.copy_ports(scope.node)
-        SubIr([],[],[])
+        return SubIr([self],[],[])
 
 
 class Reduction(Node):
