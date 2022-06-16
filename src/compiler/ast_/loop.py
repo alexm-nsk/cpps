@@ -13,6 +13,11 @@ from .multi_exp import MultiExp
 from .common import Init, Body
 
 
+class RangeGen(Node):
+    def __init__(self, location: str):
+        super().__init__(location)
+
+
 class Loop(Node):
     """Node describing loops"""
 
@@ -22,6 +27,7 @@ class Loop(Node):
         super().__init__(location)
         self.name = "Loop Expression"
         self.init = init
+        self.ranges = ranges
         self.body = body
         self.reduction = reduction
 
@@ -37,7 +43,8 @@ class Loop(Node):
         self.init.build(scope)
         del self.body
         del self.reduction
-        return SubIr([self],[],[])
+        del self.ranges
+        return SubIr([self], [], [])
 
 
 class Reduction(Node):
@@ -47,4 +54,3 @@ class Reduction(Node):
 
     def __init__(self, what, of_what, when, location):
         super().__init__(location)
-
