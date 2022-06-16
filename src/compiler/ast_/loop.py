@@ -29,7 +29,8 @@ class Loop(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        pass
+        self.copy_ports(scope.node)
+        SubIr([],[],[])
 
 
 class Reduction(Node):
