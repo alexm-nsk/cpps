@@ -18,9 +18,19 @@ class Loop(Node):
 
     name = "Loop Expression"
 
-    def __init__(self, range, init, body, reduction, location):
+    def __init__(self, ranges, init, body, reduction, location):
         super().__init__(location)
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         pass
+
+
+class Reduction(Node):
+    """Reduction"""
+
+    name = "Reduction"
+
+    def __init__(self, what, of_what, when, location):
+        super().__init__(location)
+

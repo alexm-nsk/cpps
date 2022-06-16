@@ -255,8 +255,6 @@ class ModuleVisitor(NodeVisitor):
 
     # Loops:
 
-    # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
-
     # ranges             = range _ ("," _  range)*
     # range              = range_numeric / range_scatter
     # range_scatter      = identifier _ "in" _ exp
@@ -273,20 +271,21 @@ class ModuleVisitor(NodeVisitor):
     # reduction          = reduction_type _ "of" _ multi_exp (_ "when" _ exp)?
     # reduction_type     = "array" / "value" / "sum"
 
+    # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
     def optional_node(self, node):
         return node[0] if type(node) == list else None
 
     def visit_loop(self, node, vc_):
-        range_ = self.optional_node(vc_[2])
+        ranges = self.optional_node(vc_[2])
         init = self.optional_node(vc_[4])
-        while_ = self.optional_node(vc_[6])
-        returns = self.optional_node(vc_[8])
+        body = self.optional_node(vc_[6])
+        reduction = self.optional_node(vc_[8])
 
-        return Loop(
-            range=range_,
+        return loop.Loop(
+            ranges=ranges,
             init=init,
-            while_=while_,
-            returns=returns,
+            body=body,
+            reduction=reduction,
             location=self.get_location(node),
         )
 
@@ -295,8 +294,8 @@ class ModuleVisitor(NodeVisitor):
         of_what = vc_[4]
         optional = self.optional_node(vc_[5])
         when = optional[3] if optional else None
-        return Reduction(
-            type=what, of_what=of_what, when=when, location=self.get_location(node)
+        return loop.Reduction(
+            what=what, of_what=of_what, when=when, location=self.get_location(node)
         )
 
     def visit_returns(self, node, vc_):
