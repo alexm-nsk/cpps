@@ -312,6 +312,15 @@ class ModuleVisitor(NodeVisitor):
     def visit_range(self, node, vc_):
         return loop.RangeGen(ranges=vc_[0], location=self.get_location(node))
 
+    def visit_range_scatter(self, node, vc_):
+        return loop.Scatter(ranges=vc_[0], location=self.get_location(node))
+
+    def visit_range_numeric(self, node, vc_):
+        return loop.RangeNumeric(identifier=vc_[0],
+                                 left = vc_[4],
+                                 right = vc_[8],
+                                 location=self.get_location(node))
+
     def visit_body(self, node, vc_):
         return vc_[0]
 

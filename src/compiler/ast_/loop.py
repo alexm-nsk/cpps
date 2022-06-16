@@ -16,21 +16,21 @@ from .common import Init, Body
 def Scatter(Node):
     """Scatter node"""
 
-    def __init__(self, ranges: list[MultiExp], location: str):
+    def __init__(self, identifier, multis, location: str):
         super().__init__(location)
 
 
-def Range(Node):
+def RangeNumeric(Node):
     """Scatter node"""
 
-    def __init__(self, ranges: list[MultiExp], location: str):
+    def __init__(self, identifier, left, right, location: str):
         super().__init__(location)
 
 
 class RangeGen(Node):
     """RangeGen node"""
 
-    def __init__(self, ranges: list[MultiExp], location: str):
+    def __init__(self, ranges, location: str):
         super().__init__(location)
         self.ranges = ranges
 
