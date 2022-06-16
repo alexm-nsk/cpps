@@ -14,7 +14,6 @@ from parsimonious.exceptions import ParseError
 
 from .parser_state import reset
 from .statement import Assignment
-
 from .ast_ import *
 from .error import SisalError
 
@@ -158,8 +157,7 @@ class ModuleVisitor(NodeVisitor):
             condition_nodes.append(e[2])
             elseif.append(e[6])
 
-        locations = ", ".join([condition.location
-                               for condition in condition_nodes])
+        locations = ", ".join([condition.location for condition in condition_nodes])
 
         return if_.If(
             multi_exp.MultiExp(condition_nodes, locations),
@@ -174,9 +172,9 @@ class ModuleVisitor(NodeVisitor):
     def visit_unary(self, node, vc_):
         operator = vc_[0]
         value = vc_[2]
-        return algebraic.Unary (operator.text,
-                                value,
-                                location = self.get_location(operator))
+        return algebraic.Unary(
+            operator.text, value, location=self.get_location(operator)
+        )
 
     def visit_unary_op(self, node, vc_):
         return vc_[0]
@@ -316,10 +314,12 @@ class ModuleVisitor(NodeVisitor):
         return loop.Scatter(ranges=vc_[0], location=self.get_location(node))
 
     def visit_range_numeric(self, node, vc_):
-        return loop.RangeNumeric(identifier=vc_[0],
-                                 left = vc_[4],
-                                 right = vc_[8],
-                                 location=self.get_location(node))
+        return loop.RangeNumeric(
+            identifier=vc_[0],
+            left=vc_[4],
+            right=vc_[8],
+            location=self.get_location(node),
+        )
 
     def visit_body(self, node, vc_):
         return vc_[0]
@@ -358,8 +358,7 @@ class ModuleVisitor(NodeVisitor):
         return vc_ or node
 
 
-grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + \
-                    "/module_grammar.ini"
+grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_grammar.ini"
 
 with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
@@ -383,14 +382,14 @@ def parse(src_code: str) -> dict:
         return {"functions": functions}
     except Exception as e:
         if type(e) == ParseError:
-            wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
+            wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
             print(
                 f"Syntax error ({e.line()}:{e.column()}): ",
                 rule_annotation(e.expr.name),
                 # e.expr.as_rule(),
                 f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
-                + e.text[int(e.pos): e.pos + 20].split("\n")[0]
+                + e.text[int(e.pos) : e.pos + 20].split("\n")[0]
                 + '"',
             )
         elif type(e) == SisalError:

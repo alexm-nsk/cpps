@@ -13,14 +13,14 @@ from .multi_exp import MultiExp
 from .common import Init, Body
 
 
-def Scatter(Node):
+class Scatter(Node):
     """Scatter node"""
 
     def __init__(self, identifier, multis, location: str):
         super().__init__(location)
 
 
-def RangeNumeric(Node):
+class RangeNumeric(Node):
     """Scatter node"""
 
     def __init__(self, identifier, left, right, location: str):
