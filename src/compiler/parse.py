@@ -272,6 +272,7 @@ class ModuleVisitor(NodeVisitor):
     # reduction_type     = "array" / "value" / "sum"
 
     # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
+
     def optional_node(self, node):
         return node[0] if type(node) == list else None
 

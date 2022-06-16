@@ -21,6 +21,12 @@ class Loop(Node):
     def __init__(self, ranges, init, body, reduction, location):
         super().__init__(location)
 
+    def num_in_ports(self):
+        pass
+
+    def num_out_ports(self):
+        return 1
+
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         pass
