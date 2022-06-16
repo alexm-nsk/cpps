@@ -16,7 +16,7 @@ from .common import Init, Body
 class Scatter(Node):
     """Scatter node"""
 
-    def __init__(self, identifier, multis, location: str):
+    def __init__(self, identifier, iteratable, location: str):
         super().__init__(location)
 
 
