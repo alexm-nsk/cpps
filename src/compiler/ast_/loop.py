@@ -13,12 +13,27 @@ from .multi_exp import MultiExp
 from .common import Init, Body
 
 
+def Scatter(Node):
+    """Scatter node"""
+
+    def __init__(self, ranges: list[MultiExp], location: str):
+        super().__init__(location)
+
+
+def Range(Node):
+    """Scatter node"""
+
+    def __init__(self, ranges: list[MultiExp], location: str):
+        super().__init__(location)
+
+
 class RangeGen(Node):
     """RangeGen node"""
 
     def __init__(self, ranges: list[MultiExp], location: str):
         super().__init__(location)
         self.ranges = ranges
+
 
 class Loop(Node):
     """Node describing loops"""
