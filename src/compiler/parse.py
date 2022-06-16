@@ -253,12 +253,12 @@ class ModuleVisitor(NodeVisitor):
 
     # Loops:
 
-    # ranges             = range _ ("," _  range)*
-    # range              = range_numeric / range_scatter
-    # range_scatter      = identifier _ "in" _ exp
-    # range_numeric      = identifier _ "in" _ exp _ "," _ exp
+    # ranges             = range _ ("," _  range)*                  ✓
+    # range              = range_numeric / range_scatter            ✓
+    # range_scatter      = identifier _ "in" _ exp                  ✓
+    # range_numeric      = identifier _ "in" _ exp _ "," _ exp      ✓
 
-    # initial            = "let" _ statements
+    # initial            = "let" _ statements                       ✓
     # body               = while_do / do_while / repeat
     # repeat             = "repeat" _ statements
     # while_do           = "while" _ exp _ "do" _ statements
@@ -270,6 +270,15 @@ class ModuleVisitor(NodeVisitor):
     # reduction_type     = "array" / "value" / "sum"
 
     # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
+
+    def while_do(self, node, vc_):
+        pass
+
+    def do_while(self, node, vc_):
+        pass
+
+    def repeat(self, node, vc_):
+        pass
 
     def optional_node(self, node):
         return node[0] if type(node) == list else None
@@ -311,9 +320,9 @@ class ModuleVisitor(NodeVisitor):
         return vc_[0]
 
     def visit_range_scatter(self, node, vc_):
-        return loop.Scatter(identifier=vc_[0],
-                            iteratable=vc_[4],
-                            location=self.get_location(node))
+        return loop.Scatter(
+            identifier=vc_[0], iteratable=vc_[4], location=self.get_location(node)
+        )
 
     def visit_range_numeric(self, node, vc_):
         return loop.RangeNumeric(
