@@ -310,7 +310,7 @@ class ModuleVisitor(NodeVisitor):
         return [vc_[0]] + [r[2] for r in vc_[2]]
 
     def visit_range(self, node, vc_):
-        return vc_[0]
+        return loop.RangeGen(ranges=vc_[0], location=self.get_location(node))
 
     def visit_body(self, node, vc_):
         return vc_[0]

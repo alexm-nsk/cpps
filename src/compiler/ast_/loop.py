@@ -14,9 +14,11 @@ from .common import Init, Body
 
 
 class RangeGen(Node):
-    def __init__(self, location: str):
-        super().__init__(location)
+    """RangeGen node"""
 
+    def __init__(self, ranges: list[MultiExp], location: str):
+        super().__init__(location)
+        self.ranges = ranges
 
 class Loop(Node):
     """Node describing loops"""
