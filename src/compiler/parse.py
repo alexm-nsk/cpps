@@ -311,7 +311,8 @@ class ModuleVisitor(NodeVisitor):
     # Ranges:
 
     def visit_ranges(self, node, vc_):
-        return [vc_[0]] + [r[2] for r in vc_[2]]
+        return loop.RangeGen(ranges=[vc_[0]] + [r[2] for r in vc_[2]],
+                             location=self.get_location(node))
 
     def visit_range(self, node, vc_):
         # extra [0] is because (range_numeric / exp) is a group

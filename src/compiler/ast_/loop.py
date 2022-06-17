@@ -90,9 +90,9 @@ class Loop(Node):
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         self.copy_ports(scope.node)
         self.init.build(scope)
+        self.range_gen.build(scope)
         del self.body
         del self.reduction
-        del self.range_gen
         return SubIr([self], [], [])
 
 
