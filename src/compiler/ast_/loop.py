@@ -10,6 +10,7 @@ from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .common import Init
+from ..type import IntegerType
 
 
 class LoopBody(Node):
@@ -41,6 +42,23 @@ class Scatter(Node):
 
     def __init__(self, iteratable):
         super().__init__()
+        self.iterable = iteratable
+        self.name = "Scatter"
+
+    def num_out_ports(self):
+        return 2
+
+    def num_out_ports(self):
+        return 1
+
+    @build_method
+    def build(self, target_ports: list[Port], scope):
+        self.in_ports = [Port(self.id, IntegerType(), 0)]
+        self.out_ports = [Port(self.id, None, 0, "element"),
+                          Port(self.id, IntegerType(), 1, "index")]
+        iterable_ir = self.iterable.build([self.out_ports[0]], scope)
+        del self.iterable
+        return SubIr([self], [], []) + iterable_ir
 
 
 class RangeNumeric(Node):
@@ -48,10 +66,27 @@ class RangeNumeric(Node):
 
     def __init__(self, left, right, location: str):
         super().__init__(location)
+        self.name = "Range"
+        self.left = left
+        self.right = right
+        self.out_ports = [Port(self.id, IntegerType(), 0, "range output")]
+        self.in_ports = [
+            Port(self.id, IntegerType(), 0, "left boundary"),
+            Port(self.id, IntegerType(), 1, "right boundary"),
+        ]
+
+    @build_method
+    def build(self, target_ports: list[Port], scope):
+        left_ir = self.left.build([self.in_ports[0]], scope)
+        right_ir = self.right.build([self.in_ports[1]], scope)
+        del self.left
+        del self.right
+        return SubIr([self], [], []) + left_ir + right_ir
 
 
 class Range(Node):
     """(Helper node, deleted in second pass) A single range"""
+
     no_id = True
 
     def __init__(self, identifier, scatter_node):
@@ -62,12 +97,10 @@ class Range(Node):
         # add port corresponding to this range to parent
         # RangeGen node
         range_gen = range_gen_scope.node
-        range_gen.out_ports.append(
-                                    Port(range_gen.id,
-                                         None,
-                                         self.identifier.name)
-                                  )
-        return SubIr([], [], [])
+        new_port = Port(range_gen.id, IntegerType(), self.identifier.name)
+        range_gen.out_ports.append(new_port)
+
+        return self.scatter_node.build([new_port], range_gen_scope)
 
 
 class RangeGen(Node):
