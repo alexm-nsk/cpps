@@ -13,6 +13,30 @@ from .multi_exp import MultiExp
 from .common import Init, Body
 
 
+class LoopBody(Node):
+    """Loop body node"""
+
+    def __init__(self, statements, location: str):
+        super().__init__(location)
+        self.statements = statements
+
+
+class Cond(Node):
+    """Loop condition node"""
+
+    def __init__(self, exp, location: str):
+        super().__init__(location)
+        self.exp = exp
+
+
+class PreCond(Cond):
+    name = "Pre Condition"
+
+
+class PostCond(Cond):
+    name = "Post Condition"
+
+
 class Scatter(Node):
     """Scatter node"""
 

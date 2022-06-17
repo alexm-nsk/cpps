@@ -253,36 +253,18 @@ class ModuleVisitor(NodeVisitor):
 
     # Loops:
 
-    # ranges             = range _ ("," _  range)*                  ✓
-    # range              = range_numeric / range_scatter            ✓
-    # range_scatter      = identifier _ "in" _ exp                  ✓
-    # range_numeric      = identifier _ "in" _ exp _ "," _ exp      ✓
-
-    # initial            = "let" _ statements                       ✓
-    # body               = while_do / do_while / repeat
-    # repeat             = "repeat" _ statements
-    # while_do           = "while" _ exp _ "do" _ statements
-    # do_while           = "do" _ statements _ "while" _ exp
-
-    # returns            = "returns" _ reduction
-
-    # reduction          = reduction_type _ "of" _ multi_exp (_ "when" _ exp)?
-    # reduction_type     = "array" / "value" / "sum"
-
-    # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
-
     def while_do(self, node, vc_):
-        body = common.Body(vc_[6], location=self.get_location(location))
+        body = Loop.LoopBody(vc_[6], location=self.get_location(location))
         cond = loop.PreCond(vc_[2], location=self.get_location(location))
         return dict(body=body, cond=cond)
 
     def do_while(self, node, vc_):
-        body = common.Body(vc_[2], location=self.get_location(location))
+        body = Loop.LoopBody(vc_[2], location=self.get_location(location))
         cond = loop.PostCond(vc_[6], location=self.get_location(location))
         return dict(body=body, cond=cond)
 
     def repeat(self, node, vc_):
-        body = common.Body(vc_[2], location=self.get_location(location))
+        body = Loop.LoopBody(vc_[2], location=self.get_location(location))
         return dict(body=body, cond=None)
 
     def optional_node(self, node):
@@ -324,7 +306,7 @@ class ModuleVisitor(NodeVisitor):
     def visit_range(self, node, vc_):
         return vc_[0]
 
-    def visit_range_scatter(self, node, vc_):
+    def range_iteratable(self, node, vc_):
         return loop.Scatter(
             identifier=vc_[0], iteratable=vc_[4], location=self.get_location(node)
         )
