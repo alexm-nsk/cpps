@@ -23,6 +23,9 @@ class Type:
     def is_array(self):
         return hasattr(self, "element")
 
+    def is_stream(self):
+        return type(self)==StreamType
+
 
 @dataclass
 class SingularType(Type):
@@ -64,8 +67,21 @@ class MultiType(Type):
 
 
 @dataclass
+class StreamType(MultiType):
+    """Class for describing streams."""
+
+    def ir_(self):
+        retval = deepcopy(self.__dict__)
+        retval["element"] = retval["element"].ir_()
+        return retval
+
+    def element_type(self):
+        return self.element
+
+
+@dataclass
 class ArrayType(MultiType):
-    """Class for describing arrays, streams, etc."""
+    """Class for describing arrays."""
 
     def ir_(self):
         retval = deepcopy(self.__dict__)

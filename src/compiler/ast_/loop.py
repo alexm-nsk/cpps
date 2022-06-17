@@ -10,7 +10,7 @@ from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .common import Init
-from ..type import IntegerType
+from ..type import IntegerType, StreamType
 
 
 class LoopBody(Node):
@@ -53,10 +53,10 @@ class Scatter(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope):
-        self.in_ports = [Port(self.id, IntegerType(), 0)]
-        self.out_ports = [Port(self.id, None, 0, "element"),
+        self.in_ports = [Port(self.id, None, 0)]
+        self.out_ports = [Port(self.id, IntegerType(), 0, "element"),
                           Port(self.id, IntegerType(), 1, "index")]
-        iterable_ir = self.iterable.build([self.out_ports[0]], scope)
+        iterable_ir = self.iterable.build([self.in_ports[0]], scope)
         del self.iterable
         return SubIr([self], [], []) + iterable_ir
 
