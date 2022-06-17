@@ -57,6 +57,10 @@ class Range(Node):
     def __init__(self, identifier, iterable):
         pass
 
+    @build_method
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+        return SubIr([], [], [])
+
 
 class RangeGen(Node):
     """RangeGen node"""
