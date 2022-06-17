@@ -69,6 +69,7 @@ class RangeGen(Node):
     def build(self, scope):
         self.copy_ports(scope.node)
         scope = SisalScope(self)
+        del self.ranges
 
 
 class Loop(Node):
