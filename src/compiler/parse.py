@@ -287,7 +287,7 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_loop(self, node, vc_):
         return loop.Loop(
-            ranges=self.optional_node(vc_[2]),
+            range_gen=self.optional_node(vc_[2]),
             init=self.optional_node(vc_[4]),
             body=self.optional_node(vc_[6]),
             reduction=self.optional_node(vc_[8]),

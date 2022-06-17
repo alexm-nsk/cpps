@@ -72,11 +72,11 @@ class Loop(Node):
 
     connect_parent = True
 
-    def __init__(self, ranges, init: Init, body, reduction, location):
+    def __init__(self, range_gen, init: Init, body, reduction, location):
         super().__init__(location)
         self.name = "Loop Expression"
         self.init = init
-        self.ranges = ranges
+        self.range_gen = range_gen
         self.body = body
         self.reduction = reduction
 
@@ -92,7 +92,7 @@ class Loop(Node):
         self.init.build(scope)
         del self.body
         del self.reduction
-        del self.ranges
+        del self.range_gen
         return SubIr([self], [], [])
 
 

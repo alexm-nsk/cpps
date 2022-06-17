@@ -148,7 +148,7 @@ class Node:
         for key in ["in_ports", "out_ports", "nodes", "edges"]:
             if key in retval:
                 retval[key] = [item.ir_() for item in retval[key]]
-        for key in ["init", "body"]:
+        for key in ["init", "body", "range"]:
             if key in retval:
                 retval[key] = retval[key].ir_()
         for key in extra_fields:
