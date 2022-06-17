@@ -177,6 +177,7 @@ class ModuleVisitor(NodeVisitor):
         )
 
     def visit_unary_op(self, node, vc_):
+        """passthrough"""
         return vc_[0]
 
     # Algebraic
@@ -196,7 +197,7 @@ class ModuleVisitor(NodeVisitor):
         return vc_[2]
 
     def visit_operand(self, node, vc_):
-        """operand visitor"""
+        """passthrough"""
         return vc_[0]
 
     def visit_bin_op(self, node, vc_):
@@ -241,6 +242,7 @@ class ModuleVisitor(NodeVisitor):
 
     @staticmethod
     def visit_statement(_, vc_):
+        """passthrough"""
         return vc_[0]
 
     def visit_statements(self, node, vc_):
@@ -254,26 +256,27 @@ class ModuleVisitor(NodeVisitor):
 
     # Loops:
 
-    def while_do(self, node, vc_):
-        body = loop.LoopBody(vc_[6],
-                             location=self.get_location(node.location))
-        cond = loop.PreCond(vc_[2],
-                            location=self.get_location(node.location))
+    def visit_while_do(self, node, vc_):
+        body = loop.LoopBody(statements=vc_[6],
+                             location=self.get_location(node))
+        cond = loop.PreCond(exp=vc_[2],
+                            location=self.get_location(node))
         return dict(body=body, cond=cond)
 
-    def do_while(self, node, vc_):
-        body = loop.LoopBody(vc_[2],
-                             location=self.get_location(node.location))
-        cond = loop.PostCond(vc_[6],
-                             location=self.get_location(node.location))
+    def visit_do_while(self, node, vc_):
+        body = loop.LoopBody(statements=vc_[2],
+                             location=self.get_location(node))
+        cond = loop.PostCond(exp=vc_[6],
+                             location=self.get_location(node))
         return dict(body=body, cond=cond)
 
-    def repeat(self, node, vc_):
-        body = loop.LoopBody(vc_[2],
-                             location=self.get_location(node.location))
+    def visit_repeat(self, node, vc_):
+        body = loop.LoopBody(statements=vc_[2],
+                             location=self.get_location(node))
         return dict(body=body, cond=None)
 
     def visit_body(self, node, vc_):
+        """passthrough"""
         return vc_[0]
 
     def optional_node(self, node):
@@ -307,10 +310,6 @@ class ModuleVisitor(NodeVisitor):
 
     # Ranges:
 
-    # ranges             = range _ ("," _  range)*
-    # range              = identifier _ "in" _ (range_numeric / exp)
-    # range_numeric      = exp _ "," _ exp
-
     def visit_ranges(self, node, vc_):
         return [vc_[0]] + [r[2] for r in vc_[2]]
 
@@ -329,10 +328,12 @@ class ModuleVisitor(NodeVisitor):
 
     @staticmethod
     def visit_array_index(_, vc_):
+        """passthrough"""
         return vc_[0]
 
     @staticmethod
     def visit_array_exp(_, vc_):
+        """passthrough"""
         return vc_[0]
 
     @staticmethod
