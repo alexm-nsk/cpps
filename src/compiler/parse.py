@@ -7,18 +7,16 @@ Node module methods are called to make class instances.
 """
 
 import os
-from .annotations import rule_annotation
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError
 
+from .annotations import rule_annotation
 from .parser_state import reset
 from .statement import Assignment
-from .ast_ import *
-from .ast_ import (algebraic, array_access, call, common, function, identifier,
-                   if_, let, literal, loop, multi_exp)
+from .ast_ import (algebraic, array_access, call, common, function,
+                   identifier, if_, let, literal, loop, multi_exp)
 from .error import SisalError
-
 from .type import IntegerType, BooleanType, RealType, ArrayType
 
 
