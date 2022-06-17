@@ -285,27 +285,20 @@ class ModuleVisitor(NodeVisitor):
         return common.Init(vc_[2], self.get_location(node))
 
     def visit_loop(self, node, vc_):
-        ranges = self.optional_node(vc_[2])
-        init = self.optional_node(vc_[4])
-        body = self.optional_node(vc_[6])
-        reduction = self.optional_node(vc_[8])
-
         return loop.Loop(
-            ranges=ranges,
-            init=init,
-            body=body,
-            reduction=reduction,
+            ranges=self.optional_node(vc_[2]),
+            init=self.optional_node(vc_[4]),
+            body=self.optional_node(vc_[6]),
+            reduction=self.optional_node(vc_[8]),
             location=self.get_location(node),
         )
 
     def visit_reduction(self, node, vc_):
-        what = vc_[0]
-        of_what = vc_[4]
         optional = self.optional_node(vc_[5])
         when = optional[3] if optional else None
         return loop.Reduction(
-            what=what,
-            of_what=of_what,
+            what=vc_[0],
+            of_what=vc_[4],
             when=when,
             location=self.get_location(node)
         )
