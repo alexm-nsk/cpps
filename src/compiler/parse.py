@@ -316,7 +316,7 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_range(self, node, vc_):
         # extra [0] is because (range_numeric / exp) is a group
-        return loop.Range(identifier=vc_[0], iterable=vc_[4][0])
+        return loop.Range(identifier=vc_[0], scatter_node=loop.Scatter(vc_[4][0]))
 
     def visit_range_numeric(self, node, vc_):
         return loop.RangeNumeric(

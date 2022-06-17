@@ -39,8 +39,8 @@ class PostCond(Cond):
 class Scatter(Node):
     """Iterates over an iterable type"""
 
-    def __init__(self, iteratable, location: str):
-        super().__init__(location)
+    def __init__(self, iteratable):
+        super().__init__()
 
 
 class RangeNumeric(Node):
@@ -54,11 +54,19 @@ class Range(Node):
     """(Helper node, deleted in second pass) A single range"""
     no_id = True
 
-    def __init__(self, identifier, iterable):
-        pass
+    def __init__(self, identifier, scatter_node):
+        self.identifier = identifier
+        self.scatter_node = scatter_node
 
-    @build_method
-    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+    def build(self, range_gen_scope: SisalScope) -> SubIr:
+        # add port corresponding to this range to parent
+        # RangeGen node
+        range_gen = range_gen_scope.node
+        range_gen.out_ports.append(
+                                    Port(range_gen.id,
+                                         None,
+                                         self.identifier.name)
+                                  )
         return SubIr([], [], [])
 
 
@@ -68,11 +76,15 @@ class RangeGen(Node):
     def __init__(self, ranges: list[Range], location: str):
         super().__init__(location)
         self.ranges = ranges
+        self.out_ports = []
+
         self.name = "RangeGen"
 
     def build(self, scope):
-        self.copy_ports(scope.node)
+        self.copy_ports(scope.node, out=False)
         scope = SisalScope(self)
+        for n, range_ in enumerate(self.ranges):
+            self.add_sub_ir(range_.build(scope))
         del self.ranges
 
 

@@ -58,7 +58,7 @@ class Node:
     connect_to_parent = True
     copy_scope_ports = False
 
-    def __init__(self, location):
+    def __init__(self, location=None):
         """Not meant to be run on it's own, it adds to child classes'
         initialization"""
         if not self.no_id:
@@ -68,6 +68,12 @@ class Node:
             self.location = location
         else:
             self.location = "not applicable"
+
+    # def add_out_port(self, type_):
+        # self.out_ports.append(Port(self.id, type_, len(self.out_ports)))
+
+    # def add_in_port(self, type_):
+        # self.in_ports.append(Port(self.id, type_, len(self.in_ports)))
 
     def add_sub_ir(self, sub_ir):
         """Add contents of a SubIr to this node's nodes and edges"""
