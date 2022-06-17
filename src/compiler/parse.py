@@ -15,6 +15,8 @@ from parsimonious.exceptions import ParseError
 from .parser_state import reset
 from .statement import Assignment
 from .ast_ import *
+from .ast_ import (algebraic, array_access, call, common, function, identifier,
+                   if_, let, literal, loop, multi_exp)
 from .error import SisalError
 
 from .type import IntegerType, BooleanType, RealType, ArrayType
@@ -201,7 +203,8 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_bin_op(self, node, vc_):
         """operand visitor"""
-        return algebraic.Bin(operator=node.text, location=self.get_location(node))
+        return algebraic.Bin(operator=node.text,
+                             location=self.get_location(node))
 
     @staticmethod
     def visit_module(_, vc_):
@@ -254,18 +257,26 @@ class ModuleVisitor(NodeVisitor):
     # Loops:
 
     def while_do(self, node, vc_):
-        body = Loop.LoopBody(vc_[6], location=self.get_location(location))
-        cond = loop.PreCond(vc_[2], location=self.get_location(location))
+        body = loop.LoopBody(vc_[6],
+                             location=self.get_location(node.location))
+        cond = loop.PreCond(vc_[2],
+                            location=self.get_location(node.location))
         return dict(body=body, cond=cond)
 
     def do_while(self, node, vc_):
-        body = Loop.LoopBody(vc_[2], location=self.get_location(location))
-        cond = loop.PostCond(vc_[6], location=self.get_location(location))
+        body = loop.LoopBody(vc_[2],
+                             location=self.get_location(node.location))
+        cond = loop.PostCond(vc_[6],
+                             location=self.get_location(node.location))
         return dict(body=body, cond=cond)
 
     def repeat(self, node, vc_):
-        body = Loop.LoopBody(vc_[2], location=self.get_location(location))
+        body = loop.LoopBody(vc_[2],
+                             location=self.get_location(node.location))
         return dict(body=body, cond=None)
+
+    def visit_body(self, node, vc_):
+        return vc_[0]
 
     def optional_node(self, node):
         return node[0] if type(node) == list else None
@@ -293,34 +304,35 @@ class ModuleVisitor(NodeVisitor):
         optional = self.optional_node(vc_[5])
         when = optional[3] if optional else None
         return loop.Reduction(
-            what=what, of_what=of_what, when=when, location=self.get_location(node)
+            what=what,
+            of_what=of_what,
+            when=when,
+            location=self.get_location(node)
         )
 
     def visit_returns(self, node, vc_):
         reduction = vc_[2]
         return reduction
 
+    # Ranges:
+
+    # ranges             = range _ ("," _  range)*
+    # range              = identifier _ "in" _ (range_numeric / exp)
+    # range_numeric      = exp _ "," _ exp
+
     def visit_ranges(self, node, vc_):
         return [vc_[0]] + [r[2] for r in vc_[2]]
 
     def visit_range(self, node, vc_):
-        return vc_[0]
-
-    def range_iteratable(self, node, vc_):
-        return loop.Scatter(
-            identifier=vc_[0], iteratable=vc_[4], location=self.get_location(node)
-        )
+        # extra [0] is because (range_numeric / exp) is a group
+        return loop.Range(identifier=vc_[0], iterable=vc_[4][0])
 
     def visit_range_numeric(self, node, vc_):
         return loop.RangeNumeric(
-            identifier=vc_[0],
-            left=vc_[4],
-            right=vc_[8],
+            left=vc_[0],
+            right=vc_[4],
             location=self.get_location(node),
         )
-
-    def visit_body(self, node, vc_):
-        return vc_[0]
 
     # Arrays:
 

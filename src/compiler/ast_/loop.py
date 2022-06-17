@@ -9,14 +9,13 @@ from ..port import Port
 from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-from .multi_exp import MultiExp
-from .common import Init, Body
+from .common import Init
 
 
 class LoopBody(Node):
     """Loop body node"""
 
-    def __init__(self, statements, location: str):
+    def __init__(self, statements: list[Statement], location: str):
         super().__init__(location)
         self.statements = statements
 
@@ -38,25 +37,34 @@ class PostCond(Cond):
 
 
 class Scatter(Node):
-    """Scatter node"""
+    """Iterates over an iterable type"""
 
-    def __init__(self, identifier, iteratable, location: str):
+    def __init__(self, iteratable, location: str):
         super().__init__(location)
 
 
 class RangeNumeric(Node):
-    """Scatter node"""
+    """Numeric range"""
 
-    def __init__(self, identifier, left, right, location: str):
+    def __init__(self, left, right, location: str):
         super().__init__(location)
+
+
+class Range(Node):
+    no_id = True
+    """(Helper node, deleted in second pass) A single range"""
+
+    def __init__(self, identifier, iterable):
+        pass
 
 
 class RangeGen(Node):
     """RangeGen node"""
 
-    def __init__(self, ranges, location: str):
+    def __init__(self, ranges: list[Range], location: str):
         super().__init__(location)
         self.ranges = ranges
+        self.name = "RangeGen"
 
 
 class Loop(Node):
