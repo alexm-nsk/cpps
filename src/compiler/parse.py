@@ -272,13 +272,18 @@ class ModuleVisitor(NodeVisitor):
     # loop               = "for" _ ranges? _ initial? _ body? _ returns? _ "end" _ "for"
 
     def while_do(self, node, vc_):
-        pass
+        body = common.Body(vc_[6], location=self.get_location(location))
+        cond = loop.PreCond(vc_[2], location=self.get_location(location))
+        return dict(body=body, cond=cond)
 
     def do_while(self, node, vc_):
-        pass
+        body = common.Body(vc_[2], location=self.get_location(location))
+        cond = loop.PostCond(vc_[6], location=self.get_location(location))
+        return dict(body=body, cond=cond)
 
     def repeat(self, node, vc_):
-        pass
+        body = common.Body(vc_[2], location=self.get_location(location))
+        return dict(body=body, cond=None)
 
     def optional_node(self, node):
         return node[0] if type(node) == list else None
