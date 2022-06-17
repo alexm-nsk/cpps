@@ -21,7 +21,7 @@ class LoopBody(Node):
 
 
 class Cond(Node):
-    """Loop condition node"""
+    """Loop condition node, base class"""
 
     def __init__(self, exp, location: str):
         super().__init__(location)
@@ -44,15 +44,15 @@ class Scatter(Node):
 
 
 class RangeNumeric(Node):
-    """Numeric range"""
+    """Numeric range, iterated over by Scatter"""
 
     def __init__(self, left, right, location: str):
         super().__init__(location)
 
 
 class Range(Node):
-    no_id = True
     """(Helper node, deleted in second pass) A single range"""
+    no_id = True
 
     def __init__(self, identifier, iterable):
         pass
@@ -65,6 +65,10 @@ class RangeGen(Node):
         super().__init__(location)
         self.ranges = ranges
         self.name = "RangeGen"
+
+    def build(self, scope):
+        self.copy_ports(scope.node)
+        scope = SisalScope(self)
 
 
 class Loop(Node):
