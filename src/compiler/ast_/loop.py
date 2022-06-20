@@ -159,8 +159,7 @@ class Loop(Node):
         self.copy_ports(scope.node)
         self.init.build(scope)
         self.range_gen.build(scope)
-        self.add_sub_ir(body.build(scope))
-        del self.body
+        self.body.build(scope)
         del self.condition
         del self.reduction
         return SubIr([self], [], [])
