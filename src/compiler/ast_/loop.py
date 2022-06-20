@@ -40,16 +40,16 @@ class PostCond(Cond):
 class Scatter(Node):
     """Iterates over an iterable type"""
 
-    def __init__(self, iteratable):
-        super().__init__()
-        self.iterable = iteratable
+    def __init__(self, iterable, location):
+        super().__init__(location)
+        self.iterable = iterable
         self.name = "Scatter"
+
+    def num_in_ports(self):
+        return 1
 
     def num_out_ports(self):
         return 2
-
-    def num_out_ports(self):
-        return 1
 
     @build_method
     def build(self, target_ports: list[Port], scope):
@@ -58,7 +58,8 @@ class Scatter(Node):
         element_type = self.in_ports[0].port_type()
         self.out_ports = [
             Port(self.id, StreamType(element=element_type), 0, "element"),
-            Port(self.id, IntegerType(), 1, "index")]
+            Port(self.id, IntegerType(), 1, "index"),
+        ]
         print(element_type)
         del self.iterable
         return SubIr([self], [], []) + iterable_ir
@@ -100,8 +101,13 @@ class Range(Node):
         # add port corresponding to this range to parent
         # RangeGen node
         range_gen = range_gen_scope.node
-        new_port = Port(range_gen.id, IntegerType(), self.identifier.name)
-        range_gen.out_ports.append(new_port)
+        new_index_port = Port(
+            range_gen.id, IntegerType(), index=0, label=self.identifier.name
+        )
+        new_value_port = Port(
+            range_gen.id, None, index=1, label=self.identifier.name + "_index"
+        )
+        range_gen.out_ports.append(new_value_port)
 
         return self.scatter_node.build([new_port], range_gen_scope)
 

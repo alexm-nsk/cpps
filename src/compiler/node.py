@@ -16,8 +16,9 @@ def build_method(fn):
     def wrapped(self, target_ports: list[Port], scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
             raise SisalError(
-                f"Error: {len(target_ports)} expressions expected,"
-                f"got {len(self.expressions)} at {self.location}"
+                f"Error: {len(target_ports)} output expected, "
+                f"got {self.num_out_ports()} at ({self.location}) "
+                f"(from {self.name, self.id} to {target_ports[0].node().name})"
             )
 
         if self.copy_scope_ports:
