@@ -12,15 +12,6 @@ from ..sub_ir import SubIr
 from .common import Init
 from ..type import IntegerType, StreamType
 
-
-class LoopBody(Node):
-    """Loop body node"""
-
-    def __init__(self, statements: list[Statement], condition: Cond, location: str):
-        super().__init__(location)
-        self.statements = statements
-
-
 class Cond(Node):
     """Loop condition node, base class"""
 
@@ -35,6 +26,14 @@ class PreCond(Cond):
 
 class PostCond(Cond):
     name = "Post Condition"
+
+
+class LoopBody(Node):
+    """Loop body node"""
+
+    def __init__(self, statements: list[Statement], condition: Cond, location: str):
+        super().__init__(location)
+        self.statements = statements
 
 
 class Scatter(Node):
