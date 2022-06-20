@@ -163,7 +163,6 @@ class Loop(Node):
             else:
                 del self.__dict__[item]
 
-
         return SubIr([self], [], [])
 
 

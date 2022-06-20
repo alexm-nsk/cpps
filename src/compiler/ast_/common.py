@@ -36,7 +36,7 @@ class Init(Node):
 
         for index, definition in enumerate(self.statements):
             self.add_sub_ir(
-                    definition.value.build([self.out_ports[index]], scope)
+                        definition.value.build([self.out_ports[index]], scope)
                     )
             # here we add newly defined value to the scope
             # so it's avalable to later init statements
