@@ -45,9 +45,11 @@ class LoopBody(Node):
         self.in_ports = []
 
     def setup_ports(self, scope: SisalScope):
-        init = scope.node.init
-        if init:
-            self.copy_results_ports(init)
+        loop = scope.node
+        self.copy_ports(scope.node, out=False)
+
+        if loop.init:
+            self.copy_results_ports(loop.init)
 
     def build(self, scope):
         self.setup_ports(scope)
