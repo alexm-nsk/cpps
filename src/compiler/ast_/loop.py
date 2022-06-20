@@ -19,13 +19,20 @@ class Cond(Node):
     def __init__(self, exp, location: str):
         super().__init__(location)
         self.exp = exp
+        # copies the name from class, see PreCond/ PostCond
+        self.name = self.name
+
+    def build(self, scope: SisalScope):
+        del self.exp
 
 
 class PreCond(Cond):
+
     name = "Pre Condition"
 
 
 class PostCond(Cond):
+
     name = "Post Condition"
 
 
@@ -35,8 +42,15 @@ class LoopBody(Node):
     def __init__(self, statements: list[Statement], location: str):
         super().__init__(location)
         self.statements = statements
+        self.in_ports = []
+
+    def setup_ports(self, scope: SisalScope):
+        init = scope.node.init
+        if init:
+            self.copy_results_ports(init)
 
     def build(self, scope):
+        self.setup_ports(scope)
         del self.statements
 
 
@@ -106,7 +120,7 @@ class Range(Node):
         range_gen = range_gen_scope.node
         index = len(range_gen.out_ports)
         new_index_port = Port(
-            range_gen.id, IntegerType(), index+1, label=self.identifier.name
+            range_gen.id, IntegerType(), index + 1, label=self.identifier.name
         )
         new_value_port = Port(
             range_gen.id, None, index, label=self.identifier.name + "_index"
@@ -157,6 +171,7 @@ class Loop(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         self.copy_ports(scope.node)
+        scope = SisalScope(self)
         for item in ["init", "range_gen", "body", "condition", "reduction"]:
             if self.__dict__[item]:
                 self.__dict__[item].build(scope)
