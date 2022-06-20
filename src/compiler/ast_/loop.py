@@ -157,11 +157,13 @@ class Loop(Node):
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
         self.copy_ports(scope.node)
-        self.init.build(scope)
-        self.range_gen.build(scope)
-        self.body.build(scope)
-        del self.condition
-        del self.reduction
+        for item in ["init", "range_gen", "body", "condition", "reduction"]:
+            if self.__dict__[item]:
+                self.__dict__[item].build(scope)
+            else:
+                del self.__dict__[item]
+
+
         return SubIr([self], [], [])
 
 
@@ -172,3 +174,6 @@ class Reduction(Node):
 
     def __init__(self, what, of_what, when, location):
         super().__init__(location)
+
+    def build(self, scope):
+        pass
