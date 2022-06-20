@@ -16,7 +16,7 @@ from ..type import IntegerType, StreamType
 class LoopBody(Node):
     """Loop body node"""
 
-    def __init__(self, statements: list[Statement], location: str):
+    def __init__(self, statements: list[Statement], condition: Cond, location: str):
         super().__init__(location)
         self.statements = statements
 

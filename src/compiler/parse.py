@@ -267,18 +267,26 @@ class ModuleVisitor(NodeVisitor):
     # Loops:
 
     def visit_while_do(self, node, vc_):
-        body = loop.LoopBody(statements=vc_[6], location=self.get_location(node))
-        cond = loop.PreCond(exp=vc_[2], location=self.get_location(node))
-        return dict(body=body, cond=cond)
+        return loop.LoopBody(
+            statements=vc_[6],
+            cond=loop.PreCond(exp=vc_[2], location=self.get_location(node)),
+            location=self.get_location(node),
+        )
 
     def visit_do_while(self, node, vc_):
-        body = loop.LoopBody(statements=vc_[2], location=self.get_location(node))
-        cond = loop.PostCond(exp=vc_[6], location=self.get_location(node))
+        body = loop.LoopBody(
+            statements=vc_[2],
+            cond=loop.PostCond(exp=vc_[6], location=self.get_location(node)),
+            location=self.get_location(node),
+        )
+
         return dict(body=body, cond=cond)
 
     def visit_repeat(self, node, vc_):
-        body = loop.LoopBody(statements=vc_[2], location=self.get_location(node))
-        return dict(body=body, cond=None)
+
+        return loop.LoopBody(
+            statements=vc_[2], cond=None, location=self.get_location(node)
+        )
 
     def visit_body(self, node, vc_):
         """passthrough"""
