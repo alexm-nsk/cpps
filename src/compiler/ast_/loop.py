@@ -108,8 +108,7 @@ class Range(Node):
         new_value_port = Port(
             range_gen.id, None, index + 1, label=self.identifier.name + "_index"
         )
-        range_gen.out_ports.append(new_value_port)
-        range_gen.out_ports.append(new_index_port)
+        range_gen.out_ports += [new_value_port, new_index_port]
 
         return self.scatter_node.build(range_gen.out_ports, range_gen_scope)
 
