@@ -18,7 +18,7 @@ def build_method(fn):
             raise SisalError(
                 f"Error: {len(target_ports)} output expected, "
                 f"got {self.num_out_ports()} at ({self.location}) "
-                f"(from {self.name, self.id} to {target_ports[0].node().name})"
+                # f"(from {self.name, self.id} to {target_ports[0].node().name})"
             )
 
         if self.copy_scope_ports:
@@ -71,10 +71,10 @@ class Node:
             self.location = "not applicable"
 
     # def add_out_port(self, type_):
-        # self.out_ports.append(Port(self.id, type_, len(self.out_ports)))
+    # self.out_ports.append(Port(self.id, type_, len(self.out_ports)))
 
     # def add_in_port(self, type_):
-        # self.in_ports.append(Port(self.id, type_, len(self.in_ports)))
+    # self.in_ports.append(Port(self.id, type_, len(self.in_ports)))
 
     def add_sub_ir(self, sub_ir):
         """Add contents of a SubIr to this node's nodes and edges"""
