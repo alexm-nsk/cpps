@@ -56,8 +56,9 @@ class Scatter(Node):
         self.in_ports = [Port(self.id, None, 0)]
         iterable_ir = self.iterable.build([self.in_ports[0]], scope)
         element_type = self.in_ports[0].port_type()
-        self.out_ports = [Port(self.id, StreamType(element=element_type), 0, "element"),
-                          Port(self.id, IntegerType(), 1, "index")]
+        self.out_ports = [
+            Port(self.id, StreamType(element=element_type), 0, "element"),
+            Port(self.id, IntegerType(), 1, "index")]
         print(element_type)
         del self.iterable
         return SubIr([self], [], []) + iterable_ir
