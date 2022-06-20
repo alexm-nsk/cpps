@@ -98,15 +98,15 @@ class Range(Node):
         self.scatter_node = scatter_node
 
     def build(self, range_gen_scope: SisalScope) -> SubIr:
-        # add port corresponding to this range to parent
+        # add ports corresponding to this range to parent
         # RangeGen node
         range_gen = range_gen_scope.node
         index = len(range_gen.out_ports)
         new_index_port = Port(
-            range_gen.id, IntegerType(), index, label=self.identifier.name
+            range_gen.id, IntegerType(), index+1, label=self.identifier.name
         )
         new_value_port = Port(
-            range_gen.id, None, index + 1, label=self.identifier.name + "_index"
+            range_gen.id, None, index, label=self.identifier.name + "_index"
         )
         range_gen.out_ports += [new_value_port, new_index_port]
 
