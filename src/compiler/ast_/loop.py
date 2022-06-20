@@ -12,6 +12,7 @@ from ..sub_ir import SubIr
 from .common import Init
 from ..type import IntegerType, StreamType
 
+
 class Cond(Node):
     """Loop condition node, base class"""
 
@@ -29,11 +30,14 @@ class PostCond(Cond):
 
 
 class LoopBody(Node):
-    """Loop body node"""
+    """Loop body node, it also forms loop condition object"""
 
-    def __init__(self, statements: list[Statement], condition: Cond, location: str):
+    def __init__(self, statements: list[Statement], location: str):
         super().__init__(location)
         self.statements = statements
+
+    def build(self, scope):
+        del self.statements
 
 
 class Scatter(Node):
@@ -135,12 +139,13 @@ class Loop(Node):
 
     connect_parent = True
 
-    def __init__(self, range_gen, init: Init, body, reduction, location):
+    def __init__(self, range_gen, init: Init, body, condition, reduction, location):
         super().__init__(location)
         self.name = "Loop Expression"
         self.init = init
         self.range_gen = range_gen
         self.body = body
+        self.condition = condition
         self.reduction = reduction
 
     def num_in_ports(self):
@@ -154,7 +159,9 @@ class Loop(Node):
         self.copy_ports(scope.node)
         self.init.build(scope)
         self.range_gen.build(scope)
+        self.add_sub_ir(body.build(scope))
         del self.body
+        del self.condition
         del self.reduction
         return SubIr([self], [], [])
 

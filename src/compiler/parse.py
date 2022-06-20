@@ -267,24 +267,24 @@ class ModuleVisitor(NodeVisitor):
     # Loops:
 
     def visit_while_do(self, node, vc_):
-        return loop.LoopBody(
+        condition = loop.PreCond(exp=vc_[2], location=self.get_location(node))
+        body = loop.LoopBody(
             statements=vc_[6],
-            condition=loop.PreCond(exp=vc_[2],
-                                   location=self.get_location(node)),
             location=self.get_location(node),
         )
+        return dict(body=body, condition=condition)
 
     def visit_do_while(self, node, vc_):
-        return loop.LoopBody(
-            statements=vc_[2],
-            condition=loop.PostCond(exp=vc_[6],
-                                    location=self.get_location(node)),
-            location=self.get_location(node),
-        )
+        condition = loop.PostCond(exp=vc_[6], location=self.get_location(node))
+        body = loop.LoopBody(statements=vc_[2], location=self.get_location(node))
+        return dict(body=body, condition=condition)
 
     def visit_repeat(self, node, vc_):
-        return loop.LoopBody(
-            statements=vc_[2], condition=None, location=self.get_location(node)
+        return dict(
+            body=loop.LoopBody(
+                statements=vc_[2], location=self.get_location(node)
+            ),
+            condition=None,
         )
 
     def visit_body(self, node, vc_):
@@ -298,10 +298,12 @@ class ModuleVisitor(NodeVisitor):
         return common.Init(vc_[2], self.get_location(node))
 
     def visit_loop(self, node, vc_):
+        body_cond = self.optional_node(vc_[6])
         return loop.Loop(
             range_gen=self.optional_node(vc_[2]),
             init=self.optional_node(vc_[4]),
-            body=self.optional_node(vc_[6]),
+            body=body_cond["body"],
+            condition=body_cond["condition"],
             reduction=self.optional_node(vc_[8]),
             location=self.get_location(node),
         )
