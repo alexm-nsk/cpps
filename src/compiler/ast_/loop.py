@@ -99,7 +99,6 @@ class Scatter(Node):
             Port(self.id, StreamType(element=element_type), 0, "element"),
             Port(self.id, IntegerType(), 1, "index"),
         ]
-        print(element_type)
         del self.iterable
         return SubIr([self], [], []) + iterable_ir
 
