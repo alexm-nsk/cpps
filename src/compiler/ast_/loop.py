@@ -65,9 +65,7 @@ class LoopBody(Node):
         ]
 
         for index, definition in enumerate(self.statements):
-            self.add_sub_ir(
-                        definition.value.build([self.out_ports[index]], scope)
-                    )
+            self.add_sub_ir(definition.value.build([self.out_ports[index]], scope))
             # here we add newly defined value to the scope
             value_port = Edge.src_port(self.out_ports[index])
             # TODO add option to not change port's label and rather
