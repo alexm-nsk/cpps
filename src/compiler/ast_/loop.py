@@ -5,6 +5,7 @@ Loops
 """
 
 from ..node import Node, build_method
+from ..edge import Edge
 from ..port import Port
 from ..statement import Statement
 from ..scope import SisalScope
@@ -46,13 +47,38 @@ class LoopBody(Node):
 
     def setup_ports(self, scope: SisalScope):
         loop = scope.node
-        self.copy_ports(scope.node, out=False)
+        self.copy_ports(loop, out=False)
 
         if loop.init:
             self.copy_results_ports(loop.init)
 
+        if loop.range_gen:
+            self.copy_results_ports(loop.range_gen)
+
     def build(self, scope):
         self.setup_ports(scope)
+        scope = SisalScope(self)
+
+        self.out_ports = [
+            Port(self.id, None, index, exp.identifier.name)
+            for index, exp in enumerate(self.statements)
+        ]
+
+        for index, definition in enumerate(self.statements):
+            self.add_sub_ir(
+                        definition.value.build([self.out_ports[index]], scope)
+                    )
+            # here we add newly defined value to the scope
+            # so it's avalable to later init statements
+            value_port = Edge.src_port(self.out_ports[index])
+            # we find the port that puts out the defined value
+            # and label it with identifier name
+            # (so it can be found in the scope)
+            # TODO add option to not change port's label and rather
+            # change it in the scope's copy of the port
+            value_port.label = definition.identifier.name
+            scope.add_port(value_port)
+
         del self.statements
 
 
@@ -150,6 +176,18 @@ class RangeGen(Node):
         del self.ranges
 
 
+class Reduction(Node):
+    """Reduction"""
+
+    name = "Reduction"
+
+    def __init__(self, what, of_what, when, location):
+        super().__init__(location)
+
+    def build(self, scope):
+        pass
+
+
 class Loop(Node):
     """Node describing loops"""
 
@@ -181,15 +219,3 @@ class Loop(Node):
                 del self.__dict__[item]
 
         return SubIr([self], [], [])
-
-
-class Reduction(Node):
-    """Reduction"""
-
-    name = "Reduction"
-
-    def __init__(self, what, of_what, when, location):
-        super().__init__(location)
-
-    def build(self, scope):
-        pass
