@@ -47,6 +47,7 @@ class Init(Node):
             # TODO add option to not change port's label and rather
             # change it in the scope's copy of the port
             value_port.label = definition.identifier.name
+            value_port.type.location = definition.identifier.location
             scope.add_port(value_port)
 
         del self.statements

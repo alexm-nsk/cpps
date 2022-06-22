@@ -182,14 +182,6 @@ class Reduction(Node):
         self.when = when
 
     def build(self, scope):
-        loop = scope.node
-        self.copy_ports(scope.node, out=False)
-        if "init" in loop.__dict__:
-            self.copy_results_ports(loop.init)
-        if "range_gen" in loop.__dict__:
-            self.copy_results_ports(loop.range_gen)
-        scope = SisalScope(self)
-
         self.operator = self.what
         # self.of_what.build(scope)
 
@@ -207,8 +199,14 @@ class Returns(Node):
         self.reduction_segments = reduction_segments
 
     def build(self, scope):
+        loop = scope.node
+        self.copy_ports(scope.node, out=False)
+        if "init" in loop.__dict__:
+            self.copy_results_ports(loop.init)
+        if "range_gen" in loop.__dict__:
+            self.copy_results_ports(loop.range_gen)
+        scope = SisalScope(self)
         del self.reduction_segments
-        pass
 
 
 class Loop(Node):
