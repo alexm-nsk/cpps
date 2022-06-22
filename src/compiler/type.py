@@ -75,6 +75,7 @@ class StreamType(MultiType):
         retval["element"] = retval["element"].ir_()
         # TODO it previously return retval instead of retval["element"]
         # mark it explicitly as stream somehow
+        retval["element"]["location"] = self.location
         return retval["element"]
 
     def element_type(self):

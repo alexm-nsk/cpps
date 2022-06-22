@@ -149,8 +149,9 @@ class Range(Node):
             label=self.identifier.name + "_index",
         )
         range_gen.out_ports += [new_value_port, new_index_port]
-
-        return self.scatter_node.build(range_gen.out_ports, range_gen_scope)
+        retval = self.scatter_node.build(range_gen.out_ports, range_gen_scope)
+        new_value_port.type.location = self.identifier.location
+        return retval
 
 
 class RangeGen(Node):
