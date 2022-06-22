@@ -315,6 +315,9 @@ class ModuleVisitor(NodeVisitor):
             what=vc_[0], of_what=vc_[4], when=when, location=self.get_location(node)
         )
 
+    def visit_reduction_type(self, node, vc_):
+        return vc_[0].text
+
     def visit_returns(self, node, vc_):
         reduction = vc_[2]
         return reduction

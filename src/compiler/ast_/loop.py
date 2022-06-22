@@ -173,13 +173,19 @@ class RangeGen(Node):
 class Reduction(Node):
     """Reduction"""
 
-    name = "Reduction"
-
     def __init__(self, what, of_what, when, location):
         super().__init__(location)
+        self.name = "Reduction"
+        self.what = what
+        self.of_what = of_what
+        self.when = when
 
     def build(self, scope):
-        pass
+        self.operator = self.what
+        print(self.operator)
+        del self.what
+        del self.of_what
+        del self.when
 
 
 class Loop(Node):
@@ -195,9 +201,6 @@ class Loop(Node):
         self.body = body
         self.condition = condition
         self.reduction = reduction
-
-    def num_in_ports(self):
-        pass
 
     def num_out_ports(self):
         return 1
