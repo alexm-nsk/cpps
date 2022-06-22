@@ -189,8 +189,8 @@ class Loop(Node):
 
     def __init__(self, range_gen, init: Init, body, condition, reduction, location):
         super().__init__(location)
-        self.name = "Loop Expression"
         self.init = init
+        self.name = "Loop Expression"
         self.range_gen = range_gen
         self.body = body
         self.condition = condition
