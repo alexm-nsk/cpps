@@ -146,7 +146,7 @@ class Range(Node):
             range_gen.id,
             IntegerType(),
             index + 1,
-            label=self.identifier.name + "_index"
+            label=self.identifier.name + "_index",
         )
         range_gen.out_ports += [new_value_port, new_index_port]
 
@@ -170,12 +170,13 @@ class RangeGen(Node):
         del self.ranges
 
 
-class Reduction(Node):
-    """Reduction"""
+class ReductionSegment(Node):
+    """Reduction segment"""
+
+    no_id = True
 
     def __init__(self, what, of_what, when, location):
         super().__init__(location)
-        self.name = "Reduction"
         self.what = what
         self.of_what = of_what
         self.when = when
@@ -195,6 +196,19 @@ class Reduction(Node):
         del self.what
         del self.of_what
         del self.when
+
+
+class Reduction(Node):
+    """Reduction"""
+
+    def __init__(self, reduction_segments: list[ReductionSegment], location):
+        super().__init__(location)
+        self.name = "Reduction"
+        self.reduction_segments = reduction_segments
+
+    def build(self, scope):
+        del self.reduction_segments
+        pass
 
 
 class Loop(Node):

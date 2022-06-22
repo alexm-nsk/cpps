@@ -311,16 +311,19 @@ class ModuleVisitor(NodeVisitor):
     def visit_reduction(self, node, vc_):
         optional = self.optional_node(vc_[5])
         when = optional[3] if optional else None
-        return loop.Reduction(
+        return loop.ReductionSegment(
             what=vc_[0], of_what=vc_[4], when=when, location=self.get_location(node)
         )
+
+    def visit_reductions(self, node, vc_):
+        return [vc_[0]] + [red[3] for red in vc_[1]]
 
     def visit_reduction_type(self, node, vc_):
         return vc_[0].text
 
     def visit_returns(self, node, vc_):
-        reduction = vc_[2]
-        return reduction
+        reductions = vc_[2]
+        return loop.Reduction(reductions, self.get_location(node))
 
     # Ranges:
 
