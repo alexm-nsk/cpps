@@ -203,7 +203,7 @@ class Returns(Node):
 
     def __init__(self, reduction_segments: list[Reduction], location):
         super().__init__(location)
-        self.name = "Reduction"
+        self.name = "Returns"
         self.reduction_segments = reduction_segments
 
     def build(self, scope):
