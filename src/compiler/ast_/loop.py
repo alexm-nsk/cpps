@@ -141,13 +141,13 @@ class Range(Node):
         # RangeGen node
         range_gen = range_gen_scope.node
         index = len(range_gen.out_ports)
+        new_value_port = Port(range_gen.id, None, index, label=self.identifier.name)
         new_index_port = Port(
             range_gen.id,
             IntegerType(),
             index + 1,
-            label=self.identifier.name + "_index",
+            label=self.identifier.name + "_index"
         )
-        new_value_port = Port(range_gen.id, None, index, label=self.identifier.name)
         range_gen.out_ports += [new_value_port, new_index_port]
 
         return self.scatter_node.build(range_gen.out_ports, range_gen_scope)
@@ -159,9 +159,8 @@ class RangeGen(Node):
     def __init__(self, ranges: list[Range], location: str):
         super().__init__(location)
         self.ranges = ranges
-        self.out_ports = []
-
         self.name = "RangeGen"
+        self.out_ports = []
 
     def build(self, scope):
         self.copy_ports(scope.node, out=False)

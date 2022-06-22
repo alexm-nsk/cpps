@@ -73,7 +73,9 @@ class StreamType(MultiType):
     def ir_(self):
         retval = deepcopy(self.__dict__)
         retval["element"] = retval["element"].ir_()
-        return retval
+        # TODO it previously return retval instead of retval["element"]
+        # mark it explicitly as stream somehow
+        return retval["element"]
 
     def element_type(self):
         return self.element
