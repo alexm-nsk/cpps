@@ -170,7 +170,7 @@ class RangeGen(Node):
         del self.ranges
 
 
-class ReductionSegment(Node):
+class Reduction(Node):
     """Reduction segment"""
 
     no_id = True
@@ -198,10 +198,10 @@ class ReductionSegment(Node):
         del self.when
 
 
-class Reduction(Node):
-    """Reduction"""
+class Returns(Node):
+    """Returns (or Ret as it's called in Sisal 3.1)"""
 
-    def __init__(self, reduction_segments: list[ReductionSegment], location):
+    def __init__(self, reduction_segments: list[Reduction], location):
         super().__init__(location)
         self.name = "Reduction"
         self.reduction_segments = reduction_segments
