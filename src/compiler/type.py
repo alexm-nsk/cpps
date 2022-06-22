@@ -24,7 +24,7 @@ class Type:
         return hasattr(self, "element")
 
     def is_stream(self):
-        return type(self)==StreamType
+        return type(self) == StreamType
 
 
 @dataclass
@@ -78,6 +78,11 @@ class StreamType(MultiType):
     def element_type(self):
         return self.element
 
+    @property
+    def name(self):
+        # TODO make sure it's always processed
+        if "name" in self.element.__dict__:
+            return self.element.name
 
 @dataclass
 class ArrayType(MultiType):
@@ -100,5 +105,7 @@ class ArrayType(MultiType):
     def bottom_element_type(self):
         """returns the type of single element of an array"""
         return (
-            self.element.bottom_element_type() if self.element.is_array() else self.element
+            self.element.bottom_element_type()
+            if self.element.is_array()
+            else self.element
         )

@@ -142,11 +142,12 @@ class Range(Node):
         range_gen = range_gen_scope.node
         index = len(range_gen.out_ports)
         new_index_port = Port(
-            range_gen.id, IntegerType(), index + 1, label=self.identifier.name
+            range_gen.id,
+            IntegerType(),
+            index + 1,
+            label=self.identifier.name + "_index",
         )
-        new_value_port = Port(
-            range_gen.id, None, index, label=self.identifier.name + "_index"
-        )
+        new_value_port = Port(range_gen.id, None, index, label=self.identifier.name)
         range_gen.out_ports += [new_value_port, new_index_port]
 
         return self.scatter_node.build(range_gen.out_ports, range_gen_scope)
@@ -181,8 +182,17 @@ class Reduction(Node):
         self.when = when
 
     def build(self, scope):
+        loop = scope.node
+        self.copy_ports(scope.node, out=False)
+        if "init" in loop.__dict__:
+            self.copy_results_ports(loop.init)
+        if "range_gen" in loop.__dict__:
+            self.copy_results_ports(loop.range_gen)
+        scope = SisalScope(self)
+
         self.operator = self.what
-        print(self.operator)
+        # self.of_what.build(scope)
+
         del self.what
         del self.of_what
         del self.when
