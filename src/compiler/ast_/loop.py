@@ -42,6 +42,7 @@ class LoopBody(Node):
 
     def __init__(self, statements: list[Statement], location: str):
         super().__init__(location)
+        self.name = "Loop Body"
         self.statements = statements
         self.in_ports = []
 

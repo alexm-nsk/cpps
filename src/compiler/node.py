@@ -62,6 +62,10 @@ class Node:
     def __init__(self, location=None):
         """Not meant to be run on it's own, it adds to child classes'
         initialization"""
+        # copy name from class's static field "name"
+        if "name" in self.__dict__:
+            self.name = self.name
+
         if not self.no_id:
             self.id = self.get_id()
             Node.__nodes__[self.id] = self
