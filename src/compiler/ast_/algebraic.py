@@ -53,6 +53,7 @@ class Bin(Node):
         try:
             if self.operator in ["<", ">", ">=", "<="]:
                 return BooleanType()
+            # TODO make something like "item_name" instead
             left_name = self.in_ports[0].type.name
             right_name = self.in_ports[1].type.name
             return Bin.alg_type_map[left_name][right_name]()
