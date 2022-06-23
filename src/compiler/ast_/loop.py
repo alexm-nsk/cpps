@@ -278,7 +278,9 @@ class Loop(Node):
         self.body = body
         self.condition = condition
         if type(condition) == list:
+            # TODO implement while-do-while
             raise SisalError("While-do-while not implemented", location)
+        # TODO rename reduction to ret?
         self.reduction = reduction
 
     def num_out_ports(self):
