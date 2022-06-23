@@ -174,22 +174,27 @@ class RangeGen(Node):
 class Reduction(Node):
     """Reduction segment"""
 
-    no_id = True
-
     def __init__(self, what, of_what, when, location):
         super().__init__(location)
         self.what = what
         self.of_what = of_what
         self.when = when
 
-    def build(self, scope):
+    def num_out_ports(self):
+        return 1
+
+    @build_method
+    def build(self, target_ports: list[Port], scope: SisalScope):
         self.operator = self.what
+        # create out-port without type specified (it's done later)
+        self.out_ports = [Port(self.id, None, 0, "reduction output")]
         # self.of_what.build(scope)
 
+        # cleanup (no loger needed after 2nd pass):
         del self.what
         del self.of_what
         del self.when
-
+        return SubIr([self], [], [])
 
 class Returns(Node):
     """Returns (or Ret as it's called in Sisal 3.1)"""
@@ -198,15 +203,25 @@ class Returns(Node):
         super().__init__(location)
         self.name = "Returns"
         self.reduction_segments = reduction_segments
+        self.out_ports = []
 
     def build(self, scope):
         loop = scope.node
+        # in-ports are copied from Loop Expression in-ports
+        # and out-ports of init and range_gen
         self.copy_ports(scope.node, out=False)
         if "init" in loop.__dict__:
             self.copy_results_ports(loop.init)
         if "range_gen" in loop.__dict__:
             self.copy_results_ports(loop.range_gen)
+        # out-ports are dedicated to each reduction
         scope = SisalScope(self)
+        for index, r_s in enumerate(self.reduction_segments):
+            self.out_ports += [Port(self.id,
+                                    None,
+                                    index,
+                                    "reduction #" + str(index))]
+            self.add_sub_ir(r_s.build([self.out_ports[-1]], scope))
         del self.reduction_segments
 
 
