@@ -192,15 +192,17 @@ class Reduction(Node):
         cond_port = Port(self.id, BooleanType(), 0, "reduction cond input")
         value_port = Port(self.id, None, 1, "reduction value input")
         self.in_ports = [cond_port, value_port]
-        self.of_what.build([value_port], scope)
+        value_ir = self.of_what.build([value_port], scope)
+        cond_ir = SubIr([], [], [])gitpush
+
         if self.when:
-            self.when.build([cond_port], scope)
+            cond_ir = self.when.build([cond_port], scope)
         out_port.type = value_port.type
         # cleanup (no loger needed after 2nd pass):
         del self.what
         del self.of_what
         del self.when
-        return SubIr([self], [], [])
+        return SubIr([self], [], []) + value_ir + cond_ir
 
 class Returns(Node):
     """Returns (or Ret as it's called in Sisal 3.1)"""
