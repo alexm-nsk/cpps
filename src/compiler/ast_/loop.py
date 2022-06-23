@@ -277,6 +277,8 @@ class Loop(Node):
         self.range_gen = range_gen
         self.body = body
         self.condition = condition
+        if type(condition) == list:
+            raise SisalError("While-do-while not implemented", location)
         self.reduction = reduction
 
     def num_out_ports(self):
