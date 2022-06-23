@@ -18,7 +18,7 @@ class Literal(Node):
     def __init__(self, type_: Type, value=None, location: str = None):
         super().__init__(location)
         self.type = type_
-        self.value = int(value)
+        self.value = value
         self.name = "Literal"
         self.out_ports = [Port(self.id, self.type, index=0)]
 

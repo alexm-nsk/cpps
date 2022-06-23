@@ -12,7 +12,7 @@ from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .common import Init
 from ..type import IntegerType, StreamType, BooleanType
-
+from .literal import Literal
 
 class Cond(Node):
     """Loop condition node, base class"""
@@ -193,16 +193,19 @@ class Reduction(Node):
         value_port = Port(self.id, None, 1, "reduction value input")
         self.in_ports = [cond_port, value_port]
         value_ir = self.of_what.build([value_port], scope)
-        cond_ir = SubIr([], [], [])gitpush
-
         if self.when:
             cond_ir = self.when.build([cond_port], scope)
+        else:
+            true_literal = Literal(BooleanType(), value=True)
+            true_literal_edge = Edge(true_literal.out_ports[0], cond_port)
+            cond_ir = SubIr([true_literal], [], [true_literal_edge])
         out_port.type = value_port.type
         # cleanup (no loger needed after 2nd pass):
         del self.what
         del self.of_what
         del self.when
         return SubIr([self], [], []) + value_ir + cond_ir
+
 
 class Returns(Node):
     """Returns (or Ret as it's called in Sisal 3.1)"""
