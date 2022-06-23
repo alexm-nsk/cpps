@@ -258,7 +258,7 @@ class Loop(Node):
 
     connect_parent = True
 
-    def __init__(self, range_gen, init: Init, body, condition, reduction, location):
+    def __init__(self, range_gen, init, body, condition, reduction, location):
         super().__init__(location)
         self.init = init
         self.name = "Loop Expression"

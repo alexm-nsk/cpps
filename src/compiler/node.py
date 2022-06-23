@@ -55,8 +55,11 @@ class Node:
     # "global" index for all the nodes
     __nodes__ = {}
     no_id = False
+    # connect parent node's input ports to this nodes' input ports
     connect_parent = False
+    # connect this node's output ports to parent node's otput ports
     connect_to_parent = True
+    # copy ports from the scope this node is contained in
     copy_scope_ports = False
 
     def __init__(self, location=None):
