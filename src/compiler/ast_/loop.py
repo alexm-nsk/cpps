@@ -11,7 +11,7 @@ from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
 from .common import Init
-from ..type import IntegerType, StreamType
+from ..type import IntegerType, StreamType, BooleanType
 
 
 class Cond(Node):
@@ -187,9 +187,15 @@ class Reduction(Node):
     def build(self, target_ports: list[Port], scope: SisalScope):
         self.operator = self.what
         # create out-port without type specified (it's done later)
-        self.out_ports = [Port(self.id, None, 0, "reduction output")]
-        # self.of_what.build(scope)
-
+        out_port = Port(self.id, None, 0, "reduction output")
+        self.out_ports = [out_port]
+        cond_port = Port(self.id, BooleanType(), 0, "reduction cond input")
+        value_port = Port(self.id, None, 1, "reduction value input")
+        self.in_ports = [cond_port, value_port]
+        self.of_what.build([value_port], scope)
+        if self.when:
+            self.when.build([cond_port], scope)
+        out_port.type = value_port.type
         # cleanup (no loger needed after 2nd pass):
         del self.what
         del self.of_what
@@ -214,6 +220,8 @@ class Returns(Node):
             self.copy_results_ports(loop.init)
         if "range_gen" in loop.__dict__:
             self.copy_results_ports(loop.range_gen)
+        if "body" in loop.__dict__:
+            self.copy_results_ports(loop.body)
         # out-ports are dedicated to each reduction
         scope = SisalScope(self)
         for index, r_s in enumerate(self.reduction_segments):
