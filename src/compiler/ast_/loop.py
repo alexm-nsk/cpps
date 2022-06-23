@@ -38,7 +38,7 @@ class Cond(Node):
             self.copy_results_ports(loop.body)
 
         scope = SisalScope(self)
-        self.exp.build([out_port], scope)
+        self.add_sub_ir(self.exp.build([out_port], scope))
         del self.exp
 
 
