@@ -13,7 +13,7 @@ from ..sub_ir import SubIr
 from .common import Init
 from ..type import IntegerType, StreamType, BooleanType
 from .literal import Literal
-
+from ..error import SisalError
 
 class Cond(Node):
     """Loop condition node, base class"""
@@ -233,6 +233,11 @@ class Returns(Node):
 
     def build(self, scope):
         loop = scope.node
+        if loop.num_out_ports() != len(self.reduction_segments):
+            raise SisalError("Number of reductions must "
+                             "match the expected number of output values"
+                             f"({loop.num_out_ports()} expected, "
+                             f"got {len(self.reduction_segments)}")
         # in-ports are copied from Loop Expression in-ports
         # and out-ports of init and range_gen
         self.copy_ports(scope.node, out=False)
@@ -257,11 +262,14 @@ class Loop(Node):
     """Node describing loops"""
 
     connect_parent = True
+    copy_scope_ports = True
 
     def __init__(self, range_gen, init, body, condition, reduction, location):
         super().__init__(location)
-        self.init = init
         self.name = "Loop Expression"
+        self.in_ports = []
+        self.out_ports = []
+        self.init = init
         self.range_gen = range_gen
         self.body = body
         self.condition = condition
@@ -272,7 +280,6 @@ class Loop(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        self.copy_ports(scope.node)
         scope = SisalScope(self)
         for item in ["init", "range_gen", "body", "condition", "reduction"]:
             if self.__dict__[item]:
