@@ -14,6 +14,7 @@ from .common import Init
 from ..type import IntegerType, StreamType, BooleanType
 from .literal import Literal
 
+
 class Cond(Node):
     """Loop condition node, base class"""
 
@@ -24,6 +25,19 @@ class Cond(Node):
         self.name = self.name
 
     def build(self, scope: SisalScope):
+        loop = scope.node
+        out_port = Port(self.id, BooleanType(), 0, "condition_output")
+        self.out_ports = [out_port]
+        self.copy_ports(loop, out=False)
+
+        if "init" in loop.__dict__:
+            self.copy_results_ports(loop.init)
+        if "range_gen" in loop.__dict__:
+            self.copy_results_ports(loop.range_gen)
+        if "body" in loop.__dict__:
+            self.copy_results_ports(loop.body)
+        scope = SisalScope(self)
+        self.exp.build([out_port], scope)
         del self.exp
 
 
