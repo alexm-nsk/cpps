@@ -10,10 +10,10 @@ from ..port import Port
 from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-from .common import Init
 from ..type import IntegerType, StreamType, BooleanType
 from .literal import Literal
 from ..error import SisalError
+
 
 class Cond(Node):
     """Loop condition node, base class"""
@@ -208,6 +208,10 @@ class Reduction(Node):
         value_port = Port(self.id, None, 1, "reduction value input")
         self.in_ports = [cond_port, value_port]
         value_ir = self.of_what.build([value_port], scope)
+        # if there is no condition for Reduction
+        # make a Literal node with "True" value
+        # and connect it to cond input,
+        # otherwise, apply second pass to the "when" exp
         if self.when:
             cond_ir = self.when.build([cond_port], scope)
         else:
