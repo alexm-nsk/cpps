@@ -6,7 +6,7 @@ This module describes an edge
 """
 from __future__ import annotations
 from dataclasses import dataclass
-
+from .settings import PORT_FULL_DESCRIPTION_IN_EDGES
 
 @dataclass
 class Edge:
@@ -64,7 +64,12 @@ class Edge:
 
     def ir_(self):
         """An IR form of this edge as a dict"""
-        return dict(
-            from_=(self.from_.node_id, self.from_.index),
-            to=(self.to.node_id, self.to.index),
-        )
+        if PORT_FULL_DESCRIPTION_IN_EDGES:
+            return [
+                self.from_.ir_(), self.to.ir_()
+                ]
+        else:
+            return dict(
+                from_=(self.from_.node_id, self.from_.index),
+                to=(self.to.node_id, self.to.index),
+            )
