@@ -36,6 +36,7 @@ class Cond(Node):
             self.copy_results_ports(loop.range_gen)
         if "body" in loop.__dict__:
             self.copy_results_ports(loop.body)
+
         scope = SisalScope(self)
         self.exp.build([out_port], scope)
         del self.exp
