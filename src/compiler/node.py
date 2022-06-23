@@ -51,9 +51,11 @@ def build_method(fn):
 class Node:
     """Class for nodes"""
 
+    # used to keep IDs' count
     __ids__ = count()
     # "global" index for all the nodes
     __nodes__ = {}
+    # if True, do not create an ID for this node
     no_id = False
     # connect parent node's input ports to this nodes' input ports
     connect_parent = False
