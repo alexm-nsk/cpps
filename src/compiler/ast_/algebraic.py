@@ -20,10 +20,7 @@ class Unary(Node):
         self.operator = operator
         self.value = value
         self.name = "Unary"
-        self.in_ports = [Port(self.id,
-                              None,
-                              0,
-                              label=f"unary ({self.operator}) input")]
+        self.in_ports = [Port(self.id, None, 0, label=f"unary ({self.operator}) input")]
         self.out_ports = [
             Port(self.id, None, 0, label=f"unary ({self.operator}) output")
         ]
@@ -42,6 +39,9 @@ class Unary(Node):
 class Bin(Node):
     """Binary operation node. Only processed within Algebraic's 'build'
     method"""
+
+    # TODO replace keys with class definitions like
+    # class_map = {Integer : "integer numbers", Real: "real numbers"}
 
     alg_type_map = {
         "Integer": {"Real": RealType, "Integer": IntegerType},

@@ -74,6 +74,7 @@ class StreamType(MultiType):
         retval = deepcopy(self.__dict__)["element"].ir_()
         # TODO mark it explicitly as stream somehow
         retval["location"] = self.location
+        retval["multi_type"] = "stream"
         return retval
 
     def element_type(self):
@@ -93,6 +94,7 @@ class ArrayType(MultiType):
     def ir_(self):
         retval = deepcopy(self.__dict__)
         retval["element"] = retval["element"].ir_()
+        retval["multi_type"] = "array"
         return retval
 
     def depth(self):
