@@ -10,7 +10,7 @@ from copy import deepcopy
 from .edge import Edge
 from .sub_ir import SubIr
 from .error import SisalError
-
+from .type import StreamType
 
 def build_method(fn):
     def wrapped(self, target_ports: list[Port], scope: SisalScope):
@@ -114,6 +114,12 @@ class Node:
         self.in_ports = new_ports + self.in_ports
         # reset port indices
         for index, port in enumerate(self.in_ports):
+            # TODO think of other solutions:
+            # change stream type to it's element type
+            if type(port.type) == StreamType:
+                location = port.type.location
+                port.type = port.type.element
+                port.type.location = location
             port.index = index
 
     @classmethod

@@ -10,7 +10,7 @@ from ..port import Port
 from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-from ..type import IntegerType, StreamType, BooleanType, ArrayType
+from ..type import IntegerType, StreamType, BooleanType, ArrayType, MultiType
 from .literal import Literal
 from ..error import SisalError
 
@@ -110,7 +110,13 @@ class Scatter(Node):
     def build(self, target_ports: list[Port], scope):
         self.in_ports = [Port(self.id, None, 0)]
         iterable_ir = self.iterable.build([self.in_ports[0]], scope)
-        element_type = self.in_ports[0].port_type()
+        # get element type of the iterated object
+        port_type = self.in_ports[0].port_type()
+        if issubclass(type(port_type), MultiType):
+            element_type = port_type.element
+        else:
+            raise SisalError("Attempting to iterate over non-iterable "
+                             f"object: {self.location}")
         self.out_ports = [
             Port(self.id, StreamType(element=element_type), 0, "element"),
             Port(self.id, IntegerType(), 1, "index"),
