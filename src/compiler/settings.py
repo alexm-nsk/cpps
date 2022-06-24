@@ -4,5 +4,6 @@ DONT_ADD_EMPTY_LABELS = True
 # don't use separate node for Let and
 # turn it into a simple set of nodes and edges
 UNPACK_LET = False
-
+# When exporting IR as JSON, copy full description of ports
+# (sisal-cl compatibility)
 PORT_FULL_DESCRIPTION_IN_EDGES = False
