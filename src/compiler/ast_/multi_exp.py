@@ -38,7 +38,8 @@ class MultiExp(Node):
         to parent node"""
 
         # split target ports to spread them around corresponging child nodes
-        # example: (3 output ports and 2 expressions, exp1 has 2 output ports)
+        # example: (3 output ports and 2 expressions, exp1 has 2 output ports
+        # and exp2 has 1
         # ports: |p1 |p2 |  p3  |
         # exps:  \ exp1 / \exp2/
         port_index = 0
