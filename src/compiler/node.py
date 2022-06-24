@@ -22,7 +22,7 @@ def build_method(fn):
             )
 
         if self.copy_scope_ports:
-            self.copy_ports(scope.node)
+            self.copy_ports(scope.node)  # TODO only the inputs
 
         node_sub_ir = fn(self, target_ports, scope)
 
