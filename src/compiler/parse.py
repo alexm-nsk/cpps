@@ -232,6 +232,12 @@ class ModuleVisitor(NodeVisitor):
     # Arrays:
 
     def visit_array(self, node, vc_):
+        return vc_[0]
+
+    def visit_array_of(self, node, vc_):
+        return ArrayType(location=self.get_location(node), element=vc_[4])
+
+    def visit_array_br(self, node, vc_):
         return ArrayType(location=self.get_location(node), element=vc_[4])
 
     def visit_array_access(self, node, vc_):
