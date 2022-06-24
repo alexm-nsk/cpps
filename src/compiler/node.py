@@ -65,7 +65,8 @@ class Node:
     connect_to_parent = True
     # copy ports from the scope this node is contained in
     copy_scope_ports = False
-
+    # copy target ports to output ports when using
+    # @build_method decorated method
     copy_target_ports = False
 
     def __init__(self, location=None):
