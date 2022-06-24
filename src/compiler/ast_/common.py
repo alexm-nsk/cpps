@@ -54,7 +54,7 @@ class Init(Node):
 
 
 class Body(Node):
-    """Body node. Shared by let and loop"""
+    """Body node. Used by let"""
 
     def __init__(self, expressions: MultiExp, location: str = None):
         super().__init__(location)
