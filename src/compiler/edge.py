@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from .settings import PORT_FULL_DESCRIPTION_IN_EDGES
 
+
 @dataclass
 class Edge:
     """Class for edges"""
