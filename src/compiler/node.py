@@ -117,7 +117,6 @@ class Node:
             port.index = index
             port.node_id = self.id
 
-
     def copy_results_ports(self, src_node: Node):
         """Prepends copies of output ports of src_node
         to this node's in_ports. Used to transfer init's
