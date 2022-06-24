@@ -115,6 +115,7 @@ class If(Node):
     def ir_(self) -> dict:
         """Returns this IF as a standard dictionary
         suitable for export"""
-        retval = super().ir_(extra_fields=["condition"])
+        #retval = super().ir_(extra_fields=["condition"])
+        retval = super().ir_()
         retval["branches"] = [branch.ir_() for branch in retval["branches"]]
         return retval

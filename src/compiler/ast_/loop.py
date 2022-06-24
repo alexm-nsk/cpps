@@ -220,7 +220,8 @@ class Reduction(Node):
             cond_ir = SubIr([true_literal], [], [true_literal_edge])
 
         if self.operator == "array":
-            out_port.type = ArrayType(value_port.type)
+            out_port.type = ArrayType(element=value_port.type)
+            print(value_port.type)
         elif self.operator in ["value", "sum"]:
             out_port.type = value_port.type
 
