@@ -65,6 +65,12 @@ class MultiType(Type):
 
     element: Type = None
 
+    @property
+    def name(self):
+        # TODO make sure it's always processed
+        if "name" in self.element.__dict__:
+            return self.element
+
 
 @dataclass
 class StreamType(MultiType):
@@ -79,12 +85,6 @@ class StreamType(MultiType):
 
     def element_type(self):
         return self.element
-
-    @property
-    def name(self):
-        # TODO make sure it's always processed
-        if "name" in self.element.__dict__:
-            return self.element.name
 
 
 @dataclass

@@ -10,7 +10,7 @@ from ..port import Port
 from ..statement import Statement
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-from ..type import IntegerType, StreamType, BooleanType
+from ..type import IntegerType, StreamType, BooleanType, ArrayType
 from .literal import Literal
 from ..error import SisalError
 
@@ -218,7 +218,14 @@ class Reduction(Node):
             true_literal = Literal(BooleanType(), value=True)
             true_literal_edge = Edge(true_literal.out_ports[0], cond_port)
             cond_ir = SubIr([true_literal], [], [true_literal_edge])
-        out_port.type = value_port.type
+
+        if self.operator == "array":
+            out_port.type = ArrayType(value_port.type)
+        elif self.operator in ["value", "sum"]:
+            out_port.type = value_port.type
+
+        # TODO it must be "array", "value", etc
+        # out_port.type = value_port.type
         # cleanup (no loger needed after 2nd pass):
         del self.what
         del self.of_what
@@ -253,12 +260,15 @@ class Returns(Node):
             self.copy_results_ports(loop.body)
         # out-ports are dedicated to each reduction
         scope = SisalScope(self)
+        # apply 2nd pass to all reductions and create ports for them:
         for index, r_s in enumerate(self.reduction_segments):
             self.out_ports += [Port(self.id,
                                     None,
                                     index,
                                     "reduction #" + str(index))]
+            # add processed reduction expressions to this node:
             self.add_sub_ir(r_s.build([self.out_ports[-1]], scope))
+            # set loop's out-port type to reduction out-port type:
             loop.out_ports[index].type = self.out_ports[-1].type
         del self.reduction_segments
 

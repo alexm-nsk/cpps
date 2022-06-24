@@ -6,11 +6,11 @@ Algebraic operations, bin node and various tools for those
 
 from ..node import Node, build_method
 from ..port import Port
-from ..type import IntegerType, RealType, BooleanType
+from ..type import IntegerType, RealType, BooleanType, ArrayType, StreamType
 
 from ..scope import SisalScope
 from ..sub_ir import SubIr
-
+from ..error import SisalError
 
 class Unary(Node):
     """Unary operation node"""
@@ -44,8 +44,10 @@ class Bin(Node):
     # class_map = {Integer : "integer numbers", Real: "real numbers"}
 
     alg_type_map = {
-        "Integer": {"Real": RealType, "Integer": IntegerType},
-        "Real": {"Real": RealType, "Integer": RealType},
+        IntegerType: {RealType: RealType, IntegerType: IntegerType},
+        RealType: {RealType: RealType, IntegerType: RealType},
+        ArrayType: {ArrayType: ArrayType},
+        StreamType: {ArrayType: ArrayType}
     }
 
     def result_type(self):
@@ -54,13 +56,17 @@ class Bin(Node):
             if self.operator in ["<", ">", ">=", "<="]:
                 return BooleanType()
             # TODO make something like "item_name" instead
-            left_name = self.in_ports[0].type.name
-            right_name = self.in_ports[1].type.name
-            return Bin.alg_type_map[left_name][right_name]()
+            left_type = type(self.in_ports[0].type)
+            right_type = type(self.in_ports[1].type)
+            if left_type == StreamType:
+                left_type = type(self.in_ports[0].type.name)
+            if right_type == StreamType:
+                right_type = type(self.in_ports[0].type.name)
+            return Bin.alg_type_map[left_type][right_type]()
         except KeyError:
-            raise Exception(
-                f"Operations {self.operator} between {left_name} and "
-                f"{right_name} not implemented"
+            raise SisalError(
+                f"Operations {self.operator} between {left_type} and "
+                f"{right_type} not implemented. {self.location}"
             )
 
     def __init__(self, operator: str, location: str):
