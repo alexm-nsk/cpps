@@ -311,6 +311,8 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_loop(self, node, vc_):
         body_cond = self.optional_node(vc_[6])
+        if not body_cond:
+            body_cond = dict(body=None, condition=None)
         return loop.Loop(
             range_gen=self.optional_node(vc_[2]),
             init=self.optional_node(vc_[4]),

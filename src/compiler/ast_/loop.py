@@ -259,6 +259,7 @@ class Returns(Node):
                                     index,
                                     "reduction #" + str(index))]
             self.add_sub_ir(r_s.build([self.out_ports[-1]], scope))
+            loop.out_ports[index].type = self.out_ports[-1].type
         del self.reduction_segments
 
 
