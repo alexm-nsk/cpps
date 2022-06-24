@@ -6,6 +6,8 @@ Describes an Error class
 """
 
 
+# TODO make internal error (ex. for 'Number of output ports requested, b...)'"
+
 class SisalError(Exception):
     def __init__(self, message: str, location: str = ""):
         super().__init__(message)
