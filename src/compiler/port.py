@@ -31,6 +31,5 @@ class Port:
         retval = deepcopy(self.__dict__)
         if self.label is None and DONT_ADD_EMPTY_LABELS:
             del retval["label"]
-
         retval.update(type=self.type.ir_())
         return retval
