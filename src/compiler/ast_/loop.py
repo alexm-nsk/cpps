@@ -115,8 +115,10 @@ class Scatter(Node):
         if issubclass(type(port_type), MultiType):
             element_type = port_type.element
         else:
-            raise SisalError("Attempting to iterate over non-iterable "
-                             f"object: {self.location}{port_type}")
+            raise SisalError(
+                "Attempting to iterate over non-iterable "
+                f"object: {self.location}{port_type}"
+            )
         self.out_ports = [
             Port(self.id, StreamType(element=element_type), 0, "element"),
             Port(self.id, IntegerType(), 1, "index"),
@@ -133,7 +135,15 @@ class RangeNumeric(Node):
         self.name = "Range"
         self.left = left
         self.right = right
-        self.out_ports = [Port(self.id, StreamType(element=IntegerType(self.location)), 0, "range output")]
+        self.out_ports = [
+            Port(
+                self.id,
+                # TODO Should it be an array instead?
+                StreamType(element=IntegerType(self.location)),
+                0,
+                "range output",
+            )
+        ]
         self.in_ports = [
             Port(self.id, IntegerType(), 0, "left boundary"),
             Port(self.id, IntegerType(), 1, "right boundary"),
@@ -251,10 +261,12 @@ class Returns(Node):
     def build(self, scope):
         loop = scope.node
         if loop.num_out_ports() != len(self.reduction_segments):
-            raise SisalError("Number of reductions must "
-                             "match the expected number of output values"
-                             f"({loop.num_out_ports()} expected, "
-                             f"got {len(self.reduction_segments)}")
+            raise SisalError(
+                "Number of reductions must "
+                "match the expected number of output values"
+                f"({loop.num_out_ports()} expected, "
+                f"got {len(self.reduction_segments)}"
+            )
         # in-ports are copied from Loop Expression in-ports
         # and out-ports of init and range_gen
         self.copy_ports(scope.node, out=False)
@@ -268,10 +280,7 @@ class Returns(Node):
         scope = SisalScope(self)
         # apply 2nd pass to all reductions and create ports for them:
         for index, r_s in enumerate(self.reduction_segments):
-            new_port = Port(self.id,
-                            None,
-                            index,
-                            "reduction #" + str(index))
+            new_port = Port(self.id, None, index, "reduction #" + str(index))
             self.out_ports += [new_port]
             # add processed reduction expressions to this node:
             self.add_sub_ir(r_s.build([new_port], scope))
