@@ -286,9 +286,6 @@ class Returns(Node):
             self.add_sub_ir(r_s.build([new_port], scope))
             # set loop's out-port type to reduction out-port type:
         loop.copy_ports(self, in_=False)
-        # if not new_port.type:
-        # print(new_port)
-        print([port for port in loop.out_ports if not port.type])
         del self.reduction_segments
 
 

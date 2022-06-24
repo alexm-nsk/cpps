@@ -62,7 +62,10 @@ class Bin(Node):
                 left_type = type(self.in_ports[0].type.name)
             if right_type == StreamType:
                 right_type = type(self.in_ports[0].type.name)
-            return Bin.alg_type_map[left_type][right_type]()
+            type_ = Bin.alg_type_map[left_type][right_type]
+            if type_ == ArrayType:
+                return left_type(element=self.in_ports[0].type.element)
+            return type_()
         except KeyError:
             raise SisalError(
                 f"Operations {self.operator} between {left_type} and "

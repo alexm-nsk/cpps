@@ -93,10 +93,7 @@ class ArrayType(MultiType):
 
     def ir_(self):
         retval = deepcopy(self.__dict__)
-        try:
-            retval["element"] = retval["element"].ir_()
-        except:
-            print(self.location)
+        retval["element"] = retval["element"].ir_()
         retval["multi_type"] = "array"
         return retval
 
