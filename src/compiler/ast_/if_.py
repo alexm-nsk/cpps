@@ -68,6 +68,7 @@ class If(Node):
 
     connect_parent = True
     copy_scope_ports = True
+    copy_target_ports = True
 
     def __init__(
         self,

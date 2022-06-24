@@ -65,10 +65,9 @@ class Body(Node):
         """ Build method. Note it's not standard, i.e.
         not using build_method-decorator and has init-node
         as an extra argument"""
-        # copy ports from the scope:
-        self.copy_ports(scope.node)
         # add ports corresponding to init's new values before
         # the port copied from the parent scope
+        self.copy_ports(scope.node)
         self.copy_results_ports(init)
         scope = SisalScope(self)
         self.add_sub_ir(self.expressions.build(self.out_ports, scope))

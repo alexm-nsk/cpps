@@ -20,6 +20,7 @@ class Let(Node):
     """ Let node. Uses Init and Body nodes"""
 
     copy_scope_ports = True
+    copy_target_ports = True
     connect_parent = True
 
     def __init__(self, init: list[Statement], body: MultiExp,

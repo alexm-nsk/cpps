@@ -12,17 +12,19 @@ from .sub_ir import SubIr
 from .error import SisalError
 from .type import StreamType
 
+
 def build_method(fn):
     def wrapped(self, target_ports: list[Port], scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
             raise SisalError(
                 f"Error: {len(target_ports)} output expected, "
                 f"got {self.num_out_ports()} at ({self.location}) "
-                # f"(from {self.name, self.id} to {target_ports[0].node().name})"
             )
 
         if self.copy_scope_ports:
-            self.copy_ports(scope.node)  # TODO only the inputs
+            self.copy_ports(scope.node, out=False)
+        if self.copy_target_ports:
+            self.copy_ports_from_list(target_ports)
 
         node_sub_ir = fn(self, target_ports, scope)
 
@@ -64,6 +66,8 @@ class Node:
     # copy ports from the scope this node is contained in
     copy_scope_ports = False
 
+    copy_target_ports = False
+
     def __init__(self, location=None):
         """Not meant to be run on it's own, it adds to child classes'
         initialization"""
@@ -93,7 +97,8 @@ class Node:
             self.edges += sub_ir.edges
 
     def copy_ports(self, src_node: Node, in_: bool = True, out: bool = True):
-        """Copies ports from specified node"""
+        """Copies ports from specified node.
+        It will replace whatever ports already existed in this node"""
         if in_:
             self.in_ports = deepcopy(src_node.in_ports)
             for i_p in self.in_ports:
@@ -102,6 +107,15 @@ class Node:
             self.out_ports = deepcopy(src_node.out_ports)
             for o_p in self.out_ports:
                 o_p.node_id = self.id
+
+    def copy_ports_from_list(self, ports: list[Port]):
+        """Copies ports from a list of ports,
+        setting correct indices and IDs"""
+        self.out_ports = deepcopy(ports)
+        for index, port in enumerate(self.out_ports):
+            port.index = index
+            port.node_id = self.id
+
 
     def copy_results_ports(self, src_node: Node):
         """Prepends copies of output ports of src_node

@@ -293,6 +293,8 @@ class Loop(Node):
     """Node describing loops"""
 
     connect_parent = True
+    copy_scope_ports = True
+    copy_target_ports = True
 
     def __init__(self, range_gen, init, body, condition, reduction, location):
         super().__init__(location)
@@ -315,7 +317,7 @@ class Loop(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        self.copy_ports(scope.node, out=False)
+
         scope = SisalScope(self)
         for item in ["init", "range_gen", "body", "condition", "reduction"]:
             if self.__dict__[item]:
