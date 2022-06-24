@@ -1,0 +1,5 @@
+function main(A: array[integer] returns integer)
+    for a in A
+        returns sum of a
+    end for
+end function
