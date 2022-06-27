@@ -6,10 +6,10 @@
 Node module methods are called to make class instances.
 """
 
-import os
+import os, re
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
-from parsimonious.exceptions import ParseError
+from parsimonious.exceptions import ParseError, VisitationError
 
 from .annotations import rule_annotation
 from .parser_state import reset
@@ -425,13 +425,13 @@ def parse(src_code: str) -> dict:
     try:
         parsed = grammar.parse(src_code)
         functions = module_visitor.visit(parsed)
-        for function in functions:
-            function.build()
+        for function_ in functions:
+            function_.build()
         functions = [function.ir_() for function in functions]
         return {"functions": functions}
     except Exception as e:
         if type(e) == ParseError:
-            wrong = e.text[e.pos : e.pos + 20].split(" ")[0]
+            wrong = e.text[e.pos: e.pos + 20].split(" ")[0]
             print(
                 f"Syntax error ({e.line()}:{e.column()}): ",
                 rule_annotation(e.expr.name),
@@ -443,6 +443,11 @@ def parse(src_code: str) -> dict:
             )
         elif type(e) == SisalError:
             print(e)
+        elif type(e) == VisitationError:
+            # TODO do it properly:
+            message = str(e)
+            message = re.sub("Parse tree:.*", "", message, flags=re.DOTALL)
+            print(message)
         else:
             print("unknown error")
             # TODO raise if the parameter if set:

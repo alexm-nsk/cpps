@@ -15,3 +15,7 @@ end function
 function main(A: array of integer returns array of integer)
     sort(A)
 end function
+
+function main(A: array of integer returns array of integer)
+    sort(A)
+end function
