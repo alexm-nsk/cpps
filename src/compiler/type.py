@@ -12,7 +12,7 @@ class Type:
     location: str = "not applicable"
 
     def __eq__(self, obj):
-        print("IMPLEMENT AN _EQ FOR TYPE!!!")
+        return type(self) == type(obj)
         return False
 
     def ir_(self):
@@ -26,6 +26,10 @@ class Type:
     def is_stream(self):
         return type(self) == StreamType
 
+    def get_a_copy(self, location: str = "not applicable"):
+        copy = deepcopy(self)
+        copy.location = location
+        return copy
 
 @dataclass
 class SingularType(Type):
@@ -90,6 +94,11 @@ class StreamType(MultiType):
 @dataclass
 class ArrayType(MultiType):
     """Class for describing arrays."""
+
+    def __eq__(self, obj):
+        if "element" not in obj.__dict__:
+            return False
+        return self.element == obj.element
 
     def ir_(self):
         retval = deepcopy(self.__dict__)

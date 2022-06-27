@@ -48,7 +48,6 @@ class Bin(Node):
         IntegerType: {RealType: RealType, IntegerType: IntegerType},
         RealType: {RealType: RealType, IntegerType: RealType},
         ArrayType: {ArrayType: ArrayType},
-        StreamType: {ArrayType: ArrayType},
     }
 
     def result_type(self):
@@ -56,17 +55,18 @@ class Bin(Node):
         try:
             if self.operator in ["<", ">", ">=", "<="]:
                 return BooleanType()
-            # TODO make something like "item_name" instead
-            left_type = type(self.in_ports[0].type)
-            right_type = type(self.in_ports[1].type)
-            if left_type == StreamType:
-                left_type = type(self.in_ports[0].type.name)
-            if right_type == StreamType:
-                right_type = type(self.in_ports[0].type.name)
-            type_ = Bin.alg_type_map[left_type][right_type]
-            if type_ == ArrayType:
-                return left_type(element=self.in_ports[0].type.element)
-            return type_()
+
+            left_type = self.in_ports[0].type
+            left_class = type(left_type)
+            right_type = self.in_ports[1].type
+            right_class = type(right_type)
+            class_ = Bin.alg_type_map[left_class][right_class]
+
+            if class_ == ArrayType and left_type == right_type:
+                return self.in_ports[0].type.get_a_copy(location=self.location)
+
+            return class_(location=self.location)
+
         except KeyError:
             raise SisalError(
                 f"Operations {self.operator} between {left_type} and "
@@ -133,7 +133,7 @@ class Algebraic(Node):
                 ):
                     left = self.expression[:n]
                     left = Algebraic(left) if len(left) > 1 else left[0]
-                    right = self.expression[n + 1:]
+                    right = self.expression[n + 1 :]
                     right = Algebraic(right) if len(right) > 1 else right[0]
                     # note the order of 'builds' in 'return':
                     # we first need to get left and right built,

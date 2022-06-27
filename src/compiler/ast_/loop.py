@@ -117,10 +117,10 @@ class Scatter(Node):
         else:
             raise SisalError(
                 "Attempting to iterate over non-iterable "
-                f"object: {self.location}{port_type}"
+                f"object: {self.location} {port_type}"
             )
         self.out_ports = [
-            Port(self.id, StreamType(element=element_type), 0, "element"),
+            Port(self.id, element_type, 0, "element"),
             Port(self.id, IntegerType(), 1, "index"),
         ]
         del self.iterable
