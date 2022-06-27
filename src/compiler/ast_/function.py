@@ -75,7 +75,8 @@ class Function(Node):
 
 
 class BuiltInFunction(Function):
-    no_id = True
+
+    no_id = True  # not needed but left in in case of future changes
 
     def __init__(self, function_name: str, args: list, retvals: list):
         self.function_name = function_name
@@ -87,7 +88,8 @@ class BuiltInFunction(Function):
         ]
 
         self.out_ports = [
-            Port(None, type_, port_index) for port_index, type_ in enumerate(retvals)
+            Port(None, type_, port_index)
+            for port_index, type_ in enumerate(retvals)
         ]
 
         Function.functions[self.function_name] = self

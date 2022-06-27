@@ -31,3 +31,5 @@ def reset():
     Edge.reset()
     Node.reset()
     Function.reset()
+
+# TODO move "get_function(name)" here
