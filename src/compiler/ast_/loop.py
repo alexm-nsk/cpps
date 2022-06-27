@@ -228,6 +228,7 @@ class Reduction(Node):
         # make a Literal node with "True" value
         # and connect it to cond input,
         # otherwise, apply second pass to the "when" exp
+        # TODO move it to parse.py so that True's ID is adequate
         if self.when:
             cond_ir = self.when.build([cond_port], scope)
         else:
