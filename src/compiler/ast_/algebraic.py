@@ -41,9 +41,6 @@ class Bin(Node):
     """Binary operation node. Only processed within Algebraic's 'build'
     method"""
 
-    # TODO replace keys with class definitions like
-    # class_map = {Integer : "integer numbers", Real: "real numbers"}
-
     alg_type_map = {
         IntegerType: {RealType: RealType, IntegerType: IntegerType},
         RealType: {RealType: RealType, IntegerType: RealType},
@@ -62,8 +59,10 @@ class Bin(Node):
             right_class = type(right_type)
             class_ = Bin.alg_type_map[left_class][right_class]
 
-            if class_ == ArrayType and left_type == right_type:
-                return self.in_ports[0].type.get_a_copy(location=self.location)
+            if class_ == ArrayType:  # and left_type == right_type:
+                # TODO compare left and right type and return a type
+                # otherwise - raise an exception
+                return left_type.type.get_a_copy(location=self.location)
 
             return class_(location=self.location)
 
