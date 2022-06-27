@@ -65,10 +65,10 @@ class LoopBody(Node):
         loop = scope.node
         self.copy_ports(loop, out=False)
 
-        if loop.init:
+        if "init" in loop.__dict__:
             self.copy_results_ports(loop.init)
 
-        if loop.range_gen:
+        if "range_gen" in loop.__dict__:
             self.copy_results_ports(loop.range_gen)
 
     def build(self, scope):

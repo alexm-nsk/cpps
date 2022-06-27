@@ -68,13 +68,6 @@ class Function(Node):
         """Recursively rebuilds the function's ir into a dataflow graph.
         Because it's a top level node it doesn't run the 'super' from Node
         and doesn't take any arguments"""
-        if len(self.out_ports) != len(self.body.expressions):
-            raise SisalError(
-                f"""Number of function's return values doesn't match the """
-                f"""expected number return values: {len(self.in_ports)}, """
-                f"""name: \"{self.function_name}\".""",
-                self.location,
-            )
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body

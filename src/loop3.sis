@@ -4,6 +4,6 @@ function Main( M, N, K : integer returns integer, integer)
            R1 := i + N;
            R2 := i - K
        returns
-          sum of R1 + i ; sum of R2 - i
+          sum of R1 + i , sum of R2 - i
     end for
 end function
