@@ -39,6 +39,8 @@ class Function(Node):
         body: MultiExp,
         location: str,
     ):
+        if self.get_function(function_name):
+            raise SisalError(message=f"function named {function_name} is already defined or is a built-in", location=location)
         super().__init__(location)
         self.function_name = function_name
         self.name = "Lambda"
