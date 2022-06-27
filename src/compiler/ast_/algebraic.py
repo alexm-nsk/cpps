@@ -62,7 +62,7 @@ class Bin(Node):
             if class_ == ArrayType:  # and left_type == right_type:
                 # TODO compare left and right type and return a type
                 # otherwise - raise an exception
-                return left_type.type.get_a_copy(location=self.location)
+                return left_type.get_a_copy(location=self.location)
 
             return class_(location=self.location)
 
