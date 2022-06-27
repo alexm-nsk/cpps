@@ -15,10 +15,21 @@ class Function(Node):
     """Class for function nodes"""
 
     functions = {}
+    built_ins = []  # the list is defined below
 
     @classmethod
     def reset(cls):
         cls.functions = {}
+
+    @classmethod
+    def get_function(cls, name: str):
+
+        if name in Function.functions:
+            return Function.functions[name]
+        if name in Function.built_ins:
+            return Function.built_ints[name]
+
+        return None
 
     def __init__(
         self,
@@ -66,14 +77,7 @@ class Function(Node):
 class BuiltInFunction(Function):
     no_id = True
 
-    def __init__(
-        self,
-        function_name: str,
-        args: list,
-        retvals: list,
-        body: MultiExp,
-        location: str,
-    ):
+    def __init__(self, function_name: str, args: list, retvals: list):
         self.function_name = function_name
         self.name = "Lambda"
 
@@ -86,10 +90,10 @@ class BuiltInFunction(Function):
             Port(None, type_, port_index) for port_index, type_ in enumerate(retvals)
         ]
 
-        self.body = body
         Function.functions[self.function_name] = self
 
-built_ins = [
-    BuiltInFunction("size", [["array", ArrayType]], [IntegerType], None, None),
-    BuiltInFunction("cos", [["x", RealType]], [RealType], None, None),
-]
+
+Function.built_ins = dict(
+    size=BuiltInFunction("size", [["array", ArrayType]], [IntegerType]),
+    cos=BuiltInFunction("cos", [["x", RealType]], [RealType]),
+)

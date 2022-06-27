@@ -37,12 +37,19 @@ class Call(Node):
         )
 
     def called_function(self):
-        if self.callee not in Function.functions:
+        # if self.callee not in Function.functions:
+            # raise SisalError(
+                # f'No function named "{self.callee}".',
+                # self.location,
+            # )
+        # return Function.functions[self.callee]
+        function = Function.get_function(self.callee)
+        if not function:
             raise SisalError(
                 f'No function named "{self.callee}".',
                 self.location,
             )
-        return Function.functions[self.callee]
+        return function
 
     def num_out_ports(self):
         return self.called_function().num_out_ports()
