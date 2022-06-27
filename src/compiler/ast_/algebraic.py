@@ -6,7 +6,7 @@ Algebraic operations, bin node and various tools for those
 
 from ..node import Node, build_method
 from ..port import Port
-from ..type import IntegerType, RealType, BooleanType, ArrayType, StreamType
+from ..type import IntegerType, RealType, BooleanType, ArrayType
 
 from ..scope import SisalScope
 from ..sub_ir import SubIr
@@ -41,6 +41,9 @@ class Bin(Node):
     """Binary operation node. Only processed within Algebraic's 'build'
     method"""
 
+    # TODO make a class for different operation groups
+    # (sqrt can result in Real, even when arguments are integers)
+
     alg_type_map = {
         IntegerType: {RealType: RealType, IntegerType: IntegerType},
         RealType: {RealType: RealType, IntegerType: RealType},
@@ -50,7 +53,7 @@ class Bin(Node):
     def result_type(self):
         """Returns result type when processing two given types"""
         try:
-            if self.operator in ["<", ">", ">=", "<="]:
+            if self.operator in ["<", ">", ">=", "<=", "="]:
                 return BooleanType()
 
             left_type = self.in_ports[0].type
