@@ -8,6 +8,7 @@ from .multi_exp import MultiExp
 from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
+from ..type import ArrayType, IntegerType, RealType
 
 
 class Function(Node):
@@ -37,9 +38,8 @@ class Function(Node):
         ]
 
         self.out_ports = [
-                            Port(self.id, type_, port_index)
-                            for port_index, type_ in enumerate(retvals)
-                         ]
+            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
+        ]
 
         self.body = body
         Function.functions[self.function_name] = self
@@ -61,3 +61,35 @@ class Function(Node):
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
+
+
+class BuiltInFunction(Function):
+    no_id = True
+
+    def __init__(
+        self,
+        function_name: str,
+        args: list,
+        retvals: list,
+        body: MultiExp,
+        location: str,
+    ):
+        self.function_name = function_name
+        self.name = "Lambda"
+
+        self.in_ports = [
+            Port(None, type_, port_index, identifier)
+            for port_index, [identifier, type_] in enumerate(args)
+        ]
+
+        self.out_ports = [
+            Port(None, type_, port_index) for port_index, type_ in enumerate(retvals)
+        ]
+
+        self.body = body
+        Function.functions[self.function_name] = self
+
+built_ins = [
+    BuiltInFunction("size", [["array", ArrayType]], [IntegerType], None, None),
+    BuiltInFunction("cos", [["x", RealType]], [RealType], None, None),
+]

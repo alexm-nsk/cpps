@@ -213,15 +213,18 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_bin_op(self, node, vc_):
         """operand visitor"""
-        return algebraic.Bin(operator=node.text, location=self.get_location(node))
+        return algebraic.Bin(operator=node.text,
+                             location=self.get_location(node))
 
     def visit_equation(self, node, vc_):
         expression = [
             vc_[0],
-            algebraic.Bin(operator=vc_[2].text, location=self.get_location(vc_[2])),
+            algebraic.Bin(operator=vc_[2].text,
+                          location=self.get_location(vc_[2])),
             vc_[4],
         ]
-        return algebraic.Algebraic(expression, location=self.get_location(node))
+        return algebraic.Algebraic(expression,
+                                   location=self.get_location(node))
 
     @staticmethod
     def visit_module(_, vc_):
