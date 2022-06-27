@@ -8,7 +8,7 @@ from .multi_exp import MultiExp
 from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
-from ..type import ArrayType, IntegerType, RealType
+from ..type import AnyType, ArrayType, IntegerType, RealType
 
 
 class Function(Node):
@@ -27,7 +27,7 @@ class Function(Node):
         if name in Function.functions:
             return Function.functions[name]
         if name in Function.built_ins:
-            return Function.built_ints[name]
+            return Function.built_ins[name]
 
         return None
 
@@ -81,6 +81,7 @@ class BuiltInFunction(Function):
     def __init__(self, function_name: str, args: list, retvals: list):
         self.function_name = function_name
         self.name = "Lambda"
+        self.is_built_in = True
 
         self.in_ports = [
             Port(None, type_, port_index, identifier)
@@ -96,6 +97,6 @@ class BuiltInFunction(Function):
 
 
 Function.built_ins = dict(
-    size=BuiltInFunction("size", [["array", ArrayType]], [IntegerType]),
+    size=BuiltInFunction("size", [["array", ArrayType(element=AnyType())]], [IntegerType()]),
     cos=BuiltInFunction("cos", [["x", RealType]], [RealType]),
 )

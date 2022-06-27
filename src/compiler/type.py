@@ -32,6 +32,12 @@ class Type:
         return copy
 
 @dataclass
+class AnyType(Type):
+    """Class for describing arbitrary type"""
+
+    name: str = "Any"
+
+@dataclass
 class SingularType(Type):
     """Class for describing singular sisal types
     (integer, real, boolean etc.)"""
@@ -41,24 +47,21 @@ class SingularType(Type):
 
 @dataclass
 class IntegerType(Type):
-    """Class for describing singular sisal types
-    (integer, real, boolean etc.)"""
+    """Class for describing integer type"""
 
     name: str = "Integer"
 
 
 @dataclass
 class BooleanType(Type):
-    """Class for describing singular sisal types
-    (integer, real, boolean etc.)"""
+    """Class for describing boolean type"""
 
     name: str = "Boolean"
 
 
 @dataclass
 class RealType(Type):
-    """Class for describing singular sisal types
-    (integer, real, boolean etc.)"""
+    """Class for describing real types"""
 
     name: str = "Real"
 
