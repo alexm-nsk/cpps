@@ -10,14 +10,14 @@ from copy import deepcopy
 from .edge import Edge
 from .sub_ir import SubIr
 from .error import SisalError
-from .type import StreamType
 
 
 def build_method(fn):
     def wrapped(self, target_ports: list[Port], scope: SisalScope):
         if len(target_ports) != self.num_out_ports():
             raise SisalError(
-                f"Error: {len(target_ports)} output expected, "
+                f"Error: {len(target_ports)} "
+                f"{'values' if len(target_ports) > 1 else 'value'} expected, "
                 f"got {self.num_out_ports()} at ({self.location}) "
             )
 
