@@ -1,5 +1,5 @@
 function sort(A: array of integer returns array of integer)
-  if (A[0] <= 1) then
+  if (size(A) <= 1) then
     A
   else
     let

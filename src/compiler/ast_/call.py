@@ -24,7 +24,7 @@ class Call(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        self.copy_ports(self.called_function())
+        self.copy_ports(self.called_function)
         args_ir = self.args.build(self.in_ports, scope)
         del self.args
         return (
@@ -36,13 +36,8 @@ class Call(Node):
             + args_ir
         )
 
+    @property
     def called_function(self):
-        # if self.callee not in Function.functions:
-            # raise SisalError(
-                # f'No function named "{self.callee}".',
-                # self.location,
-            # )
-        # return Function.functions[self.callee]
         function = Function.get_function(self.callee)
         if not function:
             raise SisalError(
@@ -52,7 +47,7 @@ class Call(Node):
         return function
 
     def num_out_ports(self):
-        return self.called_function().num_out_ports()
+        return self.called_function.num_out_ports()
 
     def num_in_ports(self):
-        return self.called_function().num_in_ports()
+        return self.called_function.num_in_ports()

@@ -141,6 +141,7 @@ class Algebraic(Node):
                     # we first need to get left and right built,
                     # then we can set in-port types of bins
                     # the out-port types of left and right
+
                     return (
                         left.build([item.in_ports[0]], scope)
                         + right.build([item.in_ports[1]], scope)
