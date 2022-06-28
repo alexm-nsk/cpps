@@ -97,7 +97,7 @@ class Edge:
 
         gml_str = f'<edge source="{self.from_.node().id}" '\
                   f'target="{self.to.node().id}" '\
-                  f'sourceport="{src_port_type}{self.to.index}" '\
+                  f'sourceport="{src_port_type}{self.from_.index}" '\
                   f'targetport="{dst_port_type}{self.to.index}">\n'\
                   f'{GraphMlModule.indent(type_str)}'\
                   '\n</edge>'

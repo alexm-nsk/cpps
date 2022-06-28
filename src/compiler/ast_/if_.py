@@ -44,6 +44,7 @@ class Condition(Node):
         """Condition node"""
         super().__init__(conditions.location)
         self.conditions = conditions
+        self.name = "Condition"
 
     def build(self, scope: SisalScope) -> SubIr:
         """Convert parsed data to IR"""
