@@ -51,14 +51,19 @@ def main(args):
         with open(args[1], "r", encoding="UTF-8") as src_file:
             src_code = src_file.read()
             parsed = parse.parse(src_code)
-            parsed["functions"] = [
-                    function.ir_()
-                    for function in parsed["functions"]
-                ]
             if parsed:
-                if "--ir" in args:
+                if "--json" in args:
+                    parsed["functions"] = [
+                            function.ir_()
+                            for function in parsed["functions"]
+                        ]
                     print(json.dumps(json_names(parsed), indent=1))
-
+                elif "--graphml" in args:
+                    parsed["functions"] = [
+                            function.ir_()
+                            for function in parsed["functions"]
+                        ]
+                    print(json.dumps(json_names(parsed), indent=1))
     return 0
 
 
