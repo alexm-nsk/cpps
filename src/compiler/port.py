@@ -8,6 +8,7 @@ from copy import deepcopy
 from .type import Type
 from .settings import DONT_ADD_EMPTY_LABELS
 from .node import Node
+from .graphml import GraphMlModule
 
 
 @dataclass
@@ -33,3 +34,12 @@ class Port:
             del retval["label"]
         retval.update(type=self.type.ir_())
         return retval
+
+    def graphml(self, port_type):
+        port_index = self.index
+        # <data key="label">A</data>
+        if self.label:
+            label = '<data key="label"></data>'
+            return f'<port name={port_type}{port_index}>label</port>'
+        else:
+            return f'<port name={port_type}{port_index}/>'
