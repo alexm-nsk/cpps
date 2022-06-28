@@ -10,6 +10,7 @@ from copy import deepcopy
 from .edge import Edge
 from .sub_ir import SubIr
 from .error import SisalError
+from .graphml import GraphMlModule as gml
 
 
 def build_method(fn):
@@ -187,3 +188,21 @@ class Node:
             if key in retval:
                 retval[key] = retval[key].ir_()
         return retval
+
+    def common_gml(self):
+        """get gml text of ports, nodes, etc"""
+        gml_content = ""
+        # convert ports:
+        for i_p in self.in_ports:
+            gml_content += gml.indent(i_p.graphml("in"), 1)
+        gml_content += "\n"
+        for o_p in self.out_ports:
+            gml_content += gml.indent(o_p.graphml("out"), 1)
+        graph_content = "\n"
+        # convert edges and arbitrary nodes:
+        graph_content += f'<graph id="{self.id}_graph" edgedefault="directed">'
+        for edge in self.edges:
+            graph_content += gml.indent(edge.gml()) + "\n"
+        graph_content += '</graph>'
+        gml_content += gml.indent(graph_content)
+        return gml_content

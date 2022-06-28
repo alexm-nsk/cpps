@@ -13,7 +13,7 @@ class GraphMlModule:
         self.module_data = module_data
 
     @staticmethod
-    def indent(text, level):
+    def indent(text, level=1):
         offset = GraphMlModule.indent_str*level
         return offset + text.replace("\n", "\n" + offset)
 

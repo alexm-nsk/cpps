@@ -75,12 +75,7 @@ class Function(Node):
         del self.body
 
     def graphml(self):
-        content = ""
-        for i_p in self.in_ports:
-            content += gml.indent(i_p.graphml("in"), 1)
-        content += "\n"
-        for o_p in self.out_ports:
-            content += gml.indent(o_p.graphml("out"), 1)
+        content = self.common_gml()
         return f"<node id={self.id}>\n{content}\n</node>"
 
 
