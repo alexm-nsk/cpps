@@ -37,11 +37,10 @@ class Port:
 
     def graphml(self, port_type):
         port_index = self.index
-        # <data key="label">A</data>
         type_str = f'type="{self.type.gml()}"'
         header = f'<port name="{port_type}{port_index}" {type_str}'
         if self.label:
-            label = f'<data key="label">{self.label}</data>'
+            label = gml.key_str("label", self.label)
             return header + ">\n" + f"{gml.indent(label,1)}\n</port>"
         else:
             return header + "/>"
