@@ -194,9 +194,11 @@ class Node:
                 retval[key] = retval[key].ir_()
         return retval
 
-    def common_gml(self):
+    def common_gml(self, extra=""):
         """get gml text of ports, nodes, etc"""
+
         gml_content = ""
+
         # convert ports:
         for i_p in self.in_ports:
             gml_content += gml.indent(i_p.graphml("in"), 1)
@@ -204,10 +206,17 @@ class Node:
         for o_p in self.out_ports:
             gml_content += gml.indent(o_p.graphml("out"), 1)
         graph_content = "\n"
+
         # convert edges and arbitrary nodes:
         graph_content += f'<graph id="{self.id}_graph" edgedefault="directed">\n'
         for edge in self.edges:
             graph_content += gml.indent(edge.gml()) + "\n"
+
+        # close the <graph>tag
         graph_content += '</graph>'
+
         gml_content += gml.indent(graph_content)
-        return gml_content
+        return f"<node id={self.id}>\n{gml_content}\n</node>"
+
+    def graphml(self):
+        return self.common_gml()

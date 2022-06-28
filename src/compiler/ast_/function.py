@@ -74,10 +74,6 @@ class Function(Node):
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
 
-    def graphml(self):
-        content = self.common_gml()
-        return f"<node id={self.id}>\n{content}\n</node>"
-
 
 class BuiltInFunction(Function):
 
