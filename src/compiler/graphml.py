@@ -18,6 +18,7 @@ class GraphMlModule:
         return offset + text.replace("\n", "\n" + offset)
 
     def document(self):
+
         content = "\n".join(
             [function.graphml() for function in self.module_data["functions"]]
         )
