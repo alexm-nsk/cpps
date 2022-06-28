@@ -105,7 +105,7 @@ def graphml(self, extra=""):
     gml_content = ""
 
     # convert keys
-    for key in ["name", "function_name", "operator", "value"]:
+    for key in ["name", "function_name", "location" ,  "operator", "value"]:
         if key in self.__dict__:
             gml_content += gml.key_str(key, self.__dict__[key]) + "\n"
 
