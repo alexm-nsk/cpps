@@ -199,24 +199,51 @@ class Node:
 
         gml_content = ""
 
-        # convert ports:
-        for i_p in self.in_ports:
-            gml_content += gml.indent(i_p.graphml("in"), 1)
-        gml_content += "\n"
-        for o_p in self.out_ports:
-            gml_content += gml.indent(o_p.graphml("out"), 1)
-        graph_content = "\n"
+        # convert edges and nodes:
 
-        # convert edges and arbitrary nodes:
-        graph_content += f'<graph id="{self.id}_graph" edgedefault="directed">\n'
-        for edge in self.edges:
-            graph_content += gml.indent(edge.gml()) + "\n"
+        for key in ["name", "function_name", "operator", "value"]:
+            if key in self.__dict__:
+                gml_content += gml.key_str(key, self.__dict__[key]) + "\n"
+
+        # convert ports:
+        if hasattr(self, "in_ports"):
+            for i_p in self.in_ports:
+                gml_content += i_p.graphml("in")
+        gml_content += "\n"
+        if hasattr(self, "out_ports"):
+            for o_p in self.out_ports:
+                gml_content += o_p.graphml("out")
+
+        graph_content = ""
+
+        for key in ["else", "elseif", "then", "condition",
+                    "body", "init", "returns", "range_gen",
+                    "reduction", "branches"]:
+            if key in self.__dict__:
+                if type(self.__dict__[key]) == list:
+                    for item in self.__dict__[key]:
+                        graph_content += gml.indent(item.graphml()) + "\n"
+                else:
+                    graph_content += gml.indent(self.__dict__[key].graphml()) + "\n"
+
+        if hasattr(self, "nodes"):
+            for node in self.nodes:
+                graph_content += gml.indent(node.graphml()) + "\n"
+
+        if hasattr(self, "edges"):
+            for edge in self.edges:
+                graph_content += gml.indent(edge.gml()) + "\n"
 
         # close the <graph>tag
-        graph_content += '</graph>'
+        graph = ""
+        if graph_content:
+            graph = f'\n<graph id="{self.id}_graph" '\
+                    'edgedefault="directed">\n'
+            graph += gml.indent(graph_content)
+            graph += "</graph>"
 
-        gml_content += gml.indent(graph_content)
-        return f"<node id={self.id}>\n{gml_content}\n</node>"
+        gml_content += graph
+        return f"<node id={self.id}>\n{gml.indent(gml_content)}\n</node>"
 
     def graphml(self):
         return self.common_gml()
