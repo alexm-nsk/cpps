@@ -207,6 +207,14 @@ class ModuleVisitor(NodeVisitor):
         """brackets algebraic visitor"""
         return vc_[2]
 
+    def visit_open_operand(self, node, vc_):
+        """passthrough"""
+        return vc_[0]
+
+    def visit_br_operand(self, node, vc_):
+        """passthrough"""
+        return vc_[2]
+
     def visit_operand(self, node, vc_):
         """passthrough"""
         return vc_[0]
