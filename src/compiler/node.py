@@ -172,6 +172,12 @@ class Node:
             f" doesn't have in_ports"
         )
 
+    def is_node_parent(self, node):
+        """check if this node is contained in provided node's "nodes" """
+        if "nodes" not in node.__dict__:
+            return False
+        return self in node.nodes
+
     def ir_(self, extra_fields: list[str] = []) -> dict:
         """Common for all nodes, converts the fields to export-ready dict
         extra _fields is a list of strings - names of fields special to
@@ -200,7 +206,7 @@ class Node:
             gml_content += gml.indent(o_p.graphml("out"), 1)
         graph_content = "\n"
         # convert edges and arbitrary nodes:
-        graph_content += f'<graph id="{self.id}_graph" edgedefault="directed">'
+        graph_content += f'<graph id="{self.id}_graph" edgedefault="directed">\n'
         for edge in self.edges:
             graph_content += gml.indent(edge.gml()) + "\n"
         graph_content += '</graph>'

@@ -7,7 +7,7 @@ This module describes an edge
 from __future__ import annotations
 from dataclasses import dataclass
 from .settings import PORT_FULL_DESCRIPTION_IN_EDGES
-from .graphml import GraphMlModule as gml
+from .graphml import GraphMlModule
 
 
 @dataclass
@@ -82,8 +82,19 @@ class Edge:
         # </edge>
         src_node = self.from_.node()
         dst_node = self.to.node()
-        return ""
-        gml_str = f'<edge source="{self.from_.node()}"'\
-                  f'target="{self.from_.node()}"'\
-                  f'sourceport="'
-        return self
+
+        if src_node.is_node_parent(dst_node):
+            dst_port_type = "out"
+        else:
+            dst_port_type = "in"
+
+        if dst_node.is_node_parent(src_node):
+            src_port_type = "in"
+        else:
+            src_port_type = "out"
+
+        gml_str = f'<edge source="{self.from_.node().id}"'\
+                  f'target="{self.from_.node().id}"'\
+                  f'sourceport="{src_port_type}{self.to.index}"'\
+                  f'targetport="{dst_port_type}{self.to.index}"'
+        return gml_str

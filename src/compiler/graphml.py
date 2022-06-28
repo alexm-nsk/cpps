@@ -31,7 +31,7 @@ class GraphMlModule:
             '    <key id="type" for="node" attr.name="nodetype" '
             'attr.type="string"/>\n'
             '    <key id="location" for="node" attr.name="location" '
-            'attr.type="string" />\n\n\n'
+            'attr.type="string"/>\n\n'
             '    <graph id="module" edgedefault="directed">\n'
             f"{ self.indent(content, 4) }\n"
             "    </graph>"
