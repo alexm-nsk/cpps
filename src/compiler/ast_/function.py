@@ -9,7 +9,6 @@ from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
 from ..type import AnyType, ArrayType, IntegerType, RealType
-from ..graphml import GraphMlModule as gml
 
 
 class Function(Node):
