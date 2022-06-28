@@ -56,7 +56,8 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index)
+            for port_index, type_ in enumerate(retvals)
         ]
 
         self.body = body
@@ -74,7 +75,8 @@ class Function(Node):
         del self.body
 
     def graphml(self):
-        return ""
+        content = ""
+        return f"<node id={self.id}>\n{content}</node>"
 
 
 class BuiltInFunction(Function):
@@ -92,7 +94,8 @@ class BuiltInFunction(Function):
         ]
 
         self.out_ports = [
-            Port(None, type_, port_index) for port_index, type_ in enumerate(retvals)
+            Port(None, type_, port_index)
+            for port_index, type_ in enumerate(retvals)
         ]
 
         Function.functions[self.function_name] = self
