@@ -9,7 +9,7 @@ from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
 from ..type import AnyType, ArrayType, IntegerType, RealType
-from ..graphml import GraphMlModule
+from ..graphml import GraphMlModule as gml
 
 
 class Function(Node):
@@ -76,7 +76,12 @@ class Function(Node):
 
     def graphml(self):
         content = ""
-        return f"<node id={self.id}>\n{content}</node>"
+        for i_p in self.in_ports:
+            content += gml.indent(i_p.graphml("in"), 1)
+        content += "\n"
+        for o_p in self.out_ports:
+            content += gml.indent(o_p.graphml("out"), 1)
+        return f"<node id={self.id}>\n{content}\n</node>"
 
 
 class BuiltInFunction(Function):

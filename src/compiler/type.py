@@ -31,11 +31,17 @@ class Type:
         copy.location = location
         return copy
 
+    def gml(self):
+        return self.name
+
 @dataclass
 class AnyType(Type):
     """Class for describing arbitrary type"""
 
     name: str = "Any"
+
+    def gml(self):
+        return "any type"
 
 @dataclass
 class SingularType(Type):
@@ -44,12 +50,18 @@ class SingularType(Type):
 
     name: str = None
 
+    def gml(self):
+        return "singular type"
+
 
 @dataclass
 class IntegerType(Type):
     """Class for describing integer type"""
 
     name: str = "Integer"
+
+    def gml(self):
+        return "integer"
 
 
 @dataclass
@@ -58,6 +70,8 @@ class BooleanType(Type):
 
     name: str = "Boolean"
 
+    def gml(self):
+        return "boolean"
 
 @dataclass
 class RealType(Type):
@@ -65,6 +79,8 @@ class RealType(Type):
 
     name: str = "Real"
 
+    def gml(self):
+        return "real"
 
 @dataclass
 class MultiType(Type):
@@ -78,6 +94,8 @@ class MultiType(Type):
         if "name" in self.element.__dict__:
             return self.element
 
+    def gml(self):
+        return "multi_type"
 
 @dataclass
 class StreamType(MultiType):
@@ -93,6 +111,8 @@ class StreamType(MultiType):
     def element_type(self):
         return self.element
 
+    def gml(self):
+        return f"stream of {self.element.gml()}"
 
 @dataclass
 class ArrayType(MultiType):
@@ -125,3 +145,6 @@ class ArrayType(MultiType):
             if self.element.is_array()
             else self.element
         )
+
+    def gml(self):
+        return f"array of {self.element.gml()}"
