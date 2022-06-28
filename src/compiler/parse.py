@@ -6,7 +6,8 @@
 Node module methods are called to make class instances.
 """
 
-import os, re
+import os
+import re
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 from parsimonious.exceptions import ParseError, VisitationError
@@ -446,7 +447,7 @@ def parse(src_code: str) -> dict:
                 # e.expr.as_rule(),
                 f'expected instead of "{wrong}" at {e.line()}:{e.column()}: '
                 + '"'
-                + e.text[int(e.pos) : e.pos + 20].split("\n")[0]
+                + e.text[int(e.pos): e.pos + 20].split("\n")[0]
                 + '"',
             )
         elif type(e) == SisalError:
