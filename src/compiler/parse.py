@@ -395,7 +395,7 @@ class ModuleVisitor(NodeVisitor):
     @staticmethod
     def visit_exp_singular(_, vc_):
         """exp_singular visitor"""
-        return vc_[0]
+        return vc_[0][2][0]
 
     @staticmethod
     def visit_def(_, vc_):
@@ -459,6 +459,6 @@ def parse(src_code: str) -> dict:
             print(message)
         else:
             print("unknown error")
-            # TODO raise if the parameter if set:
+            # TODO raise if the parameter is set:
             raise Exception(e)
         return None
