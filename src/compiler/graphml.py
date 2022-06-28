@@ -23,7 +23,7 @@ class GraphMlModule:
     def key_str(key, value):
         if REPLACE_XML_TAGS:
             value = escape(value)
-            #for key, value in GraphMlModule.value_sub.items():
+            # for key, value in GraphMlModule.value_sub.items():
             #   value = value.replace(key, value)
         return f'<data key="{key}">{value}</data>'
 
@@ -105,7 +105,12 @@ def graphml(self, extra=""):
     gml_content = ""
 
     # convert keys
-    for key in ["name", "function_name", "location" , "operator", "value", "callee"]:
+    for key in ["name",
+                "function_name",
+                "location",
+                "operator",
+                "value",
+                "callee"]:
         if key in self.__dict__:
             gml_content += gml.key_str(key, self.__dict__[key]) + "\n"
 
