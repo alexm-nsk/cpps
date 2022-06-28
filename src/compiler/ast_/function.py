@@ -9,6 +9,7 @@ from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
 from ..type import AnyType, ArrayType, IntegerType, RealType
+from ..graphml import GraphMlModule
 
 
 class Function(Node):
@@ -71,6 +72,9 @@ class Function(Node):
         scope = SisalScope(self)
         self.add_sub_ir(self.body.build(self.out_ports, scope))
         del self.body
+
+    def graphml(self):
+        return ""
 
 
 class BuiltInFunction(Function):

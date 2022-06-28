@@ -59,11 +59,9 @@ def main(args):
                         ]
                     print(json.dumps(json_names(parsed), indent=1))
                 elif "--graphml" in args:
-                    parsed["functions"] = [
-                            function.ir_()
-                            for function in parsed["functions"]
-                        ]
-                    print(json.dumps(json_names(parsed), indent=1))
+                    import compiler.graphml as graphml
+                    gmlm = graphml.GraphMlModule(parsed)
+                    print(gmlm)
     return 0
 
 
