@@ -7,7 +7,7 @@ graphml export
 
 class GraphMlModule:
 
-    def document(content: str):
+    def document(self, content: str):
         return
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<graphml xmlns="http://graphml.graphdrawing.org/xmlns"\n\n'
@@ -20,3 +20,7 @@ class GraphMlModule:
         'attr.type="string" />\n\n\n'
         f"  {content}s\n"
         "\n\n</graphml>"
+
+    def process_module(self, module):
+        for
+        return self.document(content)

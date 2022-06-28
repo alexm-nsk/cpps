@@ -50,10 +50,14 @@ def main(args):
     if src_code == "":
         with open(args[1], "r", encoding="UTF-8") as src_file:
             src_code = src_file.read()
-            ir_ = parse.parse(src_code)
-            if ir_:
+            parsed = parse.parse(src_code)
+            parsed["functions"] = [
+                    function.ir_()
+                    for function in parsed["functions"]
+                ]
+            if parsed:
                 if "--ir" in args:
-                    print(json.dumps(json_names(ir_), indent=1))
+                    print(json.dumps(json_names(parsed), indent=1))
 
     return 0
 

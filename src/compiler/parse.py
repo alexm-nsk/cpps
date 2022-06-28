@@ -436,7 +436,7 @@ def parse(src_code: str) -> dict:
         functions = module_visitor.visit(parsed)
         for function_ in functions:
             function_.build()
-        functions = [function.ir_() for function in functions]
+        #  functions = [function.ir_() for function in functions]
         return {"functions": functions}
     except Exception as e:
         if type(e) == ParseError:
