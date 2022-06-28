@@ -228,21 +228,19 @@ class Node:
 
         if hasattr(self, "nodes"):
             for node in self.nodes:
-                graph_content += gml.indent(node.graphml()) + "\n"
+                graph_content += node.graphml() + "\n"
 
         if hasattr(self, "edges"):
             for edge in self.edges:
-                graph_content += gml.indent(edge.gml()) + "\n"
+                graph_content += edge.gml() + "\n"
 
-        # close the <graph>tag
-        graph = ""
         if graph_content:
-            graph = f'\n<graph id="{self.id}_graph" '\
+            graph = f'<graph id="{self.id}_graph" '\
                     'edgedefault="directed">\n'
             graph += gml.indent(graph_content)
-            graph += "</graph>"
+            graph += "\n</graph>"
 
-        gml_content += graph
+            gml_content +="\n" + graph
         return f"<node id={self.id}>\n{gml.indent(gml_content)}\n</node>"
 
     def graphml(self):

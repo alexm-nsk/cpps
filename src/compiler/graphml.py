@@ -15,7 +15,7 @@ class GraphMlModule:
     @staticmethod
     def indent(text, level=1):
         offset = GraphMlModule.indent_str * level
-        return offset + text.replace("\n", "\n" + offset)
+        return offset + text.replace("\n", "\n" + offset).rstrip()
 
     def key_str(key, value):
         return f'<data key="{key}">{value}</data>'
