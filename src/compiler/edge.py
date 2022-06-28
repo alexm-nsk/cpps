@@ -92,9 +92,11 @@ class Edge:
             src_port_type = "in"
         else:
             src_port_type = "out"
-
-        gml_str = f'<edge source="{self.from_.node().id}"'\
-                  f'target="{self.from_.node().id}"'\
-                  f'sourceport="{src_port_type}{self.to.index}"'\
-                  f'targetport="{dst_port_type}{self.to.index}"'
+        type_str = f'<data key="type">{self.to.type.gml()}</data>'
+        gml_str = f'<edge source="{self.from_.node().id}" '\
+                  f'target="{self.from_.node().id}" '\
+                  f'sourceport="{src_port_type}{self.to.index}" '\
+                  f'targetport="{dst_port_type}{self.to.index}">\n'\
+                  f'{GraphMlModule.indent(type_str)}'\
+                  '\n</edge>'
         return gml_str
