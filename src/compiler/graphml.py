@@ -52,8 +52,7 @@ def graphml(self, extra=""):
 
     gml_content = ""
 
-    # convert edges and nodes:
-
+    # convert keys
     for key in ["name", "function_name", "operator", "value"]:
         if key in self.__dict__:
             gml_content += gml.key_str(key, self.__dict__[key]) + "\n"
@@ -62,11 +61,12 @@ def graphml(self, extra=""):
     if hasattr(self, "in_ports"):
         for i_p in self.in_ports:
             gml_content += i_p.graphml("in")
-    gml_content += "\n"
+            gml_content += "\n"
     if hasattr(self, "out_ports"):
         for o_p in self.out_ports:
             gml_content += o_p.graphml("out")
 
+    # convert edges and nodes:
     graph_content = ""
 
     for key in ["else", "elseif", "then", "condition",
@@ -77,7 +77,8 @@ def graphml(self, extra=""):
                 for item in self.__dict__[key]:
                     graph_content += gml.indent(item.graphml()) + "\n"
             else:
-                graph_content += gml.indent(self.__dict__[key].graphml()) + "\n"
+                graph_content += gml.indent(self.__dict__[key].graphml())\
+                                 + "\n"
 
     if hasattr(self, "nodes"):
         for node in self.nodes:
@@ -93,5 +94,5 @@ def graphml(self, extra=""):
         graph += gml.indent(graph_content)
         graph += "\n</graph>"
 
-        gml_content +="\n" + graph
+        gml_content += "\n" + graph
     return f"<node id={self.id}>\n{gml.indent(gml_content)}\n</node>"
