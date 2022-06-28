@@ -8,6 +8,7 @@ graphml export
 class GraphMlModule:
 
     indent_str = "  "
+    value_sub = {"<": "&lt", ">": "&gt"}
 
     def __init__(self, module_data):
         self.module_data = module_data
@@ -18,6 +19,8 @@ class GraphMlModule:
         return offset + text.replace("\n", "\n" + offset).rstrip()
 
     def key_str(key, value):
+        for key, value in GraphMlModule.value_sub.items():
+            value = value.replace(key, value)
         return f'<data key="{key}">{value}</data>'
 
     def document(self):
