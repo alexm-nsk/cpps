@@ -293,7 +293,7 @@ class ModuleVisitor(NodeVisitor):
     # Loops:
 
     def visit_while_do(self, node, vc_):
-        condition = loop.PreCond(exp=vc_[2], location=self.get_location(node))
+        condition = loop.PreCond(exp=vc_[2], location=vc_[2].location)
         body = loop.LoopBody(
             statements=vc_[6],
             location=self.get_location(node),
@@ -301,7 +301,7 @@ class ModuleVisitor(NodeVisitor):
         return dict(body=body, condition=condition)
 
     def visit_do_while(self, node, vc_):
-        condition = loop.PostCond(exp=vc_[6], location=self.get_location(node))
+        condition = loop.PostCond(exp=vc_[6], location=vc_[6].location)
         body = loop.LoopBody(statements=vc_[2],
                              location=self.get_location(node))
         return dict(body=body, condition=condition)
