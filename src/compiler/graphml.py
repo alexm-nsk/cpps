@@ -122,6 +122,7 @@ def graphml(self, extra=""):
     if hasattr(self, "out_ports"):
         for o_p in self.out_ports:
             gml_content += o_p.graphml("out")
+            gml_content += "\n"
 
     # convert edges and nodes:
     gml_content += "\n" + make_graph_content(self)
