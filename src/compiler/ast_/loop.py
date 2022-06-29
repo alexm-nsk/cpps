@@ -13,7 +13,7 @@ from ..sub_ir import SubIr
 from ..type import IntegerType, StreamType, BooleanType, ArrayType, MultiType
 from .literal import Literal
 from ..error import SisalError
-
+from copy import deepcopy
 
 class Cond(Node):
     """Loop condition node, base class"""
@@ -81,7 +81,8 @@ class LoopBody(Node):
         ]
 
         for index, definition in enumerate(self.statements):
-            self.add_sub_ir(definition.value.build([self.out_ports[index]], scope))
+            self.add_sub_ir(definition.value.build([self.out_ports[index]],
+                            scope))
             # here we add newly defined value to the scope
             value_port = Edge.src_port(self.out_ports[index])
             # TODO add option to not change port's label and rather
@@ -334,14 +335,14 @@ class OldValue(Node):
     def __init__(self, identifier, location):
         super().__init__(location)
         self.name = "Old Value"
+        self.identifier = identifier
         self.in_ports = [Port(self.id, None, 0)]
         self.out_ports = [Port(self.id, None, 0)]
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
 
-        scope = SisalScope(self)
         self.identifier.build(self.in_ports, scope)
-
-
+        self.out_ports[0].type = deepcopy(self.in_ports[0].type)
+        del self.identifier
         return SubIr([self], [], [])
