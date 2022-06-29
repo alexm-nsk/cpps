@@ -44,7 +44,7 @@ class GraphMlModule:
             '    <key id="location" for="node" attr.name="location" '
             'attr.type="string"/>\n\n'
             '    <graph id="module" edgedefault="directed">\n'
-            f"{ self.indent(content, 4) }\n"
+           f"{ self.indent(content, 3) }\n"
             "    </graph>"
             "\n\n</graphml>"
         )
