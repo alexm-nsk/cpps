@@ -125,9 +125,11 @@ class Node:
         new_ports = []
         for n_p in deepcopy(src_node.out_ports):
             if n_p.label not in [port.label for port in self.in_ports]:
+                n_p.node_id = self.id
                 new_ports.append(n_p)
-        for o_p in new_ports:
-            o_p.node_id = self.id
+
+        #for o_p in new_ports:
+            #o_p.node_id = self.id
         # prepend new ports to existing ports
         self.in_ports = new_ports + self.in_ports
         # reset port indices
