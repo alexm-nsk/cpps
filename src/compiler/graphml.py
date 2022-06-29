@@ -22,7 +22,7 @@ class GraphMlModule:
 
     def key_str(key, value):
         if REPLACE_XML_TAGS:
-            value = escape(value)
+            value = escape(str(value))
             # for key, value in GraphMlModule.value_sub.items():
             #   value = value.replace(key, value)
         return f'<data key="{key}">{value}</data>'
