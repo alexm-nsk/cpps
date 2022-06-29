@@ -364,11 +364,16 @@ class ModuleVisitor(NodeVisitor):
         reductions = vc_[2]
         return loop.Returns(reductions, self.get_location(node))
 
+    def visit_old(self, node, vc_):
+        return loop.OldValue(identifier=vc_[2],
+                             location=self.get_location(node))
+
     # Ranges:
 
     def visit_ranges(self, node, vc_):
         return loop.RangeGen(
-            ranges=[vc_[0]] + [r[2] for r in vc_[2]], location=self.get_location(node)
+            ranges=[vc_[0]] + [r[2] for r in vc_[2]],
+            location=self.get_location(node)
         )
 
     def visit_range(self, node, vc_):

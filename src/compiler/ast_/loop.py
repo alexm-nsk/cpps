@@ -327,3 +327,21 @@ class Loop(Node):
                 del self.__dict__[item]
 
         return SubIr([self], [], [])
+
+
+class OldValue(Node):
+
+    def __init__(self, identifier, location):
+        super().__init__(location)
+        self.name = "Old Value"
+        self.in_ports = [Port(self.id, None, 0)]
+        self.out_ports = [Port(self.id, None, 0)]
+
+    @build_method
+    def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
+
+        scope = SisalScope(self)
+        self.identifier.build(self.in_ports, scope)
+
+
+        return SubIr([self], [], [])
