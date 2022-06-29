@@ -302,18 +302,22 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_do_while(self, node, vc_):
         condition = loop.PostCond(exp=vc_[6], location=self.get_location(node))
-        body = loop.LoopBody(statements=vc_[2], location=self.get_location(node))
+        body = loop.LoopBody(statements=vc_[2],
+                             location=self.get_location(node))
         return dict(body=body, condition=condition)
 
     def visit_while_do_while(self, node, vc_):
         condition1 = loop.PreCond(exp=vc_[6], location=self.get_location(node))
-        condition2 = loop.PostCond(exp=vc_[6], location=self.get_location(node))
-        body = loop.LoopBody(statements=vc_[2], location=self.get_location(node))
+        condition2 = loop.PostCond(exp=vc_[6],
+                                   location=self.get_location(node))
+        body = loop.LoopBody(statements=vc_[2],
+                             location=self.get_location(node))
         return dict(body=body, condition=[condition1, condition2])
 
     def visit_repeat(self, node, vc_):
         return dict(
-            body=loop.LoopBody(statements=vc_[2], location=self.get_location(node)),
+            body=loop.LoopBody(statements=vc_[2],
+                               location=self.get_location(node)),
             condition=None,
         )
 
@@ -344,7 +348,10 @@ class ModuleVisitor(NodeVisitor):
         optional = self.optional_node(vc_[5])
         when = optional[3] if optional else None
         return loop.Reduction(
-            what=vc_[0], of_what=vc_[4], when=when, location=self.get_location(node)
+            what=vc_[0],
+            of_what=vc_[4],
+            when=when,
+            location=self.get_location(node)
         )
 
     def visit_reductions(self, node, vc_):
