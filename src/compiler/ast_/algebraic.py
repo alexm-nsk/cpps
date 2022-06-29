@@ -123,7 +123,7 @@ class Algebraic(Node):
         # by design we get alternating operands and binary operators
         # super().build(target_ports, scope)
 
-        low_priority = ["+", "-"]
+        low_priority = ["+", "-", "<", ">", ">=", "<="]
 
         def process(operators: list = []):
             """recursively processes parts of algebraic, until only single
