@@ -125,6 +125,6 @@ def graphml(self, extra=""):
             gml_content += "\n"
 
     # convert edges and nodes:
-    gml_content += "\n" + make_graph_content(self)
+    gml_content += make_graph_content(self)
 
     return f"<node id={self.id}>\n{gml.indent(gml_content)}\n</node>"
