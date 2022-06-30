@@ -343,7 +343,7 @@ class ModuleVisitor(NodeVisitor):
             init=self.optional_node(vc_[4]),
             body=body_cond["body"],
             condition=body_cond["condition"],
-            reduction=self.optional_node(vc_[8]),
+            returns=self.optional_node(vc_[8]),
             location=self.get_location(node),
         )
 

@@ -71,7 +71,7 @@ def make_graph_content(self):
         "init",
         "returns",
         "range_gen",
-        "reduction",
+        "returns",
         "branches",
     ]:
         if key in self.__dict__:

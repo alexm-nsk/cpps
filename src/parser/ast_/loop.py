@@ -298,7 +298,7 @@ class Loop(Node):
     copy_scope_ports = True
     copy_target_ports = True
 
-    def __init__(self, range_gen, init, body, condition, reduction, location):
+    def __init__(self, range_gen, init, body, condition, returns, location):
         super().__init__(location)
         self.name = "Loop Expression"
         self.in_ports = []
@@ -311,17 +311,17 @@ class Loop(Node):
             # TODO implement while-do-while
             raise SisalError("While-do-while not implemented", location)
         # TODO rename reduction to ret?
-        self.reduction = reduction
+        self.returns = returns
 
     def num_out_ports(self):
         # TODO make sure it works in both passes
-        return len(self.reduction.reduction_segments)
+        return len(self.returns.reduction_segments)
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
 
         scope = SisalScope(self)
-        for item in ["init", "range_gen", "body", "condition", "reduction"]:
+        for item in ["init", "range_gen", "body", "condition", "returns"]:
             if self.__dict__[item]:
                 self.__dict__[item].build(scope)
             else:
