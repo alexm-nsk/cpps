@@ -6,7 +6,7 @@
 import json
 import re
 
-json_re = re.compile("_([a-z])")
+json_re = re.compile("[a-z]([A-Z])")
 re_remove_ = re.compile("_(?=$)")
 
 
