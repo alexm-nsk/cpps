@@ -8,7 +8,7 @@ stand-alone. Use the parse module in other cases.
 import sys
 import json
 import re
-from compiler import parse
+from parser import parse
 
 
 def check_piped():
@@ -59,7 +59,7 @@ def main(args):
                         ]
                     print(json.dumps(json_names(parsed), indent=1))
                 elif "--graphml" in args:
-                    import compiler.graphml as graphml
+                    import parser.graphml as graphml
                     gmlm = graphml.GraphMlModule(parsed)
                     print(gmlm)
     return 0
