@@ -50,7 +50,7 @@ class Edge:
 
     @classmethod
     def reset(cls):
-        """Resets edge indices for recompiling"""
+        """Resets edge indices"""
         cls.__edges__ = []
         cls.__edges_from__ = {}
         cls.__edges_to__ = {}
@@ -77,9 +77,6 @@ class Edge:
             )
 
     def gml(self):
-        # <edge source="node3" target="node3" sourceport="in0" targetport="out0">
-        #     <data key="type">integer</data>
-        # </edge>
         src_node = self.from_.node()
         dst_node = self.to.node()
 
