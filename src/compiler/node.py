@@ -10,7 +10,6 @@ from copy import deepcopy
 from .edge import Edge
 from .sub_ir import SubIr
 from .error import SisalError
-from .graphml import GraphMlModule as gml
 
 
 def build_method(fn):
@@ -40,7 +39,8 @@ def build_method(fn):
         in_edges = (
             [
                 Edge(scope_port, in_port)
-                for scope_port, in_port in zip(scope.node.in_ports, self.in_ports)
+                for scope_port, in_port in zip(scope.node.in_ports,
+                                               self.in_ports)
             ]
             if self.connect_parent
             else []

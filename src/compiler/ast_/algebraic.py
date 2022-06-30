@@ -21,7 +21,10 @@ class Unary(Node):
         self.operator = operator
         self.value = value
         self.name = "Unary"
-        self.in_ports = [Port(self.id, None, 0, label=f"unary ({self.operator}) input")]
+        self.in_ports = [Port(self.id,
+                              None,
+                              0,
+                              label=f"unary ({self.operator}) input")]
         self.out_ports = [
             Port(self.id, None, 0, label=f"unary ({self.operator}) output")
         ]
@@ -92,7 +95,10 @@ class Bin(Node):
     def build(self, target_ports: list[Port], scope) -> SubIr:
         """returns an IR form of this node (Bin)"""
         self.out_ports = [
-            Port(self.id, self.result_type(), 0, f"binary output ({self.operator})")
+            Port(self.id,
+                 self.result_type(),
+                 0,
+                 f"binary output ({self.operator})")
         ]
         return SubIr(nodes=[self], internal_edges=[], output_edges=[])
 
