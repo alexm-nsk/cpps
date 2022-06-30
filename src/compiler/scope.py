@@ -10,8 +10,6 @@ from copy import deepcopy
 
 class SisalScope:
     """base class for scopes"""
-    # TODO replace node with in_ports or add ports to node
-    # TODO consider different implementation with port ordering
 
     def __init__(self, node):
         self.node = node
