@@ -54,12 +54,12 @@ def main(args):
             if parsed:
                 if "--json" in args:
                     parsed["functions"] = [
-                            function.ir_()
-                            for function in parsed["functions"]
-                        ]
+                        function.ir_() for function in parsed["functions"]
+                    ]
                     print(json.dumps(json_names(parsed), indent=1))
                 elif "--graphml" in args:
                     import parser.graphml as graphml
+
                     gmlm = graphml.GraphMlModule(parsed)
                     print(gmlm)
     return 0

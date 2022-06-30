@@ -5,6 +5,14 @@
 
 import sys
 
+
+def check_piped():
+    """Checks if source code is provided via pipe"""
+    src_code = ""
+    src_code = "".join(sys.stdin)
+    return src_code
+
+
 def main(args):
     """The main function"""
     # check if there is piped-in src_code

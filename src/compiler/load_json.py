@@ -4,6 +4,10 @@
 """Deserializes json IRs"""
 
 import json
+import re
+
+json_re = re.compile("_([a-z])")
+re_remove_ = re.compile("_(?=$)")
 
 
 def load_json(file_name: str):
