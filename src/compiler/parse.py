@@ -420,7 +420,8 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_empty(self, node, _):
         """empty visitor"""
-        raise SisalError("Empty expressions not allowed!", self.get_location(node))
+        raise SisalError("Empty expressions are not allowed!",
+                         self.get_location(node))
 
     @staticmethod
     def generic_visit(node, vc_):
@@ -428,7 +429,8 @@ class ModuleVisitor(NodeVisitor):
         return vc_ or node
 
 
-grammar_file_name = os.path.dirname(os.path.realpath(__file__)) + "/module_grammar.ini"
+grammar_file_name = os.path.dirname(os.path.realpath(__file__)) +\
+                                            "/module_grammar.ini"
 
 with open(grammar_file_name, "r", encoding="UTF-8") as gr_file:
     grammar_text = gr_file.read()
