@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-"""Deserializes json IRs"""
 
 import sys
+from codegen.load_json import load_json
+from codegen.load_graphml import load_graphml
+from codegen.parse_ir import parse_ir
 
 
 def check_piped():
@@ -22,10 +24,11 @@ def main(args):
     if input_text == "":
         with open(file_name, "r", encoding="UTF-8") as src_file:
             input_text = src_file.read()
-            if file_name.lower().endswith(".gml"):
-                pass
-            elif file_name.lower().endswith(".json"):
-                pass
+            if file_name.lower().endswith(".json"):
+                ir_ = load_json(input_text)
+            elif file_name.lower().endswith(".gml"):
+                ir_ = load_graphml(input_text)
+            parse_ir(ir_)
     return 0
 
 
