@@ -34,6 +34,7 @@ class Type:
     def gml(self):
         return self.name
 
+
 @dataclass
 class AnyType(Type):
     """Class for describing arbitrary type"""
@@ -42,6 +43,7 @@ class AnyType(Type):
 
     def gml(self):
         return "any type"
+
 
 @dataclass
 class SingularType(Type):
@@ -73,6 +75,7 @@ class BooleanType(Type):
     def gml(self):
         return "boolean"
 
+
 @dataclass
 class RealType(Type):
     """Class for describing real types"""
@@ -81,6 +84,7 @@ class RealType(Type):
 
     def gml(self):
         return "real"
+
 
 @dataclass
 class MultiType(Type):
@@ -96,6 +100,7 @@ class MultiType(Type):
 
     def gml(self):
         return "multi_type"
+
 
 @dataclass
 class StreamType(MultiType):
@@ -113,6 +118,7 @@ class StreamType(MultiType):
 
     def gml(self):
         return f"stream of {self.element.gml()}"
+
 
 @dataclass
 class ArrayType(MultiType):
