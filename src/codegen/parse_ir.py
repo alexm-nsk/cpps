@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 
 class Type:
-
     def __init__(self, type_object):
         self.location = type_object["location"]
         if "name" in type_object:
@@ -27,28 +26,42 @@ class Edge:
     to: Port
 
 
+def get_port(node_id, index):
+    pass
+
+
 def parse_edge(edge):
     if "from" in edge and "to" in edge:
+        from_ = Port(edge["from"][0], None, edge["from"][1])
         return Edge(edge)
     else:
-        from_ = dict(id=edge[0]["node_id"], port=edge[0]["index"])
-        to = dict(id=edge[1]["node_id"], port=edge[1]["index"])
+        from_, to = (
+            Port(
+                node_id=edge[i]["node_id"],
+                type=Type(edge[i]["type"]),
+                index=edge[i]["index"],
+                label=edge[i]["label"] if "label" in edge[i] else None,
+            )
+            for i in range(2)
+        )
         return Edge(from_, to)
 
 
 def parse_port(port):
-    return Port(port["node_id"],
-                Type(port["type"]),
-                port["index"],
-                port["label"] if "label" in port else None)
+    return Port(
+        port["node_id"],
+        Type(port["type"]),
+        port["index"],
+        port["label"] if "label" in port else None,
+    )
 
 
 def parse_node(node):
     in_ports = [parse_port(port) for port in node["in_ports"]]
     out_ports = [parse_port(port) for port in node["out_ports"]]
-    print(in_ports, out_ports)
-    # for edge in node["edge"]:
-    # print(edge)
+    # print(in_ports, out_ports)
+    for edge in node["edges"]:
+        parse_edge(edge)
 
 
 def parse_ir(ir_data):
