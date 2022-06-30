@@ -20,7 +20,7 @@ class Call(Node):
         super().__init__(location)
         self.callee = name
         self.args = args
-        self.name = "Call"
+        self.name = "FunctionCall"
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:

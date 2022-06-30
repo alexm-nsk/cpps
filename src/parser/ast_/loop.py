@@ -44,12 +44,12 @@ class Cond(Node):
 
 class PreCond(Cond):
 
-    name = "Pre Condition"
+    name = "PreCondition"
 
 
 class PostCond(Cond):
 
-    name = "Post Condition"
+    name = "PostCondition"
 
 
 class LoopBody(Node):
@@ -57,7 +57,7 @@ class LoopBody(Node):
 
     def __init__(self, statements: list[Statement], location: str):
         super().__init__(location)
-        self.name = "Loop Body"
+        self.name = "Body"
         self.statements = statements
         self.in_ports = []
 
@@ -300,7 +300,7 @@ class Loop(Node):
 
     def __init__(self, range_gen, init, body, condition, returns, location):
         super().__init__(location)
-        self.name = "Loop Expression"
+        self.name = "LoopExpression"
         self.in_ports = []
         self.out_ports = []
         self.init = init
@@ -334,7 +334,7 @@ class OldValue(Node):
 
     def __init__(self, identifier, location):
         super().__init__(location)
-        self.name = "Old Value"
+        self.name = "OldValue"
         self.identifier = identifier
         self.in_ports = [Port(self.id, None, 0)]
         self.out_ports = [Port(self.id, None, 0)]
