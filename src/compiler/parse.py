@@ -169,7 +169,10 @@ class ModuleVisitor(NodeVisitor):
             condition_nodes.append(e[2])
             elseif.append(e[6])
 
-        locations = ", ".join([condition.location for condition in condition_nodes])
+        locations = ", ".join([
+                                condition.location
+                                for condition in condition_nodes
+                               ])
 
         return if_.If(
             multi_exp.MultiExp(condition_nodes, locations),

@@ -30,8 +30,10 @@ class ArrayAccess(Node):
             self.index = index
 
         self.in_ports = [
-            Port(self.id, None, 0, label="array"),  # the array, type is set later by Edge
-            Port(self.id, IntegerType(), 1, "index"),  # element's index
+            # the array, type is set later by Edge
+            Port(self.id, None, 0, label="array"),
+            # element's index
+            Port(self.id, IntegerType(), 1, "index"),
         ]
 
         self.out_ports = [Port(self.id, None, 0)]
