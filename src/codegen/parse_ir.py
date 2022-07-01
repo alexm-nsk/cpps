@@ -1,6 +1,16 @@
 from dataclasses import dataclass
-from .ast_ import function, array, call, alg, common, function, if_, let, literal, loop
+from .ast_ import (function,
+                   array,
+                   call,
+                   alg,
+                   common,
+                   if_,
+                   let,
+                   literal,
+                   loop)
+
 from .node import Node
+
 
 class_map = {
     "Lambda": function.Function,
