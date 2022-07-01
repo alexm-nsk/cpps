@@ -44,6 +44,4 @@ def parse_node(node):
 def parse_ir(ir_data):
     for fn_ in ir_data["functions"]:
         parse_node(fn_)
-
-    # for key in sorted(Node.node_index):
-    # print(key, Node.node_index[key])
+    return function.Function.functions

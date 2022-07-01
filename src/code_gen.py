@@ -7,7 +7,6 @@ from codegen.load_json import load_json
 from codegen.load_graphml import load_graphml
 from codegen.parse_ir import parse_ir
 
-
 def check_piped():
     """Checks if source code is provided via pipe"""
     input_text = ""
@@ -28,7 +27,9 @@ def main(args):
                 ir_ = load_json(input_text)
             elif file_name.lower().endswith(".gml"):
                 ir_ = load_graphml(input_text)
-            parse_ir(ir_)
+            functions = parse_ir(ir_)
+            from codegen.cpp.generate_cpp import generate_cpp
+            generate_cpp(functions)
     return 0
 
 
