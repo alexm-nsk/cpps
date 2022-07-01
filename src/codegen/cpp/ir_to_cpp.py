@@ -3,9 +3,8 @@
 #
 """generate cpp"""
 
-from .cpp_codegen import *
+from .cpp_codegen import CppModule
 
 
 def ir_to_cpp(functions: dict):
-    for name, function in functions.items():
-        print(name, function)
+    print(CppModule(functions))
