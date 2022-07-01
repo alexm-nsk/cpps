@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+code generator node parsing
+"""
 
 from .ast_ import function, array, call, alg, common, if_, let, literal, loop
 from .node import Node
@@ -10,6 +15,7 @@ class_map = {
     "Then": if_.Branch,
     "Condition": if_.Condition,
     "Binary": alg.Binary,
+    "Unary": alg.Unary,
     "FunctionCall": call.FunctionCall,
     "Literal": literal.Literal,
     "LoopExpression": loop.LoopExpression,
@@ -28,8 +34,6 @@ class_map = {
 
 Node.class_map = class_map
 
-nodes = {}
-
 
 def parse_node(node):
     class_map[node["name"]](node)
@@ -38,3 +42,6 @@ def parse_node(node):
 def parse_ir(ir_data):
     for fn_ in ir_data["functions"]:
         parse_node(fn_)
+
+    for key in sorted(Node.node_index):
+        print(key, Node.node_index[key])

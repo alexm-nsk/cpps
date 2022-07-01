@@ -51,12 +51,13 @@ class Node:
 
                 return Edge(from_, to)
             else:
-                pass
+                raise Exception("sisal-cl compatible JSON irs not implemented")
 
             self.edges.append(Edge(from_, to))
 
     def __init__(self, data):
         Node.node_index[data["id"]] = self
+        self.location = data["location"] if "location" in data else None
         self.id = data["id"]
         self.name = data["name"]
         self.parse_ports(data["in_ports"] if "in_ports" in data else None,
@@ -64,5 +65,21 @@ class Node:
         if "nodes" in data:
             self.nodes = [Node.class_map[node["name"]](node)
                           for node in data["nodes"]]
+
+        if "branches" in data:
+            self.branches = [Node.class_map["Else"](br)
+                             for br in data["branches"]]
+
+
+        for field, value in data.items():
+            if isinstance(value, dict):
+                if "name" in value and value["name"] in self.class_map:
+                    self.__dict__[field] = self.class_map[value["name"]](value)
+            elif field in ["value",
+                           "operator",
+                           "function_name",
+                           "callee"]:
+                self.__dict__[field] = value
+
         if "edges" in data:
             self.parse_edges(data["edges"])

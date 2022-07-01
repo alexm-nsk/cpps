@@ -211,6 +211,7 @@ class Reduction(Node):
         self.what = what
         self.of_what = of_what
         self.when = when
+        self.name = "Reduction"
 
     def num_out_ports(self):
         return 1
