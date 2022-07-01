@@ -32,7 +32,7 @@ nodes = {}
 
 
 def parse_node(node):
-    Node.nodes[node["id"]] = class_map[node["name"]](node)
+    class_map[node["name"]](node)
 
 
 def parse_ir(ir_data):

@@ -10,7 +10,7 @@ from .edge import Edge
 
 class Node:
 
-    nodes = {}
+    node_index = {}
 
     @staticmethod
     def parse_port(port):
@@ -27,10 +27,10 @@ class Node:
         if out_ports:
             self.out_ports = [self.parse_port(port) for port in out_ports]
 
-    def is_parent(self, compared_node: Node):
-        if "nodes" not in compared_node:
+    def is_parent(self, compared_node):
+        if "nodes" not in compared_node.__dict__:
             return False
-        if self in compared_node["nodes"]:
+        if self in compared_node.nodes:
             return True
         return False
 
@@ -39,15 +39,16 @@ class Node:
             if "from" in edge and "to" in edge:
                 src_index = edge["from"][1]
                 dst_index = edge["to"][1]
-
-                src_node = Node.nodes[edge["from"][0]]
-                dst_node = Node.nodes[edge["to"][0]]
+                print(edge)
+                print(self.node_index)
+                src_node = self.node_index[edge["from"][0]]
+                dst_node = self.node_index[edge["to"][0]]
 
                 from_type = "in" if dst_node.is_parent(src_node) else "out"
                 to_type = "out" if src_node.is_parent(dst_node) else "in"
 
-                from_ = src_node[from_type + "_ports"][src_index]
-                to = dst_node[to_type + "_ports"][dst_index]
+                from_ = src_node.__dict__[from_type + "_ports"][src_index]
+                to = dst_node.__dict__[to_type + "_ports"][dst_index]
 
                 return Edge(from_, to)
             else:
@@ -58,8 +59,12 @@ class Node:
                             )
 
     def __init__(self, data):
+        Node.node_index[data["id"]] = self
+        self.id = data["id"]
         self.name = data["name"]
         self.parse_ports(data["in_ports"] if "in_ports" in data else None,
                          data["out_ports"] if "out_ports" in data else None)
-        self.nodes = [Node.class_map[node["name"]] for node in data["nodes"]]
-        self.parse_edges(data["edges"])
+        if "nodes" in data:
+            self.nodes = [Node.class_map[node["name"]](node) for node in data["nodes"]]
+        if "edges" in data:
+            self.parse_edges(data["edges"])
