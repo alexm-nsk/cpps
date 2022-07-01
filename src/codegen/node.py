@@ -4,7 +4,7 @@
 code generator node
 """
 from .port import Port
-from .type import Type
+from .type import Type, get_type
 from .edge import Edge
 
 
@@ -16,7 +16,7 @@ class Node:
     def parse_port(port):
         return Port(
             port["node_id"],
-            Type(port["type"]),
+            get_type(port["type"]),
             port["index"],
             port["label"] if "label" in port else None,
         )
