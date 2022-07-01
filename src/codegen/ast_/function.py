@@ -8,5 +8,8 @@ from ..node import Node
 
 class Function(Node):
 
+    functions = {}
+
     def __init__(self, data):
         super().__init__(data)
+        Function.functions[self.function_name] = self
