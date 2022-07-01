@@ -4,7 +4,6 @@
 Edges for code generator
 """
 
-from dataclasses import dataclass
 from .port import Port
 
 # from .type import Type
