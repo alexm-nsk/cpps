@@ -4,7 +4,7 @@
 code generator node parsing
 """
 
-from .ast_ import function, array, call, alg, common, if_, let, literal, loop
+from .ast_ import function, array_access, call, alg, common, if_, let, literal, loop
 from .node import Node
 
 class_map = {
@@ -27,7 +27,7 @@ class_map = {
     "Returns": loop.Returns,
     "OldValue": loop.OldValue,
     "Reduction": loop.Reduction,
-    "ArrayAccess": array.ArrayAccess,
+    "ArrayAccess": array_access.ArrayAccess,
     "BuiltInFunctionCall": call.BuiltInFunctionCall,
     "Let": let.Let,
     "RangeGen": loop.RangeGen,
@@ -45,5 +45,5 @@ def parse_ir(ir_data):
     for fn_ in ir_data["functions"]:
         parse_node(fn_)
 
-    #for key in sorted(Node.node_index):
-        #print(key, Node.node_index[key])
+    # for key in sorted(Node.node_index):
+    # print(key, Node.node_index[key])

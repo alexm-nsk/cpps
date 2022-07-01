@@ -60,8 +60,10 @@ class Node:
         self.location = data["location"] if "location" in data else None
         self.id = data["id"]
         self.name = data["name"]
-        self.parse_ports(data["in_ports"] if "in_ports" in data else None,
-                         data["out_ports"] if "out_ports" in data else None)
+        self.parse_ports(
+            data["in_ports"] if "in_ports" in data else None,
+            data["out_ports"] if "out_ports" in data else None,
+        )
         if "nodes" in data:
             self.nodes = [Node.class_map[node["name"]](node)
                           for node in data["nodes"]]
@@ -72,6 +74,7 @@ class Node:
 
         if self.name == "Let":
             from .ast_.let import LetBody
+
             self.body = LetBody(data["body"])
             del data["body"]
 
@@ -79,10 +82,7 @@ class Node:
             if isinstance(value, dict):
                 if "name" in value and value["name"] in self.class_map:
                     self.__dict__[field] = self.class_map[value["name"]](value)
-            elif field in ["value",
-                           "operator",
-                           "function_name",
-                           "callee"]:
+            elif field in ["value", "operator", "function_name", "callee"]:
                 self.__dict__[field] = value
 
         if "edges" in data:

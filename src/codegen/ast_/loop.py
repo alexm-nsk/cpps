@@ -8,9 +8,7 @@ from ..node import Node
 
 class LoopExpression(Node):
 
-    def __init__(self, data):
-        super().__init__(data)
-        #print(self.in_ports)
+    pass
 
 
 class Condition(Node):

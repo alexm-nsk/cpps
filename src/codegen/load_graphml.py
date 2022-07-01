@@ -5,4 +5,4 @@
 
 
 def load_graphml(file_contents):
-    return "not implemented"
+    return "graphml not implemented"

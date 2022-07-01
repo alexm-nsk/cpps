@@ -6,8 +6,6 @@ Edges for code generator
 
 from .port import Port
 
-# from .type import Type
-
 
 class Edge:
 
