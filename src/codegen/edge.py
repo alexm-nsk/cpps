@@ -6,27 +6,26 @@ Edges for code generator
 
 from dataclasses import dataclass
 from .port import Port
+
 # from .type import Type
 
 
-edges = []
-from_edges = {}
-to_edges = {}
-
-
-@dataclass
 class Edge:
 
-    from_: Port
-    to: Port
+    edges = []
+    from_edges = {}
+    to_edges = {}
 
-    def __post_init__(self):
-        if self.from_.node_id not in from_edges:
-            from_edges[self.from_.node_id] = []
+    def __init__(self, from_: Port, to: Port):
+        self.from_ = from_
+        self.to = to
 
-        if self.to.node_id not in to_edges:
-            to_edges[self.to.node_id] = []
+        if self.from_.node_id not in Edge.from_edges:
+            Edge.from_edges[self.from_.node_id] = []
 
-        from_edges[self.from_.node_id].append(self)
-        to_edges[self.to.node_id].append(self)
-        edges.append(self)
+        if self.to.node_id not in Edge.to_edges:
+            Edge.to_edges[self.to.node_id] = []
+
+        Edge.from_edges[self.from_.node_id].append(self)
+        Edge.to_edges[self.to.node_id].append(self)
+        Edge.edges.append(self)
