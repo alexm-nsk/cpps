@@ -4,7 +4,7 @@
 code generator node
 """
 from .port import Port
-from .type import Type, get_type
+from .type import get_type
 from .edge import Edge
 
 
