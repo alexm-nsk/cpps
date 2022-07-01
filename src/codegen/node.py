@@ -53,9 +53,7 @@ class Node:
             else:
                 pass
 
-            self.edges.append(
-                            Edge(from_, to)
-                            )
+            self.edges.append(Edge(from_, to))
 
     def __init__(self, data):
         Node.node_index[data["id"]] = self
