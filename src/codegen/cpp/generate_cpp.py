@@ -5,4 +5,5 @@
 
 
 def generate_cpp(functions: dict):
-    pass
+    for name, function in functions.items():
+        print(name, function)
