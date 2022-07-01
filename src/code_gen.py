@@ -29,8 +29,8 @@ def main(args):
             elif file_name.lower().endswith(".gml"):
                 ir_ = load_graphml(input_text)
             functions = parse_ir(ir_)
-            from codegen.cpp.generate_cpp import generate_cpp
-            generate_cpp(functions)
+            from codegen.cpp.ir_to_cpp import ir_to_cpp
+            ir_to_cpp(functions)
     return 0
 
 

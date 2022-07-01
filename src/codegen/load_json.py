@@ -8,8 +8,7 @@ import re
 
 
 def python_names(obj):
-    """Converts snake_case to camelCase in a dictionary
-    and removes '_' at the end"""
+    """Converts camelCase to snake_case in a dictionary"""
     new_object = {}
 
     def convert(value):
