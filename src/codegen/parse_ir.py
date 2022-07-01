@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 
 
+nodes = {}
+
+
 class Type:
     def __init__(self, type_object):
         self.location = type_object["location"]
@@ -32,8 +35,9 @@ def get_port(node_id, index):
 
 def parse_edge(edge):
     if "from" in edge and "to" in edge:
-        from_ = Port(edge["from"][0], None, edge["from"][1])
-        return Edge(edge)
+        from_ = Port(edge["from"][0], None, edge["from"][1], None)
+        to = Port(edge["to"][0], None, edge["to"][1], None)
+        return Edge(from_, to)
     else:
         from_, to = (
             Port(
@@ -57,8 +61,9 @@ def parse_port(port):
 
 
 def parse_node(node):
-    in_ports = [parse_port(port) for port in node["in_ports"]]
-    out_ports = [parse_port(port) for port in node["out_ports"]]
+    nodes[node["id"]] = node
+    node["in_ports"] = [parse_port(port) for port in node["in_ports"]]
+    node["out_ports"] = [parse_port(port) for port in node["out_ports"]]
     # print(in_ports, out_ports)
     for edge in node["edges"]:
         parse_edge(edge)
