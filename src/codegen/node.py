@@ -16,7 +16,7 @@ class Node:
     def parse_port(port):
         return Port(
             port["node_id"],
-            get_type(port["type"]),
+            get_type(port["type"]),  # chooses an appropriate class
             port["index"],
             port["label"] if "label" in port else None,
         )
