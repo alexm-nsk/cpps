@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Type for code generator
+"""
 
 
 class Type:
@@ -8,4 +13,3 @@ class Type:
         else:
             self.element = Type(type_object["element"])
             self.multitype = type_object["multi_type"]
-

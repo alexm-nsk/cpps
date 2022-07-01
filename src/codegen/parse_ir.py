@@ -1,15 +1,6 @@
-from dataclasses import dataclass
-from .ast_ import (function,
-                   array,
-                   call,
-                   alg,
-                   common,
-                   if_,
-                   let,
-                   literal,
-                   loop)
-from .node import Node
 
+from .ast_ import function, array, call, alg, common, if_, let, literal, loop
+from .node import Node
 
 class_map = {
     "Lambda": function.Function,
@@ -35,14 +26,13 @@ class_map = {
     "Scatter": loop.Scatter,
 }
 
+Node.class_map = class_map
+
 nodes = {}
 
 
-
-
-
 def parse_node(node):
-    nodes[node["id"]] = class_map[node["name"]](node)
+    Node.nodes[node["id"]] = class_map[node["name"]](node)
 
 
 def parse_ir(ir_data):
