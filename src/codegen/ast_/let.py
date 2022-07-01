@@ -7,3 +7,6 @@ from ..node import Node
 
 class Let(Node):
     pass
+
+class LetBody(Node):
+    pass

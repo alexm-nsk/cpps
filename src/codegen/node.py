@@ -67,9 +67,13 @@ class Node:
                           for node in data["nodes"]]
 
         if "branches" in data:
-            self.branches = [Node.class_map["Else"](br)
+            self.branches = [Node.class_map["Branch"](br)
                              for br in data["branches"]]
 
+        if self.name == "Let":
+            from .ast_.let import LetBody
+            self.body = LetBody(data["body"])
+            del data["body"]
 
         for field, value in data.items():
             if isinstance(value, dict):
