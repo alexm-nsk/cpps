@@ -7,3 +7,9 @@ from ..node import Node
 
 class If(Node):
     pass
+
+class Branch(Node):
+    pass
+
+class Condition(Node):
+    pass

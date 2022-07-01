@@ -6,5 +6,9 @@ code generator call
 from ..node import Node
 
 
-class Call(Node):
+class FunctionCall(Node):
+    pass
+
+
+class BuiltInFunctionCall(Node):
     pass
