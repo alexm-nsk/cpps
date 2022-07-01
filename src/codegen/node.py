@@ -39,8 +39,7 @@ class Node:
             if "from" in edge and "to" in edge:
                 src_index = edge["from"][1]
                 dst_index = edge["to"][1]
-                print(edge)
-                print(self.node_index)
+
                 src_node = self.node_index[edge["from"][0]]
                 dst_node = self.node_index[edge["to"][0]]
 
@@ -65,6 +64,7 @@ class Node:
         self.parse_ports(data["in_ports"] if "in_ports" in data else None,
                          data["out_ports"] if "out_ports" in data else None)
         if "nodes" in data:
-            self.nodes = [Node.class_map[node["name"]](node) for node in data["nodes"]]
+            self.nodes = [Node.class_map[node["name"]](node)
+                          for node in data["nodes"]]
         if "edges" in data:
             self.parse_edges(data["edges"])
