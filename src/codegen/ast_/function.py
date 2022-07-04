@@ -5,6 +5,7 @@ code generator function
 """
 from ..node import Node
 from ..cpp.cpp_codegen import CppScope, Variable
+from ..edge import Edge
 
 
 class Function(Node):
@@ -23,4 +24,8 @@ class Function(Node):
         function_string = (
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n" "{\n" "}"
         )
+
+        for o_p in self.out_ports:
+            print(o_p)
+            print(Edge.edges_to[self.id])
         return function_string
