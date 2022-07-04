@@ -6,5 +6,5 @@
 from .cpp_codegen import CppModule
 
 
-def ir_to_cpp(functions: dict):
-    print(CppModule(functions))
+def ir_to_cpp(module_name, functions: dict):
+    print(CppModule(module_name, functions))

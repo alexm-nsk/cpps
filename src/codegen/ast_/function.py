@@ -13,3 +13,6 @@ class Function(Node):
     def __init__(self, data):
         super().__init__(data)
         Function.functions[self.function_name] = self
+
+    def to_cpp(self, scope=None):
+        return self.function_name

@@ -20,6 +20,7 @@ def main(args):
     # check if there is piped-in input_text
     # otherwise load it from specified file
     file_name = args[1]
+    module_name = file_name.split(".")[:-1]
     input_text = ""  # check_piped()
     if input_text == "":
         with open(file_name, "r", encoding="UTF-8") as src_file:
@@ -30,7 +31,7 @@ def main(args):
                 ir_ = load_graphml(input_text)
             functions = parse_ir(ir_)
             from codegen.cpp.ir_to_cpp import ir_to_cpp
-            ir_to_cpp(functions)
+            ir_to_cpp(module_name, functions)
     return 0
 
 
