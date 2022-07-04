@@ -14,24 +14,37 @@ class Type:
             self.element = get_type(type_object["element"])
             self.multitype = type_object["multi_type"]
 
-
-class IntegerType:
-    pass
-
-
-class RealType:
-    pass
+    @property
+    def cpp_type(self):
+        return f"{self.__cpp_type__}"
 
 
-class BooleanType:
-    pass
+class IntegerType(Type):
+    __cpp_type__ = "int"
 
 
-class ArrayType:
-    pass
+class RealType(Type):
+    __cpp_type__ = "float"
 
 
-class StreamType:
+class BooleanType(Type):
+    __cpp_type__ = "bool"
+
+
+class ArrayType(Type):
+    @property
+    def cpp_type(self):
+        return f"vector<{self.element.cpp_type}>"
+
+
+class StreamType(Type):
+
+    @property
+    def cpp_type(self):
+        return f"vector<{self.element.cpp_type}>"
+
+
+class AnyType(Type):
     pass
 
 
@@ -41,18 +54,18 @@ type_map = {
     "Boolean": BooleanType,
     "Array": ArrayType,
     "Stream": StreamType,
+    "Any": AnyType,
 }
 
 
 def get_type(type_data: dict):
     if "name" in type_data:
-        print(type_data)
-        if hasattr(type_map, type_data["name"]):
+        if type_data["name"] in type_map:
             return type_map[type_data["name"]](type_data)
         else:
             raise Exception(f"type {type_data['name']} is not supported")
     elif "element" in type_data:
-        if hasattr(type_data, "multi_type"):
-            if type_data["multi_type"].lower() == "array":
+        if "multi_type" in type_data:
+            if type_data["multi_type"].lower() == "stream":
                 return StreamType(type_data)
         return ArrayType(type_data)

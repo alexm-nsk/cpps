@@ -40,6 +40,20 @@ inline int size (vector<int> A)
 """
 
 
+class Variable:
+
+    def __init__(self, name, type_, value = None):
+        self.type_ = type_
+        self.name = name
+        self.value = value
+
+    def __repr__(self):
+        return f"CppVariable<{self.name}, {self.type_}, {self.value}>"
+
+    def definition_str(self):
+        return f"{self.type_.cpp_type} {self.name}"
+
+
 class CppModule:
 
     def __init__(self, name: str, functions: dict, definitions: list = []):
@@ -49,3 +63,9 @@ class CppModule:
 
     def __str__(self):
         return CPP_MODULE_HEADER + "\n\n".join(self.modules)
+
+
+class CppScope:
+
+    def __init__(self, variables):
+        self.variables = variables

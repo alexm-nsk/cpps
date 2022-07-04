@@ -4,7 +4,7 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import CppModule
+from ..cpp.cpp_codegen import CppScope, Variable
 
 
 class Function(Node):
@@ -16,5 +16,11 @@ class Function(Node):
         Function.functions[self.function_name] = self
 
     def to_cpp(self, scope=None):
-        print(self.in_ports)
-        return self.function_name
+        ret_type = self.out_ports[0].type
+        arg_vars = [Variable(port.label, port.type) for port in self.in_ports]
+        this_function_scope = CppScope(arg_vars)
+        arg_str = ', '.join([arg.definition_str() for arg in arg_vars])
+        function_string = f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"\
+                                                        "{\n"\
+                                                        "}"
+        return function_string
