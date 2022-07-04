@@ -14,9 +14,11 @@ class Node:
 
     @staticmethod
     def parse_port(port):
+        type_ = get_type(port["type"])
+        print(type_)
         return Port(
             port["node_id"],
-            get_type(port["type"]),  # chooses an appropriate class
+            type_,  # chooses an appropriate class
             port["index"],
             port["label"] if "label" in port else None,
         )
@@ -60,6 +62,8 @@ class Node:
         self.location = data["location"] if "location" in data else None
         self.id = data["id"]
         self.name = data["name"]
+        #if data["name"]=="Lambda":
+            #print(data["in_ports"])
         self.parse_ports(
             data["in_ports"] if "in_ports" in data else None,
             data["out_ports"] if "out_ports" in data else None,

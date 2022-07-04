@@ -4,6 +4,7 @@
 code generator function
 """
 from ..node import Node
+from ..cpp.cpp_codegen import CppModule
 
 
 class Function(Node):
@@ -15,4 +16,5 @@ class Function(Node):
         Function.functions[self.function_name] = self
 
     def to_cpp(self, scope=None):
+        print(self.in_ports)
         return self.function_name

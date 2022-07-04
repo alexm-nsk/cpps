@@ -45,13 +45,13 @@ type_map = {
 
 
 def get_type(type_data: dict):
-
-    if hasattr(type_data, "name"):
+    if "name" in type_data:
+        print(type_data)
         if hasattr(type_map, type_data["name"]):
             return type_map[type_data["name"]](type_data)
         else:
             raise Exception(f"type {type_data['name']} is not supported")
-    elif hasattr(type_data, "element"):
+    elif "element" in type_data:
         if hasattr(type_data, "multi_type"):
             if type_data["multi_type"].lower() == "array":
                 return StreamType(type_data)
