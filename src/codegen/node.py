@@ -43,6 +43,7 @@ class Node:
         return False
 
     def parse_edges(self, edges):
+        self.edges = []
         for edge in edges:
             if "from" in edge and "to" in edge:
                 src_index = edge["from"][1]
@@ -57,7 +58,6 @@ class Node:
                 from_ = src_node.__dict__[from_type + "_ports"][src_index]
                 to = dst_node.__dict__[to_type + "_ports"][dst_index]
 
-                return Edge(from_, to)
             else:
                 raise Exception("sisal-cl compatible JSON irs not implemented")
 
