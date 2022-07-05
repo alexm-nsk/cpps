@@ -67,5 +67,5 @@ class CppModule:
 
 class CppScope:
 
-    def __init__(self, variables):
-        self.variables = variables
+    def __init__(self, ports):
+        self.ports = ports

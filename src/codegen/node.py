@@ -8,14 +8,22 @@ from .type import get_type
 from .edge import Edge
 
 
+def get_node(node_id):
+    return Node.node_index[node_id]
+
+
 class Node:
 
     node_index = {}
 
     @staticmethod
+    def get_node(node_id):
+        return Node.node_index[node_id]
+
+    @staticmethod
     def parse_port(port):
         return Port(
-            port["node_id"],
+            Node.get_node(port["node_id"]),
             get_type(port["type"]),  # chooses an appropriate class
             port["index"],
             port["label"] if "label" in port else None,
@@ -65,12 +73,10 @@ class Node:
             data["out_ports"] if "out_ports" in data else None,
         )
         if "nodes" in data:
-            self.nodes = [Node.class_map[node["name"]](node)
-                          for node in data["nodes"]]
+            self.nodes = [Node.class_map[node["name"]](node) for node in data["nodes"]]
 
         if "branches" in data:
-            self.branches = [Node.class_map["Branch"](br)
-                             for br in data["branches"]]
+            self.branches = [Node.class_map["Branch"](br) for br in data["branches"]]
 
         if self.name == "Let":
             from .ast_.let import LetBody

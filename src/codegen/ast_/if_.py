@@ -7,7 +7,9 @@ from ..node import Node
 
 
 class If(Node):
-    pass
+
+    def to_cpp(self, scope):
+        pass
 
 
 class Branch(Node):
