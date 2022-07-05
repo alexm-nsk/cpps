@@ -16,7 +16,7 @@ class Function(Node):
         super().__init__(data)
         Function.functions[self.function_name] = self
 
-    def to_cpp(self, scope=None):
+    def to_cpp(self, scope=None, indent=0):
         ret_type = self.out_ports[0].type
 
         for port in self.in_ports:
@@ -27,11 +27,12 @@ class Function(Node):
         arg_str = ", ".join([port.value.definition_str()
                              for port in self.in_ports])
 
+        for o_p in self.out_ports:
+            node = Edge.edge_to[o_p.id].from_.node
+            o_p.value = node.to_cpp(this_function_scope, indent + 1)
+
         function_string = (
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n" "{\n" "}"
         )
-
-        for o_p in self.out_ports:
-            Edge.edge_to[o_p.id].from_.node
 
         return function_string

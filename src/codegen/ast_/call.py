@@ -7,8 +7,12 @@ from ..node import Node
 
 
 class FunctionCall(Node):
-    pass
+
+    def to_cpp(self, scope, indent):
+        pass
 
 
 class BuiltInFunctionCall(Node):
     pass
+
+

@@ -8,7 +8,7 @@ from ..node import Node
 
 class If(Node):
 
-    def to_cpp(self, scope):
+    def to_cpp(self, scope, indent):
         pass
 
 
