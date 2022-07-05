@@ -72,5 +72,13 @@ class CppModule:
 
 class CppScope:
 
-    def __init__(self, ports):
+    def __init__(self, ports, parent_scope = None):
         self.ports = ports
+        if parent_scope:
+            for port in self.ports:
+                port.value = parent_scope.get_port(port.label).value
+
+    def get_port(self, label: str):
+        for port in self.ports:
+            if port.label == label:
+                return port
