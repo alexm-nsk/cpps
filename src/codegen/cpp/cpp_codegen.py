@@ -70,6 +70,17 @@ class CppModule:
         return CPP_MODULE_HEADER + "\n\n".join(self.modules)
 
 
+class CppBlock:
+
+    def __init__(self):
+        self.variables = []
+        self.variable_index = {}
+
+    def add_variable(self, var: Variable):
+        self.variables.append(var)
+        self.variable_index[var.name] = var
+
+
 class CppScope:
 
     def __init__(self, ports, parent_scope = None):
