@@ -17,12 +17,12 @@ class Edge:
         self.from_ = from_
         self.to = to
 
-        if self.from_.node_id not in Edge.edges_from:
-            Edge.edges_from[self.from_.node_id] = []
+        if self.from_.id not in Edge.edges_from:
+            Edge.edges_from[self.from_.id] = []
 
-        if self.to.node_id not in Edge.edges_to:
-            Edge.edges_to[self.to.node_id] = []
+        if self.to.id not in Edge.edges_to:
+            Edge.edges_to[self.to.id] = []
 
-        Edge.edges_from[self.from_.node_id].append(self)
-        Edge.edges_to[self.to.node_id].append(self)
+        Edge.edges_from[self.from_.id].append(self)
+        Edge.edges_to[self.to.id].append(self)
         Edge.edges.append(self)
