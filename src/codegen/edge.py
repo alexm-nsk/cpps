@@ -11,7 +11,7 @@ class Edge:
 
     edges = []
     edges_from = {}
-    edges_to = {}
+    edge_to = {}
 
     def __init__(self, from_: Port, to: Port):
         self.from_ = from_
@@ -20,9 +20,11 @@ class Edge:
         if self.from_.id not in Edge.edges_from:
             Edge.edges_from[self.from_.id] = []
 
-        if self.to.id not in Edge.edges_to:
-            Edge.edges_to[self.to.id] = []
+        if self.to.id in Edge.edge_to:
+            raise Exception(f"There is already an edge pointing at {to}")
+
+        # Edge.edges_to[self.to.id] = []
 
         Edge.edges_from[self.from_.id].append(self)
-        Edge.edges_to[self.to.id].append(self)
+        Edge.edge_to[self.to.id] = self
         Edge.edges.append(self)

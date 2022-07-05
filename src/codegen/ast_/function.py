@@ -32,7 +32,6 @@ class Function(Node):
         )
 
         for o_p in self.out_ports:
-            print(o_p.node)
-            print(Edge.edges_to[o_p.id][0].from_.node)
+            Edge.edge_to[o_p.id].from_.node
 
         return function_string
