@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """C++ code generation"""
-
+CPP_INDENT = "  "
 CPP_MODULE_HEADER = """\
 #include <stdio.h>
 #include <vector>
@@ -38,6 +38,11 @@ inline int size (vector<int> A)
 
 
 """
+
+
+def indent_cpp(src_code, indent_level=1):
+    indent = indent_level*CPP_INDENT
+    return indent + src_code.replace("\n", "\n" + indent)
 
 
 class Variable:

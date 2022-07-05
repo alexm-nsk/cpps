@@ -19,6 +19,10 @@ class Port:
         self.index = index
         self.label = label
         self.id = next(Port.__ids__)
+        self.value = None
 
     def get_node(self):
         return Node.get_node(self.node_id)
+
+    def __repr__(self):
+        return f"Port<{self.node}, {self.index}, {self.label}, {self.type}, {self.value}>"

@@ -9,7 +9,7 @@ from ..node import Node
 class FunctionCall(Node):
 
     def to_cpp(self, scope, indent):
-        pass
+        return ""
 
 
 class BuiltInFunctionCall(Node):

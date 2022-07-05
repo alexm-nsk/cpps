@@ -10,13 +10,11 @@ from ..edge import Edge
 class If(Node):
 
     def to_cpp(self, scope, indent):
+        self.out_ports[0].value = 1
 
-        #for i_p in self.in_ports:
-            #print(Edge.edge_to)
-        #for e in Edge.edges:
-            #print(e)
-        print(self.branches[0].__dict__)
+        cond = 1
 
+        return f"if({cond})\n{1}else{2}"
 
 
 class Branch(Node):
