@@ -15,9 +15,9 @@ class If(Node):
         print(self.in_ports[0].value)
         self.out_ports[0].value = 1
 
-        cond = 1
+        condition_src = self.condition.to_cpp(if_scope, indent + 1)
 
-        return f"if({cond})\n{1}else{2}"
+        return f"if({condition_src})\n{1}else{2}"
 
 
 class Branch(Node):
@@ -25,4 +25,8 @@ class Branch(Node):
 
 
 class Condition(Node):
-    pass
+
+    def to_cpp(self, scope, indent):
+        cond_scope = CppScope(self.in_ports, scope)
+
+        return f""
