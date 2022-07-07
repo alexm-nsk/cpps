@@ -49,12 +49,12 @@ class AnyType(Type):
 
 
 type_map = {
-    "Integer": IntegerType,
-    "Real": RealType,
-    "Boolean": BooleanType,
-    "Array": ArrayType,
-    "Stream": StreamType,
-    "Any": AnyType,
+    "integer": IntegerType,
+    "real": RealType,
+    "boolean": BooleanType,
+    "array": ArrayType,
+    "stream": StreamType,
+    "any": AnyType,
 }
 
 

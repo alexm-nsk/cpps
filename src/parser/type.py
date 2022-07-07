@@ -39,7 +39,7 @@ class Type:
 class AnyType(Type):
     """Class for describing arbitrary type"""
 
-    name: str = "Any"
+    name: str = "any"
 
     def gml(self):
         return "any type"
