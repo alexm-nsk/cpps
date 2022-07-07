@@ -9,11 +9,16 @@ from ..cpp.cpp_codegen import CppScope, CppVariable, indent_cpp, CppBlock, cpp_e
 
 
 class Binary(Node):
+
     def to_cpp(self, scope, block, indent, name=None):
-        print(Edge.edge_to[self.in_ports[0].id].from_)
-        print(Edge.edge_to[self.in_ports[0].id].from_.value)
-        #left = cpp_eval(self.in_ports[0], scope, block, indent)
+        left = cpp_eval(self.in_ports[0], scope, block, indent)
         right = cpp_eval(self.in_ports[1], scope, block, indent)
+        # TODO use output port type
+        # TODO make addvariable also return it
+        result = CppVariable("bin", "int")
+        block.add_variable(result)
+        block.add_code(CppAssignment(result, f"{left} {self.operator} {right}"))
+
 
 class Unary(Node):
     pass
