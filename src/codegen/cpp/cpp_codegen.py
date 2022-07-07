@@ -57,6 +57,9 @@ class CppVariable:
     def __repr__(self):
         return f"CppVariable<{self.name}, {self.type_}, {self.value}>"
 
+    def __str__(self):
+        return self.name
+
     def definition_str(self):
         return f"{self.type_.cpp_type} {self.name}"
 
@@ -100,7 +103,12 @@ class CppBlock:
         self.statements += [code]
 
     def __str__(self):
-        return "\n".join(self.statements)
+
+        return (
+            self.add_curly_brackets * "{\n"
+            + "\n".join(self.statements)
+            + self.add_curly_brackets * "\n}"
+        )
 
 
 class CppScope:
