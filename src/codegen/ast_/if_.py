@@ -14,10 +14,10 @@ class If(Node):
         if_scope = CppScope(self.in_ports, scope)
         self.out_ports[0].value = 1
 
-        then_block = CppBlock()
+        then_block = CppBlock(add_curly_brackets=True)
         condition_result = self.condition.to_cpp(if_scope, block, indent + 1)
 
-        block.add_code(f"if({condition_result})\n{then_block}else{2}\n")
+        block.add_code(f"if({condition_result})\n{then_block}else" "{\n2\n}\n")
 
 
 class Branch(Node):

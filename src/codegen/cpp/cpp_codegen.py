@@ -86,7 +86,11 @@ class CppStatement:
 
 class CppAssignment(CppStatement):
     def __init__(self, variable: CppVariable, expression: CppExpression):
-        pass
+        self.variable = variable
+        self.expression = expression
+
+    def __str__(self):
+        return f"{self.variable} = {self.expression};"
 
 
 class CppBlock:
