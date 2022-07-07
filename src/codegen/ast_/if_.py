@@ -4,20 +4,21 @@
 code generator if
 """
 from ..node import Node
-from ..edge import Edge
-from ..type import BooleanType
 from ..cpp.cpp_codegen import CppScope, CppVariable, indent_cpp, CppBlock
 
 
 class If(Node):
-    def to_cpp(self, scope, block, indent, name = None):
+    def to_cpp(self, scope, block, indent, name=None):
         if_scope = CppScope(self.in_ports, scope)
         self.out_ports[0].value = 1
 
         then_block = CppBlock(add_curly_brackets=True)
         condition_result = self.condition.to_cpp(if_scope, block, indent + 1)
 
-        block.add_code(f"if({condition_result})\n{then_block}else" "{\n2\n}\n")
+        block.add_code(
+            f"if({condition_result})\n{indent_cpp(str(then_block), 1)}else"
+            "{\n2\n}\n"
+        )
 
 
 class Branch(Node):
@@ -25,7 +26,7 @@ class Branch(Node):
 
 
 class Condition(Node):
-    def to_cpp(self, scope, block, indent, name = None):
+    def to_cpp(self, scope, block, indent, name=None):
         cond_scope = CppScope(self.in_ports, scope)
         cond_result = CppVariable("cond", "bool")
         block.add_variable(cond_result)
