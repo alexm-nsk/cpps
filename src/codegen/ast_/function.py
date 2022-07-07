@@ -27,11 +27,9 @@ class Function(Node):
         arg_str = ", ".join([port.value.definition_str()
                              for port in self.in_ports])
 
-        for o_p in self.out_ports:
-            output_edge = Edge.edge_to[o_p.id]
-            node = output_edge.from_.node
-            function_block = CppBlock()
+        function_block = CppBlock()
 
+        for o_p in self.out_ports:
             cpp_eval(o_p, this_function_scope, function_block, indent + 1)
 
         function_string = (

@@ -114,7 +114,7 @@ class CppBlock:
             self.add_curly_brackets * "{\n"
             + "\n".join([f"{var.type_} {var.name};" for var in self.variables])
             + "\n"
-            + "\n".join(self.statements)
+            + "\n".join([str(statement) for statement in self.statements])
             + self.add_curly_brackets * "\n}"
         )
 
@@ -135,6 +135,8 @@ class CppScope:
 def cpp_eval(in_port, scope, block, indent, name=None):
     port = Edge.edge_to[in_port.id].from_
     if port.value:
+        #print(port.value)
         in_port.value = port.value
     else:
         in_port.value = port.node.to_cpp(scope, block, indent, name)
+    return in_port.value
