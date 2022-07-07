@@ -59,7 +59,17 @@ class Node:
                 to = dst_node.__dict__[to_type + "_ports"][dst_index]
 
             else:
-                raise Exception("sisal-cl compatible JSON irs not implemented")
+                src_index = edge[0]["index"]
+                dst_index = edge[1]["index"]
+
+                src_node = self.node_index[edge[0]["node_id"]]
+                dst_node = self.node_index[edge[1]["node_id"]]
+
+                from_type = "in" if dst_node.is_parent(src_node) else "out"
+                to_type = "out" if src_node.is_parent(dst_node) else "in"
+
+                from_ = src_node.__dict__[from_type + "_ports"][src_index]
+                to = dst_node.__dict__[to_type + "_ports"][dst_index]
 
             self.edges.append(Edge(from_, to))
 
