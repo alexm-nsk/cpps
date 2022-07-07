@@ -16,7 +16,7 @@ class If(Node):
         condition_result = self.condition.to_cpp(if_scope, block, indent + 1)
 
         block.add_code(
-            f"if({condition_result})\n{indent_cpp(str(then_block), 1)}else"
+            f"if({condition_result})\n{str(then_block)}else"
             "{\n2\n}\n"
         )
 
