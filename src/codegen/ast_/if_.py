@@ -10,7 +10,7 @@ from ..cpp.cpp_codegen import CppScope, CppVariable, indent_cpp, CppBlock
 
 
 class If(Node):
-    def to_cpp(self, scope, block, indent):
+    def to_cpp(self, scope, block, indent, name = None):
         if_scope = CppScope(self.in_ports, scope)
         self.out_ports[0].value = 1
 
@@ -25,7 +25,7 @@ class Branch(Node):
 
 
 class Condition(Node):
-    def to_cpp(self, scope, block, indent):
+    def to_cpp(self, scope, block, indent, name = None):
         cond_scope = CppScope(self.in_ports, scope)
         cond_result = CppVariable("cond", "bool")
         block.add_variable(cond_result)
