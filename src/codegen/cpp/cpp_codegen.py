@@ -134,9 +134,7 @@ class CppScope:
 
 def cpp_eval(in_port, scope, block, indent, name=None):
     port = Edge.edge_to[in_port.id].from_
-    if port.value:
-        #print(port.value)
-        in_port.value = port.value
-    else:
-        in_port.value = port.node.to_cpp(scope, block, indent, name)
+    if not port.value:
+        port.node.to_cpp(scope, block, indent, name)
+    in_port.value = port.value
     return in_port.value

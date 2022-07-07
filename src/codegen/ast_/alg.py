@@ -18,6 +18,7 @@ class Binary(Node):
         result = CppVariable("bin", "int")
         block.add_variable(result)
         block.add_code(CppAssignment(result, f"{left} {self.operator} {right}"))
+        self.out_ports[0].value = result
 
 
 class Unary(Node):
