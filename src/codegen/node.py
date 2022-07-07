@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-code generator node
+code generator node (mostly deserealizing code)
 """
 from .port import Port
 from .type import get_type
@@ -87,6 +87,15 @@ class Node:
 
         if "branches" in data:
             self.branches = [Node.class_map["Branch"](br) for br in data["branches"]]
+
+        if "results" in data:
+            for index, result in enumerate(data["results"]):
+                self.out_ports[index].label = result[0]
+
+        if "params" in data:
+
+            for index, result in enumerate(data["params"]):
+                self.in_ports[index].label = result[0]
 
         if self.name == "Let":
             from .ast_.let import LetBody
