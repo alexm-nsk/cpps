@@ -4,7 +4,7 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import CppScope, CppBlock, Variable, indent_cpp
+from ..cpp.cpp_codegen import CppScope, CppBlock, CppVariable, indent_cpp
 from ..edge import Edge
 
 
@@ -20,7 +20,7 @@ class Function(Node):
         ret_type = self.out_ports[0].type
 
         for port in self.in_ports:
-            port.value = Variable(port.label, port.type)
+            port.value = CppVariable(port.label, port.type)
 
         this_function_scope = CppScope(self.in_ports)
 
@@ -36,7 +36,10 @@ class Function(Node):
 
         function_string = (
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"
-            "{\n" + str(function_block) + "\n}"
+            "{\n" +
+            indent_cpp(str(function_block), indent + 1) +
+            f"return {o_p.value};" +
+            "\n}"
         )
 
         return function_string

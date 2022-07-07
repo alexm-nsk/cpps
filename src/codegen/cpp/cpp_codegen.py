@@ -45,7 +45,7 @@ def indent_cpp(src_code, indent_level=1):
     return indent + src_code.replace("\n", "\n" + indent)
 
 
-class Variable:
+class CppVariable:
 
     variable_index = {}
 
@@ -82,17 +82,18 @@ class CppStatement:
 
 
 class CppAssignment(CppStatement):
-    def __init__(self, variable: Variable, expression: CppExpression):
+    def __init__(self, variable: CppVariable, expression: CppExpression):
         pass
 
 
 class CppBlock:
-    def __init__(self):
+    def __init__(self, add_curly_brackets=False):
         self.variables = []
         self.return_variables = []
         self.statements = []
+        self.add_curly_brackets = add_curly_brackets
 
-    def add_variable(self, var: Variable):
+    def add_variable(self, var: CppVariable):
         self.variables.append(var)
 
     def add_code(self, code):
