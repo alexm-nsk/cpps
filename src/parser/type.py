@@ -60,7 +60,7 @@ class SingularType(Type):
 class IntegerType(Type):
     """Class for describing integer type"""
 
-    name: str = "Integer"
+    name: str = "integer"
 
     def gml(self):
         return "integer"
@@ -70,7 +70,7 @@ class IntegerType(Type):
 class BooleanType(Type):
     """Class for describing boolean type"""
 
-    name: str = "Boolean"
+    name: str = "boolean"
 
     def gml(self):
         return "boolean"
@@ -80,7 +80,7 @@ class BooleanType(Type):
 class RealType(Type):
     """Class for describing real types"""
 
-    name: str = "Real"
+    name: str = "real"
 
     def gml(self):
         return "real"
