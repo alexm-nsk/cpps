@@ -15,7 +15,7 @@ class Binary(Node):
         right = cpp_eval(self.in_ports[1], scope, block, indent)
         # TODO use output port type
         # TODO make addvariable also return it
-        result = CppVariable("bin", "int")
+        result = CppVariable("bin", self.out_ports[0].type.cpp_type)
         block.add_variable(result)
         block.add_code(CppAssignment(result, f"{left} {self.operator} {right}"))
         self.out_ports[0].value = result
