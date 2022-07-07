@@ -8,7 +8,7 @@ from ..node import Node
 
 class FunctionCall(Node):
 
-    def to_cpp(self, scope, indent):
+    def to_cpp(self, scope, block, indent):
         return ""
 
 

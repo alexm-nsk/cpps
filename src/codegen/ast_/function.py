@@ -4,7 +4,7 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import CppScope, Variable, indent_cpp
+from ..cpp.cpp_codegen import CppScope, CppBlock, Variable, indent_cpp
 from ..edge import Edge
 
 
@@ -16,7 +16,7 @@ class Function(Node):
         super().__init__(data)
         Function.functions[self.function_name] = self
 
-    def to_cpp(self, scope=None, indent=0):
+    def to_cpp(self, indent=0):
         ret_type = self.out_ports[0].type
 
         for port in self.in_ports:
@@ -28,15 +28,15 @@ class Function(Node):
                              for port in self.in_ports])
 
         for o_p in self.out_ports:
-            node = Edge.edge_to[o_p.id].from_.node
-            function_body = indent_cpp(
-                node.to_cpp(this_function_scope, indent + 1)
-                )
-            o_p.value = Edge.edge_to[o_p.id].from_.value
+            output_edge = Edge.edge_to[o_p.id]
+            node = output_edge.from_.node
+            function_block = CppBlock()
+            node.to_cpp(this_function_scope, function_block, indent + 1)
+            o_p.value = output_edge.from_.value
 
         function_string = (
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"
-            "{\n" + str(function_body) + "\n}"
+            "{\n" + str(function_block) + "\n}"
         )
 
         return function_string

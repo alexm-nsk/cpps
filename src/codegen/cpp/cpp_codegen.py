@@ -41,13 +41,15 @@ inline int size (vector<int> A)
 
 
 def indent_cpp(src_code, indent_level=1):
-    indent = indent_level*CPP_INDENT
+    indent = indent_level * CPP_INDENT
     return indent + src_code.replace("\n", "\n" + indent)
 
 
 class Variable:
 
-    def __init__(self, name, type_, value = None):
+    variable_index = {}
+
+    def __init__(self, name, type_, value=None):
         self.type_ = type_
         self.name = name
         self.value = value
@@ -60,7 +62,6 @@ class Variable:
 
 
 class CppModule:
-
     def __init__(self, name: str, functions: dict, definitions: list = []):
         self.modules = []
         for name, f in functions.items():
@@ -70,20 +71,39 @@ class CppModule:
         return CPP_MODULE_HEADER + "\n\n".join(self.modules)
 
 
-class CppBlock:
+class CppExpression:
+    def __init__(self):
+        pass
 
+
+class CppStatement:
+    def __init__(self):
+        pass
+
+
+class CppAssignment(CppStatement):
+    def __init__(self, variable: Variable, expression: CppExpression):
+        pass
+
+
+class CppBlock:
     def __init__(self):
         self.variables = []
-        self.variable_index = {}
+        self.return_variables = []
+        self.statements = []
 
     def add_variable(self, var: Variable):
         self.variables.append(var)
-        self.variable_index[var.name] = var
+
+    def add_code(self, code):
+        self.statements += [code]
+
+    def __str__(self):
+        return "\n".join(self.statements)
 
 
 class CppScope:
-
-    def __init__(self, ports, parent_scope = None):
+    def __init__(self, ports, parent_scope=None):
         self.ports = ports
         if parent_scope:
             for port in self.ports:
