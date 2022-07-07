@@ -4,7 +4,7 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import CppScope, CppBlock, CppVariable, indent_cpp
+from ..cpp.cpp_codegen import CppScope, CppBlock, CppVariable, indent_cpp, cpp_eval
 from ..edge import Edge
 
 
@@ -31,8 +31,8 @@ class Function(Node):
             output_edge = Edge.edge_to[o_p.id]
             node = output_edge.from_.node
             function_block = CppBlock()
-            node.to_cpp(this_function_scope, function_block, indent + 1)
-            o_p.value = output_edge.from_.value
+
+            cpp_eval(o_p, this_function_scope, function_block, indent + 1)
 
         function_string = (
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"

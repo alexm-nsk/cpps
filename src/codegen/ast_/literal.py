@@ -5,5 +5,7 @@ code generator literal
 """
 from ..node import Node
 
+
 class Literal(Node):
-    pass
+    def to_cpp(self, scope, block, indent, name=None):
+        pass

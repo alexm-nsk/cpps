@@ -7,7 +7,8 @@ from ..node import Node
 
 
 class Binary(Node):
-    pass
+    def to_cpp(self, scope, block, indent, name=None):
+        pass
 
 
 class Unary(Node):

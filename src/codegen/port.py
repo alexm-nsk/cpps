@@ -4,16 +4,15 @@
 Port for code generator
 """
 
-
-from dataclasses import dataclass
 from .type import Type
 from itertools import count
+
 
 class Port:
 
     __ids__ = count()
 
-    def __init__(self, node, type, index, label):
+    def __init__(self, node, type: Type, index, label):
         self.node = node
         self.type = type
         self.index = index
@@ -21,8 +20,7 @@ class Port:
         self.id = next(Port.__ids__)
         self.value = None
 
-    def get_node(self):
-        return Node.get_node(self.node_id)
-
     def __repr__(self):
-        return f"Port<{self.node}, {self.index}, {self.label}, {self.type}, {self.value}>"
+        return (
+            f"Port<{self.node}, {self.index}, {self.label}, {self.type}, {self.value}>"
+        )

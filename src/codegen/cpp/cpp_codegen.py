@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 """C++ code generation"""
+from ..edge import Edge
+
 CPP_INDENT = "  "
 CPP_MODULE_HEADER = """\
 #include <stdio.h>
@@ -128,3 +130,11 @@ class CppScope:
         for port in self.ports:
             if port.label == label:
                 return port
+
+
+def cpp_eval(in_port, scope, block, indent, name=None):
+    port = Edge.edge_to[in_port.id].from_
+    if port.value:
+        in_port.value = port.value
+    else:
+        in_port.value = port.node.to_cpp(scope, block, indent, name)
