@@ -59,6 +59,7 @@ class Node:
                 to = dst_node.__dict__[to_type + "_ports"][dst_index]
 
             else:
+                # sisal-cl IRs:
                 src_index = edge[0]["index"]
                 dst_index = edge[1]["index"]
 
@@ -88,12 +89,13 @@ class Node:
         if "branches" in data:
             self.branches = [Node.class_map["Branch"](br) for br in data["branches"]]
 
+        # sisal-cl IRs only:
         if "results" in data:
             for index, result in enumerate(data["results"]):
                 self.out_ports[index].label = result[0]
 
+        # sisal-cl IRs only:
         if "params" in data:
-
             for index, result in enumerate(data["params"]):
                 self.in_ports[index].label = result[0]
 
