@@ -24,7 +24,8 @@ class Function(Node):
 
         this_function_scope = CppScope(self.in_ports)
 
-        arg_str = ", ".join([port.value.definition_str() for port in self.in_ports])
+        arg_str = ", ".join([port.value.definition_str()
+                             for port in self.in_ports])
 
         for o_p in self.out_ports:
             node = Edge.edge_to[o_p.id].from_.node

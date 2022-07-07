@@ -83,11 +83,14 @@ class Node:
             data["in_ports"] if "in_ports" in data else None,
             data["out_ports"] if "out_ports" in data else None,
         )
+
         if "nodes" in data:
-            self.nodes = [Node.class_map[node["name"]](node) for node in data["nodes"]]
+            self.nodes = [Node.class_map[node["name"]](node)
+                          for node in data["nodes"]]
 
         if "branches" in data:
-            self.branches = [Node.class_map["Branch"](br) for br in data["branches"]]
+            self.branches = [Node.class_map["Branch"](br)
+                             for br in data["branches"]]
 
         # sisal-cl IRs only:
         if "results" in data:
