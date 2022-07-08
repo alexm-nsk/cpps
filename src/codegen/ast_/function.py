@@ -17,6 +17,7 @@ class Function(Node):
         Function.functions[self.function_name] = self
 
     def to_cpp(self):
+        CppVariable.variable_index = {}
         ret_type = self.out_ports[0].type
 
         for port in self.in_ports:

@@ -54,6 +54,13 @@ class CppVariable:
     def __init__(self, name, type_, value=None):
         self.type_ = type_
         self.name = name
+        if name not in self.variable_index:
+            self.variable_index[name] = 0
+        self.variable_index[name] += 1
+
+        if self.variable_index[name] > 1:
+            self.name = name + str(self.variable_index[name])
+
         self.value = value
 
     def __repr__(self):
