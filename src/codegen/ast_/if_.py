@@ -21,14 +21,19 @@ class If(Node):
         block.add_variable(if_result)
         self.out_ports[0].value = if_result
         condition_result = self.condition.to_cpp(if_scope, block)
+
         then_block = CppBlock(add_curly_brackets=False)
+        else_block = CppBlock(add_curly_brackets=False)
+
         self.branches[0].to_cpp(self.out_ports[0].value, if_scope, then_block)
+        self.branches[1].to_cpp(self.out_ports[0].value, if_scope, else_block)
 
         block.add_code(f"if({condition_result})""\n{\n"
                        f"{indent_cpp(str(then_block))}"
                        "\n}\nelse\n"
                        "{\n"
-                       "}")
+                       f"{indent_cpp(str(else_block))}"
+                       "\n}")
 
 
 class Branch(Node):
