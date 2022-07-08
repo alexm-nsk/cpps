@@ -10,12 +10,12 @@ from ..cpp.cpp_codegen import CppScope, CppVariable, indent_cpp, CppBlock, cpp_e
 
 class Binary(Node):
 
-    def to_cpp(self, scope, block, name=None):
+    def to_cpp(self, scope, block, name="bin"):
         left = cpp_eval(self.in_ports[0], scope, block)
         right = cpp_eval(self.in_ports[1], scope, block)
         # TODO use output port type
         # TODO make addvariable also return it
-        result = CppVariable("bin", self.out_ports[0].type.cpp_type)
+        result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(result)
         block.add_code(CppAssignment(result, f"{left} {self.operator} {right}"))
         self.out_ports[0].value = result

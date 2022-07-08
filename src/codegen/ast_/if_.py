@@ -15,12 +15,12 @@ from ..cpp.cpp_codegen import (
 
 
 class If(Node):
-    def to_cpp(self, scope, block, name=None):
+    def to_cpp(self, scope, block, name="if_result"):
         if_scope = CppScope(self.in_ports, scope)
-        if_result = CppVariable("if_result", self.out_ports[0].type.cpp_type)
+        if_result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(if_result)
         self.out_ports[0].value = if_result
-        condition_result = self.condition.to_cpp(if_scope, block)
+        condition_result = self.condition.to_cpp(if_scope, block, "if_test")
 
         then_block = CppBlock(add_curly_brackets=False)
         else_block = CppBlock(add_curly_brackets=False)
@@ -50,9 +50,9 @@ class Branch(Node):
 
 
 class Condition(Node):
-    def to_cpp(self, scope, block, name=None):
+    def to_cpp(self, scope, block, name="cond"):
         cond_scope = CppScope(self.in_ports, scope)
-        cond_result = CppVariable("cond", "bool")
+        cond_result = CppVariable(name, "bool")
         block.add_variable(cond_result)
         block.add_code(
             CppAssignment(
