@@ -30,12 +30,12 @@ class Function(Node):
         function_block = CppBlock()
 
         for o_p in self.out_ports:
-            cpp_eval(o_p, this_function_scope, function_block, indent + 1)
+            cpp_eval(o_p, this_function_scope, function_block)
 
         function_string = (
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"
             "{\n" +
-            indent_cpp(str(function_block), indent + 1) +
+            indent_cpp(str(function_block)) +
             f"return {o_p.value};" +
             "\n}"
         )
