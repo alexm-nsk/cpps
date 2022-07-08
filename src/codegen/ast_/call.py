@@ -15,9 +15,8 @@ from ..cpp.cpp_codegen import (
 
 
 class FunctionCall(Node):
-    def to_cpp(self, scope, block, name=None):
-        left = cpp_eval(self.in_ports[0], scope, block)
-        result = CppVariable("call", self.out_ports[0].type.cpp_type)
+    def to_cpp(self, scope, block, name="call"):
+        result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(result)
 
         arg_vars = [str(cpp_eval(i_p, scope, block)) for i_p in self.in_ports]
