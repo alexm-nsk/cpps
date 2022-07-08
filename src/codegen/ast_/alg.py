@@ -4,8 +4,7 @@
 code generator algebraic operations
 """
 from ..node import Node
-from ..edge import Edge
-from ..cpp.cpp_codegen import CppScope, CppVariable, indent_cpp, CppBlock, cpp_eval, CppAssignment
+from ..cpp.cpp_codegen import CppVariable, cpp_eval, CppAssignment
 
 
 class Binary(Node):
@@ -15,7 +14,9 @@ class Binary(Node):
         right = cpp_eval(self.in_ports[1], scope, block, "rho")
         result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(result)
-        block.add_code(CppAssignment(result, f"{left} {self.operator} {right}"))
+        block.add_code(
+            CppAssignment(result, f"{left} {self.operator} {right}")
+            )
         self.out_ports[0].value = result
 
 
