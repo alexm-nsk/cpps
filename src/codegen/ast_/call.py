@@ -8,11 +8,9 @@ from ..node import Node
 
 class FunctionCall(Node):
 
-    def to_cpp(self, scope, block, indent, name = None):
+    def to_cpp(self, scope, block, name=None):
         return ""
 
 
 class BuiltInFunctionCall(Node):
     pass
-
-
