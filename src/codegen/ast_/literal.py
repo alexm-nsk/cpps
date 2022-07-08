@@ -7,5 +7,5 @@ from ..node import Node
 
 
 class Literal(Node):
-    def to_cpp(self, scope, block, indent, name=None):
+    def to_cpp(self, scope, block, name=None):
         self.out_ports[0].value = self.value
