@@ -11,8 +11,8 @@ from ..cpp.cpp_codegen import CppScope, CppVariable, indent_cpp, CppBlock, cpp_e
 class Binary(Node):
 
     def to_cpp(self, scope, block, name="bin"):
-        left = cpp_eval(self.in_ports[0], scope, block)
-        right = cpp_eval(self.in_ports[1], scope, block)
+        left = cpp_eval(self.in_ports[0], scope, block, "lho")
+        right = cpp_eval(self.in_ports[1], scope, block, "rho")
         # TODO use output port type
         # TODO make addvariable also return it
         result = CppVariable(name, self.out_ports[0].type.cpp_type)
