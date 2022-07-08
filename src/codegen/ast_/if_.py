@@ -26,7 +26,9 @@ class If(Node):
 
         block.add_code(f"if({condition_result})""\n{\n"
                        f"{indent_cpp(str(then_block))}"
-                       "\n}\nelse\n")
+                       "\n}\nelse\n"
+                       "{\n"
+                       "}")
 
 
 class Branch(Node):

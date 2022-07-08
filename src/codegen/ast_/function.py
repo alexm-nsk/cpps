@@ -36,7 +36,8 @@ class Function(Node):
             f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"
             "{\n" +
             indent_cpp(str(function_block)) +
-            f"return {o_p.value};" +
+            "\n" +
+            indent_cpp(f"return {o_p.value};") +
             "\n}"
         )
 
