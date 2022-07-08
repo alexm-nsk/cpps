@@ -16,7 +16,7 @@ class Function(Node):
         super().__init__(data)
         Function.functions[self.function_name] = self
 
-    def to_cpp(self, indent=0):
+    def to_cpp(self):
         ret_type = self.out_ports[0].type
 
         for port in self.in_ports:

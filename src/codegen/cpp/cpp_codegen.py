@@ -112,8 +112,12 @@ class CppBlock:
 
         return (
             self.add_curly_brackets * "{\n"
-            + "\n".join([f"{var.type_} {var.name};" for var in self.variables])
-            + "\n"
+            + (
+                "\n".join([f"{var.type_} {var.name};"
+                for var in self.variables]) + "\n"
+                if self.variables
+                else ""
+            )
             + "\n".join([str(statement) for statement in self.statements])
             + self.add_curly_brackets * "\n}"
         )

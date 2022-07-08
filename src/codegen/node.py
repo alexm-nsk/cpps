@@ -36,6 +36,8 @@ class Node:
             self.out_ports = [self.parse_port(port) for port in out_ports]
 
     def is_parent(self, compared_node):
+        if self == compared_node:
+            return True
         if "nodes" not in compared_node.__dict__:
             return False
         if self in compared_node.nodes:

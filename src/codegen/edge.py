@@ -28,3 +28,6 @@ class Edge:
         Edge.edges_from[self.from_.id].append(self)
         Edge.edge_to[self.to.id] = self
         Edge.edges.append(self)
+
+    def __repr__(self):
+        return f"E<{self.from_}, {self.to}>"
