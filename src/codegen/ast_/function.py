@@ -4,8 +4,8 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import CppScope, CppBlock, CppVariable, indent_cpp, cpp_eval
-from ..edge import Edge
+from ..cpp.cpp_codegen import (CppScope, CppBlock, CppVariable, indent_cpp,
+                               cpp_eval)
 
 
 class Function(Node):
