@@ -128,7 +128,10 @@ class CppBlock:
     def __str__(self):
         var_block = (
             (
-                "\n".join([f"{var.type_} {var.name};" for var in self.variables]) + "\n"
+                "\n".join(
+                        [f"{var.type_} {var.name};" for var in self.variables]
+                    ) +
+                "\n"
                 if self.variables
                 else ""
             )
@@ -136,7 +139,8 @@ class CppBlock:
             else (
                 "\n".join(
                     [
-                        type_ + " " + ", ".join([str(var) for var in vars_]) + ";"
+                        type_ + " " + ", ".join([str(var) for var in vars_]) +
+                        ";"
                         for type_, vars_ in self.types.items()
                     ]
                 ) + "\n"
