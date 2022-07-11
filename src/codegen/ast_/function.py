@@ -25,20 +25,24 @@ class Function(Node):
 
         this_function_scope = CppScope(self.in_ports)
 
-        arg_str = ", ".join([port.value.definition_str() for port in self.in_ports])
+        arg_str = ", ".join([port.value.definition_str()
+                             for port in self.in_ports])
 
         function_block = CppBlock()
 
         for o_p in self.out_ports:
             cpp_eval(
-                o_p,
-                this_function_scope,
-                function_block,
+                o_p, this_function_scope, function_block,
                 self.function_name + "_result"
             )
 
+        cpp_function_name = (
+            "sisal_main" if self.function_name == "main"
+            else self.function_name
+        )
+
         function_string = (
-            f"{ret_type.cpp_type} {self.function_name}({arg_str})\n"
+            f"{ret_type.cpp_type} {cpp_function_name}({arg_str})\n"
             "{\n"
             + indent_cpp(str(function_block))
             + "\n"
