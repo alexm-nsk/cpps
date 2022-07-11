@@ -4,8 +4,7 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import (CppScope, CppBlock, CppVariable, indent_cpp,
-                               cpp_eval)
+from ..cpp.cpp_codegen import CppScope, CppBlock, CppVariable, indent_cpp, cpp_eval
 
 
 class Function(Node):
@@ -25,20 +24,20 @@ class Function(Node):
 
         this_function_scope = CppScope(self.in_ports)
 
-        arg_str = ", ".join([port.value.definition_str()
-                             for port in self.in_ports])
+        arg_str = ", ".join([port.value.definition_str() for port in self.in_ports])
 
         function_block = CppBlock()
 
         for index, o_p in enumerate(self.out_ports):
             cpp_eval(
-                o_p, this_function_scope, function_block,
-                self.function_name + "_result_" + str(index + 1)
+                o_p,
+                this_function_scope,
+                function_block,
+                self.function_name + "_result_" + str(index + 1),
             )
 
         cpp_function_name = (
-            "sisal_main" if self.function_name == "main"
-            else self.function_name
+            "sisal_main" if self.function_name == "main" else self.function_name
         )
 
         function_string = (
@@ -54,5 +53,21 @@ class Function(Node):
 
 
 def create_main():
-    print(Function.functions["main"])
-    return "int main(int argc, char **argv)\n" "{\n" "}"
+    main = Function.functions["main"]
+    arg_defs = (
+        ";\n ".join([port.value.definition_str() for port in main.in_ports]) +
+        ";"
+    )
+    body = (
+        "Json::Value root;\n"
+        "std::cin >> root;\n" +
+        arg_defs + "\n"
+    )
+
+    return (
+            "int main(int argc, char **argv)\n"
+            "{\n"
+            f"{indent_cpp(body)}"
+
+            "\n}"
+            )
