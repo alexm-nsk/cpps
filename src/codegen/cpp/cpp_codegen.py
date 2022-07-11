@@ -136,10 +136,10 @@ class CppBlock:
             else (
                 "\n".join(
                     [
-                        type_ + " " + ", ".join([str(var) for var in vars_]) + ";\n"
+                        type_ + " " + ", ".join([str(var) for var in vars_]) + ";"
                         for type_, vars_ in self.types.items()
                     ]
-                )
+                ) + "\n"
                 if self.variables
                 else ""
             )
