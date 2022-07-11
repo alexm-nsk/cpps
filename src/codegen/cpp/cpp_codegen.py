@@ -4,6 +4,8 @@
 """C++ code generation"""
 from ..edge import Edge
 
+GROUP_VARIABLES = True
+
 CPP_INDENT = "  "
 CPP_MODULE_HEADER = """\
 #include <stdio.h>
@@ -75,12 +77,15 @@ class CppVariable:
 
 class CppModule:
     def __init__(self, name: str, functions: dict, definitions: list = []):
-        self.modules = []
+        self.functions = []
         for name, f in functions.items():
-            self.modules += [f.to_cpp()]
+            self.functions += [f.to_cpp()]
+
+        from ..ast_.function import create_main
+        self.functions += [create_main()]
 
     def __str__(self):
-        return CPP_MODULE_HEADER + "\n\n".join(self.modules)
+        return CPP_MODULE_HEADER + "\n\n".join(self.functions)
 
 
 class CppExpression:
@@ -108,23 +113,33 @@ class CppBlock:
         self.return_variables = []
         self.statements = []
         self.add_curly_brackets = add_curly_brackets
+        self.types = {}
 
     def add_variable(self, var: CppVariable):
         self.variables.append(var)
+        if var.type_ not in self.types:
+            self.types[var.type_] = []
+        self.types[var.type_] += [var]
 
     def add_code(self, code):
         self.statements += [code]
 
     def __str__(self):
-
-        return (
-            self.add_curly_brackets * "{\n"
-            + (
+        var_block = (
                 "\n".join([f"{var.type_} {var.name};"
-                for var in self.variables]) + "\n"
+                           for var in self.variables]) + "\n"
+                if self.variables
+                else ""
+            ) if not GROUP_VARIABLES else (
+                "\n".join(
+                   [type_ + " " + [", ".join([var for var in type_])] for type_, vars in self.types.items()]
+                )
                 if self.variables
                 else ""
             )
+        return (
+            self.add_curly_brackets * "{\n"
+            + var_block
             + "\n".join([str(statement) for statement in self.statements])
             + self.add_curly_brackets * "\n}"
         )

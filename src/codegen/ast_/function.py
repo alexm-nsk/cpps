@@ -51,3 +51,8 @@ class Function(Node):
         )
 
         return function_string
+
+
+def create_main():
+    print(Function.functions["main"])
+    return ""
