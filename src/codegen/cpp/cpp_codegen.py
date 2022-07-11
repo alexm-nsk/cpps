@@ -82,6 +82,7 @@ class CppModule:
             self.functions += [f.to_cpp()]
 
         from ..ast_.function import create_main
+
         self.functions += [create_main()]
 
     def __str__(self):
@@ -126,17 +127,23 @@ class CppBlock:
 
     def __str__(self):
         var_block = (
-                "\n".join([f"{var.type_} {var.name};"
-                           for var in self.variables]) + "\n"
+            (
+                "\n".join([f"{var.type_} {var.name};" for var in self.variables]) + "\n"
                 if self.variables
                 else ""
-            ) if not GROUP_VARIABLES else (
+            )
+            if not GROUP_VARIABLES
+            else (
                 "\n".join(
-                   [type_ + " " + [", ".join([var for var in type_])] for type_, vars in self.types.items()]
+                    [
+                        type_ + " " + ", ".join([str(var) for var in vars_]) + ";\n"
+                        for type_, vars_ in self.types.items()
+                    ]
                 )
                 if self.variables
                 else ""
             )
+        )
         return (
             self.add_curly_brackets * "{\n"
             + var_block
