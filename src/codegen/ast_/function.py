@@ -69,13 +69,12 @@ def create_main():
     body = (
         "Json::Value root;\n"
         "std::cin >> root;\n" +
-        arg_defs + "\n"
+        arg_defs + ""
     )
 
     return (
             "int main(int argc, char **argv)\n"
             "{\n"
             f"{indent_cpp(body)}"
-
             "\n}"
             )
