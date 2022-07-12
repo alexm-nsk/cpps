@@ -74,6 +74,9 @@ class CppVariable:
     def definition_str(self):
         return f"{self.type_.cpp_type} {self.name}"
 
+    def get_load_from_json_code(self, json_object=None):
+        return f"{self.type_.cpp_type} {self.name} = {json_object}.asInt()"
+
 
 class CppModule:
     def __init__(self, name: str, functions: dict, definitions: list = []):

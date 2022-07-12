@@ -60,17 +60,21 @@ class Function(Node):
 
 def create_main():
     main = Function.functions["main"]
-
+    '''
     arg_defs = (
         ";\n ".join([port.value.definition_str() for port in main.in_ports]) +
         ";"
     )
-
+    '''
     body = (
         "Json::Value root;\n"
-        "std::cin >> root;\n" +
-        arg_defs + ""
+        "std::cin >> root;\n"
     )
+
+    body += "\n".join([port.value.get_load_from_json_code(
+                                f'root["{port.value.name}"]'
+                            )
+                       for port in main.in_ports])
 
     return (
             "int main(int argc, char **argv)\n"
