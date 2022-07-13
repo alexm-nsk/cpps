@@ -55,7 +55,7 @@ class ArrayType(Type):
         index_name = "index_for_" + name
         item_name = "item_for_" + name
         retval = (f"{self.cpp_type} {name};\n"
-                  f'for(unsigned int {index_name} = 0; '
+                  f'for(unsigned int {index_name} = 0;\n'
                   f'index < {src_object}.size();\n ++{index_name})\n''{\n' +
                   indent_cpp(self.element.load_from_json_code(item_name,
                                                    f"{src_object}[{index_name}]") +
