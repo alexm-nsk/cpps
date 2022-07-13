@@ -69,11 +69,9 @@ def create_main():
     body += "\n".join([port.value.get_load_from_json_code(
                                 f'root["{port.value.name}"]'
                             ) + ";"
-                       for port in main.in_ports])
+                       for port in main.in_ports]) + "\n"
 
-    body += "\n"
-
-    body += (f"{main.out_ports[0].type.cpp_type} sisal_main_results = "
+    body += ("result = "
              "sisal_main(" +
              ', '.join([str(port.value) for port in main.in_ports]) +
              ");")
