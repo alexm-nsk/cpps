@@ -82,7 +82,7 @@ def create_main():
                                 "multi_type": "array"
                             })
 
-    print(type_object.load_from_json_code())
+    print(type_object.load_from_json_code("A", "root[\"A\"]"))
 
     body += ("result = "
              "sisal_main(" +

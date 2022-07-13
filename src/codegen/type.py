@@ -22,21 +22,21 @@ class Type:
 class IntegerType(Type):
     __cpp_type__ = "int"
 
-    def load_from_json_code(self, name = ""):
+    def load_from_json_code(self, name, src_object):
         return f"{name}.asInt()"
 
 
 class RealType(Type):
     __cpp_type__ = "float"
 
-    def load_from_json_code(self):
+    def load_from_json_code(self, name, src_object):
         pass
 
 
 class BooleanType(Type):
     __cpp_type__ = "bool"
 
-    def load_from_json_code(self):
+    def load_from_json_code(self, name, src_object):
         pass
 
 
@@ -50,12 +50,12 @@ class ArrayType(Type):
                 (self.element.dimensions if "element" in self.element.__dict__
                  else 0))
 
-    def load_from_json_code(self, name=""):
-
+    def load_from_json_code(self, name, src_object):
+        index_name = "index_for_" + name
         retval = (f"vector<int> {name};\n"
-                  'for ( unsigned int index = 0; '
-                  f'index < root["{name}"].size(); ++index )\n'
-                  'A.push_back(root["A"][index].asInt());')
+                  f'for ( unsigned int {index_name} = 0; '
+                  f'index < root["{name}"].size(); ++{index_name})\n'
+                  f'  A.push_back({src_object}[{index_name}].asInt());''}')
 
         return retval
 
