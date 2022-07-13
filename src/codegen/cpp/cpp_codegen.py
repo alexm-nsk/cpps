@@ -75,7 +75,8 @@ class CppVariable:
         return f"{self.type_.cpp_type} {self.name}"
 
     def get_load_from_json_code(self, json_object=None):
-        return f"{self.type_.cpp_type} {self.name} = {json_object}.asInt()"
+        return self.type_.load_from_json_code(self.name, json_object)
+        #return f"{self.type_.cpp_type} {self.name} = {json_object}.asInt()"
 
 
 class CppModule:
