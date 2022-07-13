@@ -74,15 +74,15 @@ def create_main():
     from ..type import get_type
 
     type_object = get_type({
-                    "location": "1:42-1:58",
-                    "element": {
-                        "location": "1:51-1:58",
-                        "name": "integer"
-                    },
-                    "multi_type": "array"
-                  })
+                                "location": "1:42-1:58",
+                                "element": {
+                                    "location": "1:51-1:58",
+                                    "name": "integer"
+                                },
+                                "multi_type": "array"
+                            })
 
-    print(type_object)
+    print(type_object.load_from_json_code())
 
     body += ("result = "
              "sisal_main(" +

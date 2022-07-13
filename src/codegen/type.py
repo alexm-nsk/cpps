@@ -22,13 +22,22 @@ class Type:
 class IntegerType(Type):
     __cpp_type__ = "int"
 
+    def load_from_json_code(self):
+        pass
+
 
 class RealType(Type):
     __cpp_type__ = "float"
 
+    def load_from_json_code(self):
+        pass
+
 
 class BooleanType(Type):
     __cpp_type__ = "bool"
+
+    def load_from_json_code(self):
+        pass
 
 
 class ArrayType(Type):
@@ -40,6 +49,15 @@ class ArrayType(Type):
         return (1 +
                 (self.element.dimensions if "element" in self.element.__dict__
                  else 0))
+
+    def load_from_json_code(self, name=""):
+
+        retval = (f"vector<int> {name};\n"
+                  'for ( unsigned int index = 0; '
+                  f'index < root["{name}"].size(); ++index )\n'
+                  'A.push_back(root["A"][index].asInt());')
+
+        return retval
 
 
 class StreamType(Type):
