@@ -38,8 +38,9 @@ class ArrayType(Type):
 
     def dimensions(self):
         return (1 +
-                self.element.dimensions if "element" in self.element.__dict__
-                else 0)
+                (self.element.dimensions if "element" in self.element.__dict__
+                 else 0))
+
 
 class StreamType(Type):
 
