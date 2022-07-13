@@ -51,14 +51,16 @@ class ArrayType(Type):
                  else 0))
 
     def load_from_json_code(self, name, src_object):
+        from .cpp.cpp_codegen import indent_cpp
         index_name = "index_for_" + name
         item_name = "item_for_" + name
         retval = (f"{self.cpp_type} {name};\n"
                   f'for(unsigned int {index_name} = 0; '
-                  f'index < {src_object}.size(); ++{index_name})\n''{' +
-                  "  "+self.element.load_from_json_code(item_name,
+                  f'index < {src_object}.size();\n ++{index_name})\n''{\n' +
+                  indent_cpp(self.element.load_from_json_code(item_name,
                                                    f"{src_object}[{index_name}]") +
-                  f'  {name}.push_back({item_name});''\n}')
+                  f'\n{name}.push_back({item_name});') +
+                  '\n}')
 
         return retval
 
