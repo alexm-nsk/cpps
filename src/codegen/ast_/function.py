@@ -78,7 +78,10 @@ def create_main():
 
     body += "\n"
 
-    body += f"sisal_main({', '.join([str(port.value) for port in main.in_ports])});"
+    body += ("sisal_main_results = "
+             "sisal_main(" +
+             ', '.join([str(port.value) for port in main.in_ports]) +
+             ");")
 
     init_result = "Json::Value result;"
 
