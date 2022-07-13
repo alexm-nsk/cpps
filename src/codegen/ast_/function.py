@@ -60,12 +60,7 @@ class Function(Node):
 
 def create_main():
     main = Function.functions["main"]
-    '''
-    arg_defs = (
-        ";\n ".join([port.value.definition_str() for port in main.in_ports]) +
-        ";"
-    )
-    '''
+
     body = (
         "Json::Value root;\n"
         "std::cin >> root;\n"
@@ -78,25 +73,22 @@ def create_main():
 
     body += "\n"
 
-    body += ("sisal_main_results = "
+    body += (f"{main.out_ports[0].type.cpp_type} sisal_main_results = "
              "sisal_main(" +
              ', '.join([str(port.value) for port in main.in_ports]) +
              ");")
 
     init_result = "Json::Value result;"
 
-    '''
-    vector<int> sisal_main_results = sisal_main(A);
-    result["sisal_main_results"] = iterable_to_json(sisal_main_results);
-    std::cout << result << "\n";
-    std::cout << std::endl;
-    '''
+    result_output_code = ('std::cout << result << "\\n";\n'
+                          'std::cout << std::endl;')
 
     return (
             "int main(int argc, char **argv)\n"
             "{\n"
-            f"{indent_cpp(body)}\n"
             f"{indent_cpp(init_result)}\n"
-            f"{indent_cpp('return 0')}"
+            f"{indent_cpp(body)}\n"
+            f"{indent_cpp(result_output_code)}\n"
+            f"{indent_cpp('return 0;')}"
             "\n}"
             )
