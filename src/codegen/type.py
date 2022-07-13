@@ -22,8 +22,8 @@ class Type:
 class IntegerType(Type):
     __cpp_type__ = "int"
 
-    def load_from_json_code(self):
-        pass
+    def load_from_json_code(self, name = ""):
+        return f"{name}.asInt()"
 
 
 class RealType(Type):
