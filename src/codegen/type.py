@@ -53,7 +53,7 @@ class ArrayType(Type):
     def load_from_json_code(self, name, src_object):
         index_name = "index_for_" + name
         retval = (f"vector<int> {name};\n"
-                  f'for ( unsigned int {index_name} = 0; '
+                  f'for(unsigned int {index_name} = 0; '
                   f'index < root["{name}"].size(); ++{index_name})\n'
                   f'  A.push_back({src_object}[{index_name}].asInt());''}')
 
