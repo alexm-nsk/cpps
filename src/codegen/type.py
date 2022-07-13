@@ -58,7 +58,7 @@ class ArrayType(Type):
                   f'index < root["{name}"].size(); ++{index_name})\n' +
                   "  "+self.element.load_from_json_code(item_name,
                                                    f"{src_object}[{index_name}]") +
-                  f'  A.push_back({item_name});''}')
+                  f'  {name}.push_back({item_name});''}')
 
         return retval
 
