@@ -30,14 +30,16 @@ class RealType(Type):
     __cpp_type__ = "float"
 
     def load_from_json_code(self, name, src_object):
-        pass
+        return f"{self.cpp_type} {name} = {src_object}.asFloat();"
+
 
 
 class BooleanType(Type):
     __cpp_type__ = "bool"
 
     def load_from_json_code(self, name, src_object):
-        pass
+         return f"{self.cpp_type} {name} = {src_object}.asBool();"
+
 
 
 class ArrayType(Type):
