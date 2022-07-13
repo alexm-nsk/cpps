@@ -92,9 +92,8 @@ def create_main():
     return (
             "int main(int argc, char **argv)\n"
             "{\n"
-            f"{indent_cpp(body)}"
-            "\n"
-            f"{init_result};"
+            f"{indent_cpp(body)}\n"
+            f"{indent_cpp(init_result)}\n"
             f"{indent_cpp('return 0')}"
             "\n}"
             )
