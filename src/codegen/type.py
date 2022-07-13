@@ -23,7 +23,7 @@ class IntegerType(Type):
     __cpp_type__ = "int"
 
     def load_from_json_code(self, name, src_object):
-        return f"{name} = {src_object}.asInt();"
+        return f"{self.cpp_type} {name} = {src_object}.asInt();"
 
 
 class RealType(Type):
