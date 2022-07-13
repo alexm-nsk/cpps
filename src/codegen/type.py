@@ -38,7 +38,7 @@ class BooleanType(Type):
     __cpp_type__ = "bool"
 
     def load_from_json_code(self, name, src_object):
-         return f"{self.cpp_type} {name} = {src_object}.asBool();"
+        return f"{self.cpp_type} {name} = {src_object}.asBool();"
 
 
 
@@ -60,8 +60,8 @@ class ArrayType(Type):
                   f'for(unsigned int {index_name} = 0;\n'
                   f'index < {src_object}.size();\n ++{index_name})\n''{\n' +
                   indent_cpp(self.element.load_from_json_code(item_name,
-                                                   f"{src_object}[{index_name}]") +
-                  f'\n{name}.push_back({item_name});') +
+                                                              f"{src_object}[{index_name}]") +
+                             f'\n{name}.push_back({item_name});') +
                   '\n}')
 
         return retval
