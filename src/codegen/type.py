@@ -23,7 +23,7 @@ class IntegerType(Type):
     __cpp_type__ = "int"
 
     def load_from_json_code(self, name, src_object):
-        return f"{name} = {src_object}.asInt()"
+        return f"{name} = {src_object}.asInt();"
 
 
 class RealType(Type):
@@ -52,13 +52,13 @@ class ArrayType(Type):
 
     def load_from_json_code(self, name, src_object):
         index_name = "index_for_" + name
-        item_name = "item"
+        item_name = "item_for_" + name
         retval = (f"vector<int> {name};\n"
                   f'for(unsigned int {index_name} = 0; '
                   f'index < root["{name}"].size(); ++{index_name})\n' +
-                  self.element.load_from_json_code(item_name,
+                  "  "+self.element.load_from_json_code(item_name,
                                                    f"{src_object}[{index_name}]") +
-                  f'  A.push_back({item_name}.asInt());''}')
+                  f'  A.push_back({item_name});''}')
 
         return retval
 

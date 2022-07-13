@@ -77,7 +77,11 @@ def create_main():
                                 "location": "1:42-1:58",
                                 "element": {
                                     "location": "1:51-1:58",
-                                    "name": "integer"
+                                    "element": {
+                                        "location": "1:51-1:58",
+                                        "name": "integer"
+                                    },
+                                    "multi_type": "array"
                                 },
                                 "multi_type": "array"
                             })
