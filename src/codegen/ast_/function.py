@@ -80,11 +80,21 @@ def create_main():
 
     body += f"sisal_main({', '.join([str(port.value) for port in main.in_ports])});"
 
+    init_result = "Json::Value result;"
+
+    '''
+    vector<int> sisal_main_results = sisal_main(A);
+    result["sisal_main_results"] = iterable_to_json(sisal_main_results);
+    std::cout << result << "\n";
+    std::cout << std::endl;
+    '''
+
     return (
             "int main(int argc, char **argv)\n"
             "{\n"
             f"{indent_cpp(body)}"
             "\n"
+            f"{init_result};"
             f"{indent_cpp('return 0')}"
             "\n}"
             )
