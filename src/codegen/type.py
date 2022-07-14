@@ -70,8 +70,13 @@ class ArrayType(Type):
         return retval
 
     def save_to_json_code(self, target_object, object_):
+        from .cpp.cpp_codegen import indent_cpp
         index = f"index_for_{object_}"
-        return f"for(unsigned int {index} = 0; {index} < size({object_}); ++{index})"
+        return (f"for(unsigned int {index} = 0; {index} < size({object_});"
+                f" ++{index})"
+                "\n{"
+                "\n}"
+                )
 
 
 class StreamType(Type):
