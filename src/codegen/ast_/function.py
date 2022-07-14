@@ -70,17 +70,14 @@ def create_main():
                                 f'root["{port.value.name}"]'
                             ) + ";"
                        for port in main.in_ports]) + "\n"
-    """
-    body += ("result = "
-             "sisal_main(" +
-             ', '.join([str(port.value) for port in main.in_ports]) +
-             ");")
-    """
+
     sisal_main_result = ("sisal_main(" +
-             ', '.join([str(port.value) for port in main.in_ports]) +
-             ");")
+                         ', '.join([str(port.value)
+                                    for port in main.in_ports]) +
+                         ");")
 
     body += main.out_ports[0].type.save_to_json_code(sisal_main_result, "result")
+
     init_result = "Json::Value result;"
 
     result_output_code = ('std::cout << result << "\\n";\n'
