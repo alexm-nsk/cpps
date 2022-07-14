@@ -33,7 +33,7 @@ vector<I> operator || (const vector<I>& lhs, const vector<I>& rhs){
     return result;
 }
 
-inline int size (vector<int> A)
+inline int size (vector<auto> A)
 {
     return A.size();
 }
