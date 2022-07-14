@@ -70,7 +70,8 @@ class ArrayType(Type):
         return retval
 
     def save_to_json_code(self, target_object, object_):
-        pass
+        index = f"index_for_{object_}"
+        return f"for(unsigned int {index} = 0; {index} < size({object_}); ++{index})"
 
 
 class StreamType(Type):
