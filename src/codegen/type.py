@@ -86,8 +86,9 @@ class ArrayType(Type):
         item_name = "item_for_" + remove_spec_symbols(target_object)
 
         return (
-                f"for(unsigned int {index} = 0;\n{index} < size({object_});"
-                f"\n++{index})"
+                f"for(unsigned int {index} = 0;\n"
+                f"    {index} < size({object_});"
+                f"\n    ++{index})"
                 "\n{\n" +
                 indent_cpp(f"{self.element.cpp_type} {item_name};") +
                 "\n" +
