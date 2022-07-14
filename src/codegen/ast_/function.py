@@ -79,8 +79,8 @@ def create_main():
                                     for port in main.in_ports]) +
                          ");")
 
-    body += main.out_ports[0].type.save_to_json_code(sisal_main_result,
-                                                     "result")
+    body += main.out_ports[0].type.save_to_json_code("result",
+                                                     sisal_main_result)
 
     init_result = "Json::Value result;"
 

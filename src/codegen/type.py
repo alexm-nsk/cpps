@@ -25,7 +25,7 @@ class IntegerType(Type):
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asInt();"
 
-    def save_to_json_code(self, object_, target_object):
+    def save_to_json_code(self, target_object, object_):
         return f"{target_object} = {object_}"
 
 
@@ -69,7 +69,7 @@ class ArrayType(Type):
 
         return retval
 
-    def save_to_json_code(self, object_, target_object):
+    def save_to_json_code(self, target_object, object_):
         pass
 
 
