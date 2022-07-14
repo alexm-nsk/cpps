@@ -87,7 +87,7 @@ class ArrayType(Type):
 
         return (
                 f"for(unsigned int {index} = 0;\n{index} < size({object_});"
-                f"\n ++{index})"
+                f"\n++{index})"
                 "\n{\n" +
                 indent_cpp(f"{self.element.cpp_type} {item_name};") +
                 "\n" +
