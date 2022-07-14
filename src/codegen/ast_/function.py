@@ -59,6 +59,9 @@ class Function(Node):
 
 
 def create_main():
+    """ creates a C++ main(...) that loads JSON input data from a stdin
+        and outputs data as JSON to stdout
+    """
     main = Function.functions["main"]
 
     body = (
@@ -76,7 +79,8 @@ def create_main():
                                     for port in main.in_ports]) +
                          ");")
 
-    body += main.out_ports[0].type.save_to_json_code(sisal_main_result, "result")
+    body += main.out_ports[0].type.save_to_json_code(sisal_main_result,
+                                                     "result")
 
     init_result = "Json::Value result;"
 
