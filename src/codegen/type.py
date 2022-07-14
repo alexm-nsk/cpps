@@ -85,8 +85,8 @@ class ArrayType(Type):
         index = "index_for_" + remove_spec_symbols(target_object)
         item_name = "item_for_" + remove_spec_symbols(target_object)
 
-        return (f"for(unsigned int {index} = 0; {index} < size({object_});"
-                f" ++{index})"
+        return (f"for(unsigned int {index} = 0;\n{index} < size({object_});"
+                f"\n ++{index})"
                 "\n{\n" +
                 indent_cpp(self.element.save_to_json_code(item_name,
                                                           object_ +
