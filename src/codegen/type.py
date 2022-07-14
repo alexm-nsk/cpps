@@ -71,8 +71,8 @@ class ArrayType(Type):
 
     def save_to_json_code(self, target_object, object_):
         from .cpp.cpp_codegen import indent_cpp
-        index = f"index_for_{object_}"
-        item_name = "item_for_" + object_
+        index = f"index_for_{target_object}"
+        item_name = "item_for_" + target_object
 
         return (f"for(unsigned int {index} = 0; {index} < size({object_});"
                 f" ++{index})"
