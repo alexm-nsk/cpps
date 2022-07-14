@@ -77,7 +77,9 @@ class ArrayType(Type):
         return (f"for(unsigned int {index} = 0; {index} < size({object_});"
                 f" ++{index})"
                 "\n{\n" +
-                indent_cpp(self.element.save_to_json_code(item_name, object_ + f"[{index}]")) +
+                indent_cpp(self.element.save_to_json_code(item_name,
+                                                          object_ +
+                                                          f"[{index}]")) +
                 "\n" +
                 indent_cpp(f"{target_object}.append({item_name});") +
                 "\n}"
