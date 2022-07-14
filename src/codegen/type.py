@@ -3,6 +3,7 @@
 """
 Type for code generator
 """
+import re
 
 
 class Type:
@@ -49,6 +50,10 @@ class BooleanType(Type):
         return f"{self.cpp_type} {target_object} = {object_};"
 
 
+def remove_spec_symbols(string):
+    return re.sub("[^a-zA-Z0-9]", "_", string)
+
+
 class ArrayType(Type):
     @property
     def cpp_type(self):
@@ -61,8 +66,8 @@ class ArrayType(Type):
 
     def load_from_json_code(self, name, src_object):
         from .cpp.cpp_codegen import indent_cpp
-        index_name = "index_for_" + name
-        item_name = "item_for_" + name
+        index_name = "index_for_" + remove_spec_symbols(name)
+        item_name = "item_for_" + remove_spec_symbols(name)
         retval = (f"{self.cpp_type} {name};\n"
                   f'for(unsigned int {index_name} = 0;\n'
                   f'index < {src_object}.size();\n ++{index_name})\n''{\n' +
@@ -77,8 +82,8 @@ class ArrayType(Type):
 
     def save_to_json_code(self, target_object, object_):
         from .cpp.cpp_codegen import indent_cpp
-        index = f"index_for_{target_object}"
-        item_name = "item_for_" + target_object
+        index = "index_for_" + remove_spec_symbols(target_object)
+        item_name = "item_for_" + remove_spec_symbols(target_object)
 
         return (f"for(unsigned int {index} = 0; {index} < size({object_});"
                 f" ++{index})"
