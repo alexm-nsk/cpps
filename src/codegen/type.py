@@ -27,7 +27,7 @@ class IntegerType(Type):
         return f"{self.cpp_type} {name} = {src_object}.asInt();"
 
     def save_to_json_code(self, target_object, object_):
-        return f"{self.cpp_type} {target_object} = {object_};"
+        return f"{target_object} = {object_};"
 
 
 class RealType(Type):
@@ -37,7 +37,7 @@ class RealType(Type):
         return f"{self.cpp_type} {name} = {src_object}.asFloat();"
 
     def save_to_json_code(self, target_object, object_):
-        return f"{self.cpp_type} {target_object} = {object_};"
+        return f"{target_object} = {object_};"
 
 
 class BooleanType(Type):
@@ -47,7 +47,7 @@ class BooleanType(Type):
         return f"{self.cpp_type} {name} = {src_object}.asBool();"
 
     def save_to_json_code(self, target_object, object_):
-        return f"{self.cpp_type} {target_object} = {object_};"
+        return f"{target_object} = {object_};"
 
 
 def remove_spec_symbols(string):
@@ -85,10 +85,12 @@ class ArrayType(Type):
         index = "index_for_" + remove_spec_symbols(target_object)
         item_name = "item_for_" + remove_spec_symbols(target_object)
 
-        return (f"{self.element.cpp_type} {item_name} ;\n"
+        return (
                 f"for(unsigned int {index} = 0;\n{index} < size({object_});"
                 f"\n ++{index})"
                 "\n{\n" +
+                indent_cpp(f"{self.element.cpp_type} {item_name};") +
+                "\n" +
                 indent_cpp(self.element.save_to_json_code(item_name,
                                                           object_ +
                                                           f"[{index}]")) +
