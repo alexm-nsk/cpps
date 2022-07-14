@@ -26,7 +26,7 @@ class IntegerType(Type):
         return f"{self.cpp_type} {name} = {src_object}.asInt();"
 
     def save_to_json_code(self, target_object, object_):
-        return f"{target_object} = {object_}"
+        return f"{self.cpp_type} {target_object} = {object_};"
 
 
 class RealType(Type):
@@ -78,7 +78,7 @@ class ArrayType(Type):
                 f" ++{index})"
                 "\n{\n" +
                 indent_cpp(self.element.save_to_json_code(item_name, object_ + f"[{index}]")) +
-                ";\n" +
+                "\n" +
                 indent_cpp(f"{target_object}.append({item_name});") +
                 "\n}"
                 )
