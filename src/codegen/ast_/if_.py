@@ -22,8 +22,8 @@ class If(Node):
         self.out_ports[0].value = if_result
         condition_result = self.condition.to_cpp(if_scope, block, "if_test")
 
-        then_block = CppBlock(add_curly_brackets=False)
-        else_block = CppBlock(add_curly_brackets=False)
+        then_block = CppBlock()
+        else_block = CppBlock()
 
         self.branches[0].to_cpp(self.out_ports[0].value, if_scope, then_block)
         self.branches[1].to_cpp(self.out_ports[0].value, if_scope, else_block)
