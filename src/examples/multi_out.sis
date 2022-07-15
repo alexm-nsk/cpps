@@ -1,0 +1,3 @@
+function main(a,b : integer; r: real returns real, integer)
+    a + b, -r
+end function
