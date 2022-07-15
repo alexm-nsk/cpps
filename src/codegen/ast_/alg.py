@@ -21,4 +21,13 @@ class Binary(Node):
 
 
 class Unary(Node):
-    pass
+
+    def to_cpp(self, scope, block, name="un"):
+        operand = cpp_eval(self.in_ports[0], scope, block, "operand")
+
+        result = CppVariable(name, self.out_ports[0].type.cpp_type)
+        block.add_variable(result)
+        block.add_code(
+            CppAssignment(result, f"{self.operator} {operand}")
+            )
+        self.out_ports[0].value = result
