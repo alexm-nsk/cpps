@@ -15,6 +15,9 @@ class Function(Node):
 
     functions = {}
 
+    def num_outputs(self):
+        return len(self.out_ports)
+
     def __init__(self, data):
         super().__init__(data)
         Function.functions[self.function_name] = self
