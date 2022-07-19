@@ -20,13 +20,15 @@ class If(Node):
         if_result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(if_result)
         self.out_ports[0].value = if_result
+        self.out_ports[1].value = if_result
         condition_result = self.condition.to_cpp(if_scope, block, "if_test")
 
         then_block = CppBlock()
         else_block = CppBlock()
 
-        self.branches[0].to_cpp(self.out_ports[0].value, if_scope, then_block)
-        self.branches[1].to_cpp(self.out_ports[0].value, if_scope, else_block)
+        self.branches[0].to_cpp(self.out_ports[0].value, 0, if_scope, then_block)
+        self.branches[0].to_cpp(self.out_ports[1].value, 1,  if_scope, then_block)
+        self.branches[1].to_cpp(self.out_ports[0].value, 0,  if_scope, else_block)
 
         block.add_code(f"if({condition_result})""\n{\n"
                        f"{indent_cpp(str(then_block))}"
@@ -38,13 +40,13 @@ class If(Node):
 
 class Branch(Node):
 
-    def to_cpp(self, result_value, scope, block, name=None):
+    def to_cpp(self, result_value, port_index, scope, block, name=None):
         branch_scope = CppScope(self.in_ports, scope)
         self.block = CppBlock()
         block.add_code(
             CppAssignment(
                 result_value,
-                cpp_eval(self.out_ports[0], branch_scope, block)
+                cpp_eval(self.out_ports[port_index], branch_scope, block)
             )
         )
 

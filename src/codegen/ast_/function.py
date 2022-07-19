@@ -47,8 +47,8 @@ class Function(Node):
             cpp_eval(
                 o_p,
                 this_function_scope,
-                function_block,
-                self.function_name + "_result_" + str(index + 1),
+                function_block
+                #  , self.function_name + "_result_" + str(index + 1),
             )
 
         cpp_function_name = (
