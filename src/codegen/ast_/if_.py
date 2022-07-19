@@ -34,7 +34,7 @@ class If(Node):
 
         for o_p in self.out_ports:
             self.branches[0].to_cpp(o_p, if_scope, then_block)
-            self.branches[1].to_cpp(o_p,  if_scope, else_block)
+            self.branches[1].to_cpp(o_p, if_scope, else_block)
 
         block.add_code(f"if({condition_result})""\n{\n"
                        f"{indent_cpp(str(then_block))}"
