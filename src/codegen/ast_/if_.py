@@ -5,7 +5,6 @@ code generator if
 """
 from ..node import Node
 from ..cpp.cpp_codegen import (
-    CppScope,
     CppVariable,
     indent_cpp,
     CppBlock,

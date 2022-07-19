@@ -159,19 +159,6 @@ class CppBlock:
         )
 
 
-class CppScope:
-    def __init__(self, ports, parent_scope=None):
-        self.ports = ports
-        if parent_scope:
-            for port in self.ports:
-                port.value = parent_scope.get_port(port.label).value
-
-    def get_port(self, label: str):
-        for port in self.ports:
-            if port.label == label:
-                return port
-
-
 def cpp_eval(in_port, block, name=None):
     port = Edge.edge_to[in_port.id].from_
     if not port.value:

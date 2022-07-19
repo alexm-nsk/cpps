@@ -4,8 +4,7 @@
 code generator function
 """
 from ..node import Node
-from ..cpp.cpp_codegen import (CppScope,
-                               CppBlock,
+from ..cpp.cpp_codegen import (CppBlock,
                                CppVariable,
                                indent_cpp,
                                cpp_eval)
