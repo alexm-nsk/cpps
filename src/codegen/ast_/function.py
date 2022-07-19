@@ -10,6 +10,7 @@ from ..cpp.cpp_codegen import (CppBlock,
                                cpp_eval)
 from ..edge import Edge
 
+
 class Function(Node):
 
     functions = {}
