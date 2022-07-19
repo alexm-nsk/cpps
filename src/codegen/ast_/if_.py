@@ -14,7 +14,8 @@ from ..cpp.cpp_codegen import (
 
 
 class If(Node):
-    def to_cpp(self, block, name="if_result"):
+    def to_cpp(self, block):
+        name="if_result"
         for i_p in self.in_ports:
             cpp_eval(i_p, block)
         if_results = []
@@ -26,7 +27,7 @@ class If(Node):
             block.add_variable(if_result)
             o_p.value = if_result
 
-        condition_result = self.condition.to_cpp(self, block, "if_test")
+        condition_result = self.condition.to_cpp(self, block)
 
         then_block = CppBlock()
         else_block = CppBlock()
@@ -45,7 +46,7 @@ class If(Node):
 
 class Branch(Node):
 
-    def to_cpp(self, parent_if, result_port, block, name=None):
+    def to_cpp(self, parent_if, result_port, block):
         for i_p, p_ip in zip(self.in_ports, parent_if.in_ports):
             i_p.value = p_ip.value
         self.block = CppBlock()
@@ -59,7 +60,8 @@ class Branch(Node):
 
 
 class Condition(Node):
-    def to_cpp(self, parent_if, block, name="cond"):
+    def to_cpp(self, parent_if, block):
+        name = "if_test"
         for i_p, p_ip in zip(self.in_ports, parent_if.in_ports):
             i_p.value = p_ip.value
         cond_result = CppVariable(name, "bool")
