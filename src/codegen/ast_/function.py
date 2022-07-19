@@ -24,7 +24,7 @@ class Function(Node):
 
     def to_cpp(self):
         CppVariable.variable_index = {}
-        ret_type = self.out_ports[0].type
+        ret_types = [port.type for port in self.out_ports]
 
         for port in self.in_ports:
             port.value = CppVariable(port.label, port.type)
@@ -49,8 +49,16 @@ class Function(Node):
             if self.function_name == "main" else self.function_name
         )
 
+        ret_type_str = (
+                        ret_types[0].cpp_type if len(ret_types) == 1
+                        else
+                        "tuple<" +
+                        ','.join([type_.cpp_type for type_ in ret_types]) +
+                        ">"
+                        )
+
         function_string = (
-            f"{ret_type.cpp_type} {cpp_function_name}({arg_str})\n"
+            f"{ret_type_str} {cpp_function_name}({arg_str})\n"
             "{\n"
             + indent_cpp(str(function_block))
             + "\n"
