@@ -106,13 +106,17 @@ def create_main():
                              ', '.join([str(port.value)
                                         for port in main.in_ports]) +
                              ");")
+
         body += main.out_ports[0].type.save_to_json_code("json_result",
                                                          sisal_main_result)
     else:
-        body += f"{main.ret_cpp_type} main_result;"
-        #for index, o_p in enumerate(main.out_ports):
-            #body += o_p.type.save_to_json_code(f"json_result[{index}]",
-                                               #sisal_main_result) + "\n"
+        body += f"{main.ret_cpp_type} main_result;\n"
+
+        for index, o_p in enumerate(main.out_ports):
+            body += (o_p.type.save_to_json_code(
+                        f"json_result[{index}]",
+                        f"get<{o_p.type.cpp_type}>(main_result{[index]})") +
+                     "\n")
 
     result_output_code = ('std::cout << json_result << "\\n";\n'
                           'std::cout << std::endl;')
