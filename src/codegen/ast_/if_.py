@@ -26,11 +26,10 @@ class If(Node):
         then_block = CppBlock()
         else_block = CppBlock()
 
-
-
         self.branches[0].to_cpp(self.out_ports[0], if_scope, then_block)
         self.branches[0].to_cpp(self.out_ports[1],  if_scope, then_block)
         self.branches[1].to_cpp(self.out_ports[0],  if_scope, else_block)
+        self.branches[1].to_cpp(self.out_ports[1],  if_scope, else_block)
 
         block.add_code(f"if({condition_result})""\n{\n"
                        f"{indent_cpp(str(then_block))}"
@@ -48,7 +47,9 @@ class Branch(Node):
         block.add_code(
             CppAssignment(
                 result_port.value,
-                cpp_eval(self.out_ports[result_port.index], branch_scope, block)
+                cpp_eval(self.out_ports[result_port.index],
+                         branch_scope,
+                         block)
             )
         )
 
