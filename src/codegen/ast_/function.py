@@ -22,6 +22,13 @@ class Function(Node):
         super().__init__(data)
         Function.functions[self.function_name] = self
 
+    @property
+    def ret_cpp_type(self):
+        ret_types = [port.type for port in self.out_ports]
+        return ("tuple<" +
+                ', '.join([type_.cpp_type for type_ in ret_types]) +
+                ">")
+
     def to_cpp(self):
         CppVariable.variable_index = {}
         ret_types = [port.type for port in self.out_ports]
@@ -53,7 +60,7 @@ class Function(Node):
                         ret_types[0].cpp_type if len(ret_types) == 1
                         else
                         "tuple<" +
-                        ','.join([type_.cpp_type for type_ in ret_types]) +
+                        ', '.join([type_.cpp_type for type_ in ret_types]) +
                         ">"
                         )
 
@@ -86,30 +93,33 @@ def create_main():
     body = (
         "Json::Value root;\n"
         "std::cin >> root;\n"
+        "Json::Value json_result;\n"
     )
 
     body += "\n".join([port.value.get_load_from_json_code(
                                 f'root["{port.value.name}"]'
-                            ) + ";"
+                            ) + ""
                        for port in main.in_ports]) + "\n"
 
-    sisal_main_result = ("sisal_main(" +
-                         ', '.join([str(port.value)
-                                    for port in main.in_ports]) +
-                         ");")
+    if main.num_outputs == 1:
+        sisal_main_result = ("sisal_main(" +
+                             ', '.join([str(port.value)
+                                        for port in main.in_ports]) +
+                             ");")
+        body += main.out_ports[0].type.save_to_json_code("json_result",
+                                                         sisal_main_result)
+    else:
+        body += f"{main.ret_cpp_type} main_result;"
+        #for index, o_p in enumerate(main.out_ports):
+            #body += o_p.type.save_to_json_code(f"json_result[{index}]",
+                                               #sisal_main_result) + "\n"
 
-    body += main.out_ports[0].type.save_to_json_code("result",
-                                                     sisal_main_result)
-
-    init_result = "Json::Value result;"
-
-    result_output_code = ('std::cout << result << "\\n";\n'
+    result_output_code = ('std::cout << json_result << "\\n";\n'
                           'std::cout << std::endl;')
 
     return (
             "int main(int argc, char **argv)\n"
             "{\n"
-            f"{indent_cpp(init_result)}\n"
             f"{indent_cpp(body)}\n"
             f"{indent_cpp(result_output_code)}\n"
             f"{indent_cpp('return 0;')}"
