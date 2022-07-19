@@ -36,8 +36,6 @@ class Function(Node):
         for port in self.in_ports:
             port.value = CppVariable(port.label, port.type)
 
-        this_function_scope = CppScope(self.in_ports)
-
         arg_str = ", ".join([port.value.definition_str()
                              for port in self.in_ports])
 
@@ -46,9 +44,8 @@ class Function(Node):
         for index, o_p in enumerate(self.out_ports):
             cpp_eval(
                 o_p,
-                this_function_scope,
-                function_block
-                #  , self.function_name + "_result_" + str(index + 1),
+                function_block,
+                self.function_name + "_result_" + str(index + 1),
             )
 
         cpp_function_name = (

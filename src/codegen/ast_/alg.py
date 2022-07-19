@@ -9,9 +9,9 @@ from ..cpp.cpp_codegen import CppVariable, cpp_eval, CppAssignment
 
 class Binary(Node):
 
-    def to_cpp(self, scope, block, name="bin"):
-        left = cpp_eval(self.in_ports[0], scope, block, "lho")
-        right = cpp_eval(self.in_ports[1], scope, block, "rho")
+    def to_cpp(self, block, name="bin"):
+        left = cpp_eval(self.in_ports[0], block, "lho")
+        right = cpp_eval(self.in_ports[1], block, "rho")
         result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(result)
         block.add_code(
@@ -22,8 +22,8 @@ class Binary(Node):
 
 class Unary(Node):
 
-    def to_cpp(self, scope, block, name="un"):
-        operand = cpp_eval(self.in_ports[0], scope, block, "operand")
+    def to_cpp(self, block, name="un"):
+        operand = cpp_eval(self.in_ports[0], block, "operand")
 
         result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(result)
