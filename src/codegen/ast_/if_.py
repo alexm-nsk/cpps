@@ -17,19 +17,24 @@ from ..cpp.cpp_codegen import (
 class If(Node):
     def to_cpp(self, scope, block, name="if_result"):
         if_scope = CppScope(self.in_ports, scope)
-        if_result = CppVariable(name, self.out_ports[0].type.cpp_type)
-        block.add_variable(if_result)
-        self.out_ports[0].value = if_result
-        self.out_ports[1].value = if_result
+
+        if_results = []
+
+        for index, o_p in enumerate(self.out_ports):
+            if_result = CppVariable(name + "_" + str(index + 1),
+                                    self.out_ports[index].type.cpp_type)
+            if_results.append(if_result)
+            block.add_variable(if_result)
+            o_p.value = if_result
+
         condition_result = self.condition.to_cpp(if_scope, block, "if_test")
 
         then_block = CppBlock()
         else_block = CppBlock()
 
-        self.branches[0].to_cpp(self.out_ports[0], if_scope, then_block)
-        self.branches[0].to_cpp(self.out_ports[1],  if_scope, then_block)
-        self.branches[1].to_cpp(self.out_ports[0],  if_scope, else_block)
-        self.branches[1].to_cpp(self.out_ports[1],  if_scope, else_block)
+        for o_p in self.out_ports:
+            self.branches[0].to_cpp(o_p, if_scope, then_block)
+            self.branches[1].to_cpp(o_p,  if_scope, else_block)
 
         block.add_code(f"if({condition_result})""\n{\n"
                        f"{indent_cpp(str(then_block))}"
