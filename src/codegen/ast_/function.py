@@ -57,12 +57,20 @@ class Function(Node):
                         ">"
                         )
 
+        return_value = (
+                        f"return {o_p.value};" if len(ret_types) == 1
+                        else
+                        "return {" +
+                        ", ".join([str(o_p.value) for o_p in self.out_ports]) +
+                        "};"
+                        )
+
         function_string = (
             f"{ret_type_str} {cpp_function_name}({arg_str})\n"
             "{\n"
             + indent_cpp(str(function_block))
             + "\n"
-            + indent_cpp(f"return {o_p.value};")
+            + indent_cpp(return_value)
             + "\n}"
         )
 
