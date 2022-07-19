@@ -8,7 +8,7 @@ from ..cpp.cpp_codegen import (CppBlock,
                                CppVariable,
                                indent_cpp,
                                cpp_eval)
-
+from ..edge import Edge
 
 class Function(Node):
 
@@ -39,6 +39,11 @@ class Function(Node):
                              for port in self.in_ports])
 
         function_block = CppBlock()
+
+        # label the ports:
+        for index, o_p in enumerate(self.out_ports):
+            src_port = Edge.edge_to[o_p.id].from_
+            src_port.label = "function_result" + str(index)
 
         for index, o_p in enumerate(self.out_ports):
             cpp_eval(
