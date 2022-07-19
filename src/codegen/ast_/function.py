@@ -101,7 +101,7 @@ def create_main():
                             ) + ""
                        for port in main.in_ports]) + "\n"
 
-    if main.num_outputs == 1:
+    if main.num_outputs() == 1:
         sisal_main_result = ("sisal_main(" +
                              ', '.join([str(port.value)
                                         for port in main.in_ports]) +
