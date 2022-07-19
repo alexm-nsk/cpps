@@ -15,13 +15,15 @@ from ..cpp.cpp_codegen import (
 
 class If(Node):
     def to_cpp(self, block):
-        name="if_result"
+        name = "if_result"
+        for o_p in self.out_ports:
+            if not o_p.label:
+                o_p.label = name + str(o_p.index)
         for i_p in self.in_ports:
             cpp_eval(i_p, block)
         if_results = []
-        print(self.out_ports[0].label)
         for index, o_p in enumerate(self.out_ports):
-            if_result = CppVariable(name + "_" + str(index + 1),
+            if_result = CppVariable(o_p.label + "_" + str(index + 1),
                                     self.out_ports[index].type.cpp_type)
             if_results.append(if_result)
             block.add_variable(if_result)
