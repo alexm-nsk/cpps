@@ -12,6 +12,14 @@ def get_node(node_id):
     return Node.node_index[node_id]
 
 
+def to_cpp_method(fn):
+
+    def wrapped(self, block):
+        return fn(self, block)
+
+    return wrapped
+
+
 class Node:
 
     node_index = {}

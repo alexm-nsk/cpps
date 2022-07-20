@@ -3,17 +3,19 @@
 """
 code generator if
 """
-from ..node import Node
+from ..node import Node, to_cpp_method
 from ..cpp.cpp_codegen import (
     CppVariable,
     indent_cpp,
     CppBlock,
     cpp_eval,
-    CppAssignment,
+    CppAssignment
 )
 
 
 class If(Node):
+
+    @to_cpp_method
     def to_cpp(self, block):
         name = "if_result"
 
