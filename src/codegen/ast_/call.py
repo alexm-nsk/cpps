@@ -6,7 +6,6 @@ code generator call
 from ..node import Node
 from ..cpp.cpp_codegen import (
     CppVariable,
-    indent_cpp,
     CppBlock,
     cpp_eval,
     CppAssignment,
