@@ -15,13 +15,10 @@ from ..cpp.cpp_codegen import (
 
 class If(Node):
 
+    name = "if"
     @to_cpp_method
     def to_cpp(self, block):
         name = "if_result"
-
-        for o_p in self.out_ports:
-            if not o_p.label:
-                o_p.label = name + str(o_p.index)
 
         for i_p in self.in_ports:
             cpp_eval(i_p, block)

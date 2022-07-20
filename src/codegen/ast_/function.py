@@ -14,6 +14,7 @@ from ..edge import Edge
 class Function(Node):
 
     functions = {}
+    name = "function"
 
     copy_parent_input_values = False
     name_child_output_values = True

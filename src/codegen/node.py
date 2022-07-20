@@ -26,6 +26,10 @@ def to_cpp_method(fn):
                 src_port = Edge.edge_to[o_p.id].from_
                 src_port.label = self.result_name + str(index)
 
+            for o_p in self.out_ports:
+                if not o_p.label:
+                    o_p.label = self.__class__.__name__ + str(o_p.index)
+
         return fn(self, block)
 
     return wrapped
