@@ -8,7 +8,6 @@ from ..cpp.cpp_codegen import (CppBlock,
                                CppVariable,
                                indent_cpp,
                                cpp_eval)
-from ..edge import Edge
 
 
 class Function(Node):

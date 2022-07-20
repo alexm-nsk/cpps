@@ -6,6 +6,7 @@ code generator node (mostly deserealizing code)
 from .port import Port
 from .type import get_type
 from .edge import Edge
+from .cpp.cpp_codegen import cpp_eval
 
 
 def get_node(node_id):
@@ -13,13 +14,9 @@ def get_node(node_id):
 
 
 def to_cpp_method(fn):
-
     def wrapped(self, block):
-        if (
-            hasattr(self, "name_child_output_values")
-            and
-            self.name_child_output_values
-           ):
+        if (hasattr(self, "name_child_output_values") and
+           self.name_child_output_values):
 
             # label the ports:
             for index, o_p in enumerate(self.out_ports):
@@ -32,6 +29,13 @@ def to_cpp_method(fn):
                         o_p.label = self.name + str(o_p.index)
                     else:
                         o_p.label = self.__class__.__name__ + str(o_p.index)
+
+        if (
+            hasattr(self, "copy_parent_input_values")
+            and self.copy_parent_input_values
+        ):
+            for i_p in self.in_ports:
+                cpp_eval(i_p, block)
 
         return fn(self, block)
 
@@ -113,12 +117,10 @@ class Node:
         )
 
         if "nodes" in data:
-            self.nodes = [Node.class_map[node["name"]](node)
-                          for node in data["nodes"]]
+            self.nodes = [Node.class_map[node["name"]](node) for node in data["nodes"]]
 
         if "branches" in data:
-            self.branches = [Node.class_map["Branch"](br)
-                             for br in data["branches"]]
+            self.branches = [Node.class_map["Branch"](br) for br in data["branches"]]
 
         # sisal-cl IRs only:
         if "results" in data:

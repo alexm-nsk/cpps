@@ -16,12 +16,10 @@ from ..cpp.cpp_codegen import (
 class If(Node):
 
     name = "if"
+    copy_parent_input_values = True
 
     @to_cpp_method
     def to_cpp(self, block):
-
-        for i_p in self.in_ports:
-            cpp_eval(i_p, block)
 
         if_results = []
 
