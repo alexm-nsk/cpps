@@ -8,7 +8,7 @@ from codegen.load_graphml import load_graphml
 from codegen.parse_ir import parse_ir
 
 
-def check_piped():
+def get_piped():
     """Checks if source code is provided via pipe"""
     input_text = ""
     input_text = "".join(sys.stdin)
@@ -19,10 +19,9 @@ def main(args):
     """The main function"""
     # check if there is piped-in input_text
     # otherwise load it from specified file
-    file_name = args[1]
-    module_name = file_name.split(".")[:-1]
-    input_text = ""  # check_piped()
-    if input_text == "":
+    if "-i" in args:
+        file_name = args[args.index("-i") + 1]
+        module_name = file_name.split(".")[:-1]
         with open(file_name, "r", encoding="UTF-8") as src_file:
             input_text = src_file.read()
             if file_name.lower().endswith(".json"):
@@ -32,6 +31,9 @@ def main(args):
             functions = parse_ir(ir_)
             from codegen.cpp.ir_to_cpp import ir_to_cpp
             ir_to_cpp(module_name, functions)
+    else:
+        input_text = get_piped()
+
     return 0
 
 
