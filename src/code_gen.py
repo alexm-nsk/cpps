@@ -28,11 +28,13 @@ def main(args):
                 ir_ = load_json(input_text)
             elif file_name.lower().endswith(".gml"):
                 ir_ = load_graphml(input_text)
-            functions = parse_ir(ir_)
-            from codegen.cpp.ir_to_cpp import ir_to_cpp
-            ir_to_cpp(module_name, functions)
     else:
         input_text = get_piped()
+        ir_ = load_json(input_text)
+
+    functions = parse_ir(ir_)
+    from codegen.cpp.ir_to_cpp import ir_to_cpp
+    ir_to_cpp(module_name, functions)
 
     return 0
 
