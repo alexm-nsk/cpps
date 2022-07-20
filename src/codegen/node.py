@@ -15,6 +15,17 @@ def get_node(node_id):
 def to_cpp_method(fn):
 
     def wrapped(self, block):
+        if (
+            hasattr(self, "name_child_output_values")
+            and
+            self.name_child_output_values
+           ):
+
+            # label the ports:
+            for index, o_p in enumerate(self.out_ports):
+                src_port = Edge.edge_to[o_p.id].from_
+                src_port.label = self.result_name + str(index)
+
         return fn(self, block)
 
     return wrapped

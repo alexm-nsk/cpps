@@ -3,7 +3,7 @@
 """
 code generator function
 """
-from ..node import Node
+from ..node import Node, to_cpp_method
 from ..cpp.cpp_codegen import (CppBlock,
                                CppVariable,
                                indent_cpp,
@@ -14,6 +14,10 @@ from ..edge import Edge
 class Function(Node):
 
     functions = {}
+
+    copy_parent_input_values = False
+    name_child_output_values = True
+    result_name = "function_result"
 
     def num_outputs(self):
         return len(self.out_ports)
@@ -29,7 +33,8 @@ class Function(Node):
                 ', '.join([type_.cpp_type for type_ in ret_types]) +
                 ">")
 
-    def to_cpp(self):
+    @to_cpp_method
+    def to_cpp(self, block=None):
         CppVariable.variable_index = {}
         ret_types = [port.type for port in self.out_ports]
 
@@ -40,11 +45,6 @@ class Function(Node):
                              for port in self.in_ports])
 
         function_block = CppBlock()
-
-        # label the ports:
-        for index, o_p in enumerate(self.out_ports):
-            src_port = Edge.edge_to[o_p.id].from_
-            src_port.label = "function_result" + str(index)
 
         for index, o_p in enumerate(self.out_ports):
             cpp_eval(

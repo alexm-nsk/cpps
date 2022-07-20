@@ -82,7 +82,7 @@ class CppModule:
     def __init__(self, name: str, functions: dict, definitions: list = []):
         self.functions = []
         for name, f in functions.items():
-            self.functions += [f.to_cpp()]
+            self.functions += [f.to_cpp(None)]
 
         from ..ast_.function import create_main
 
