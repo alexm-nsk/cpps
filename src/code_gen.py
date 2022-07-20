@@ -31,6 +31,7 @@ def main(args):
     else:
         input_text = get_piped()
         ir_ = load_json(input_text)
+        module_name = "piped_input"
 
     functions = parse_ir(ir_)
     from codegen.cpp.ir_to_cpp import ir_to_cpp
