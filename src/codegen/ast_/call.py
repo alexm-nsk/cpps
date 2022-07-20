@@ -13,7 +13,7 @@ from ..cpp.cpp_codegen import (
 
 
 class FunctionCall(Node):
-    def to_cpp(self, block):
+    def to_cpp(self, block: CppBlock):
         name = "call"
         result = CppVariable(name, self.out_ports[0].type.cpp_type)
         block.add_variable(result)
