@@ -28,7 +28,10 @@ def to_cpp_method(fn):
 
             for o_p in self.out_ports:
                 if not o_p.label:
-                    o_p.label = self.__class__.__name__ + str(o_p.index)
+                    if not hasattr(self, "name"):
+                        o_p.label = self.name + str(o_p.index)
+                    else:
+                        o_p.label = self.__class__.__name__ + str(o_p.index)
 
         return fn(self, block)
 
