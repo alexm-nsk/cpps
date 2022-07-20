@@ -119,7 +119,7 @@ def create_main():
         for index, o_p in enumerate(main.out_ports):
             body += (o_p.type.save_to_json_code(
                         f"json_result[{index}]",
-                        f"get<{o_p.type.cpp_type}>(main_result{[index]})") +
+                        f"get<{index}>(main_result)") +
                      "\n")
 
     result_output_code = ('std::cout << json_result << "\\n";\n'
