@@ -102,19 +102,15 @@ def create_main():
                             ) + ""
                        for port in main.in_ports]) + "\n"
 
-    if main.num_outputs() == 1:
-        sisal_main_result = ("sisal_main(" +
-                             ', '.join([str(port.value)
-                                        for port in main.in_ports]) +
-                             ");")
+    sisal_main_call = ("sisal_main(" +
+                       ', '.join([str(port.value) for port in main.in_ports]) +
+                       ")")
 
+    if main.num_outputs() == 1:
         body += main.out_ports[0].type.save_to_json_code("json_result",
-                                                         sisal_main_result)
+                                                         sisal_main_call)
     else:
-        body += f"{main.ret_cpp_type} main_result = " +\
-                ("sisal_main(" +
-                 ', '.join([str(port.value) for port in main.in_ports]) +
-                 ");") + ";\n"
+        body += f"{main.ret_cpp_type} main_result = " + sisal_main_call + ";\n"
 
         for index, o_p in enumerate(main.out_ports):
             body += (o_p.type.save_to_json_code(
