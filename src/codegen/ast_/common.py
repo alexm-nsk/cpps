@@ -6,10 +6,17 @@ code generator init
 from ..node import Node  # to_cpp_method
 from ..cpp.cpp_codegen import CppBlock, CppVariable
 
+
 class Init(Node):
 
-    def to_cpp(self, block: CppBlock):
-        for o_p in self.out_ports:
-            result = CppVariable(o_p.label, o_p.type)
-        self.out_ports[0].value = result
+    # target_ports is tail part of an array of in ports that init variables
+    # will be assigned to
+    def to_cpp(self, block: CppBlock, target_ports):
+
+        for o_p, target_port in zip(self.out_ports, target_ports):
+            new_variable = CppVariable(o_p.label, o_p.type.cpp_type)
+            block.add_variable(new_variable)
+            o_p.value = new_variable
+            target_port.value = new_variable
+
         return "INIT"
