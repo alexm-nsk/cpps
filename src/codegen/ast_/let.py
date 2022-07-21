@@ -7,7 +7,8 @@ from ..node import Node
 
 
 class Let(Node):
-    pass
+    def to_cpp(self, block):
+        return ""
 
 
 class LetBody(Node):

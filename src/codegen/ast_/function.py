@@ -19,6 +19,7 @@ class Function(Node):
     name_child_output_values = True
     result_name = "function_result"
 
+    @property
     def num_outputs(self):
         return len(self.out_ports)
 
@@ -28,10 +29,13 @@ class Function(Node):
 
     @property
     def ret_cpp_type(self):
-        ret_types = [port.type for port in self.out_ports]
-        return ("tuple<" +
-                ', '.join([type_.cpp_type for type_ in ret_types]) +
-                ">")
+        if self.num_outputs > 1:
+            ret_types = [port.type for port in self.out_ports]
+            return ("tuple<" +
+                    ', '.join([type_.cpp_type for type_ in ret_types]) +
+                    ">")
+        else:
+            return self.out_ports[0].type.cpp_type
 
     @to_cpp_method
     def to_cpp(self, block=None):
@@ -106,12 +110,15 @@ def create_main():
                        ', '.join([str(port.value) for port in main.in_ports]) +
                        ")")
 
-    if main.num_outputs() == 1:
-        body += main.out_ports[0].type.save_to_json_code("json_result",
-                                                         sisal_main_call)
-    else:
-        body += f"{main.ret_cpp_type} main_result = " + sisal_main_call + ";\n"
+    #  sisal_main_result = main.
 
+    if main.num_outputs == 1:
+        body += f"{main.ret_cpp_type} main_result = " + sisal_main_call + ";\n"
+        body += main.out_ports[0].type.save_to_json_code("json_result",
+                                                         "main_result")
+    else:
+
+        body += f"{main.ret_cpp_type} main_result = " + sisal_main_call + ";\n"
         for index, o_p in enumerate(main.out_ports):
             body += (o_p.type.save_to_json_code(
                         f"json_result[{index}]",
