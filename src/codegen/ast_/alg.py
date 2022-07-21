@@ -10,10 +10,9 @@ from ..cpp.cpp_codegen import CppVariable, cpp_eval, CppAssignment
 class Binary(Node):
 
     def to_cpp(self, block):
-        name = "bin"
         left = cpp_eval(self.in_ports[0], block)
         right = cpp_eval(self.in_ports[1], block)
-        result = CppVariable(name, self.out_ports[0].type.cpp_type)
+        result = CppVariable("bin", self.out_ports[0].type.cpp_type)
         block.add_variable(result)
         block.add_code(
             CppAssignment(result, f"{left} {self.operator} {right}")
