@@ -14,6 +14,8 @@ class Init(Node):
     def to_cpp(self, block: CppBlock, target_ports):
 
         for o_p, target_port in zip(self.out_ports, target_ports):
+            if o_p.label != target_port.label:
+                raise Exception("(internal) var names in init and body don't match")
             new_variable = CppVariable(o_p.label, o_p.type.cpp_type)
             block.add_variable(new_variable)
             o_p.value = new_variable
