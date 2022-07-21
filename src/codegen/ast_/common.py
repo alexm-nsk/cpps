@@ -7,4 +7,5 @@ from ..node import Node
 
 
 class Init(Node):
-    pass
+    def to_cpp(self, block):
+        return "INIT"
