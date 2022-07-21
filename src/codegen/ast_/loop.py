@@ -15,11 +15,11 @@ class Condition(Node):
     pass
 
 
-class PreCondition(Node):
+class PreCondition(Condition):
     pass
 
 
-class PostCondition(Node):
+class PostCondition(Condition):
     pass
 
 
