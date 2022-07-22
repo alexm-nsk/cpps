@@ -39,6 +39,7 @@ class Function(Node):
 
     @to_cpp_method
     def to_cpp(self, block=None):
+        # reset variable index:
         CppVariable.variable_index = {}
         ret_types = [port.type for port in self.out_ports]
 
