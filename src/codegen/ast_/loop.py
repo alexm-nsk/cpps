@@ -10,8 +10,6 @@ from ..cpp.cpp_codegen import CppBlock, cpp_eval, CppVariable
 class LoopExpression(Node):
 
     def to_cpp(self, block: CppBlock):
-        print(self.range_gen.out_ports)
-        print(self.returns.in_ports)
         result = CppVariable(self.out_ports[0].label,
                              self.out_ports[0].type.cpp_type)
         self.out_ports[0].value = result
@@ -50,6 +48,9 @@ class OldValue(Node):
 
 
 class RangeGen(Node):
+    # for (auto&& element: cont) {
+    #     v.append(element);
+    # }
     pass
 
 
