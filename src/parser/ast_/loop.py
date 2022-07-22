@@ -15,6 +15,7 @@ from .literal import Literal
 from ..error import SisalError
 from copy import deepcopy
 
+
 class Cond(Node):
     """Loop condition node, base class"""
 
