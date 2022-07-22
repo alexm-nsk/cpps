@@ -4,7 +4,7 @@
 code generator loop
 """
 from ..node import Node
-from ..cpp.cpp_codegen import CppBlock, cpp_eval, CppVariable
+from ..cpp.cpp_codegen import CppBlock, cpp_eval, CppVariable, indent_cpp
 
 
 class LoopExpression(Node):
@@ -53,7 +53,11 @@ class RangeGen(Node):
     #     v.append(element);
     # }
     def to_cpp(self, loop_object: LoopExpression, block: CppBlock):
-        pass
+        block.add_code("for (auto&& element: array)\n"
+                       "{\n" +
+                       indent_cpp("v.append(element);\n") +
+                       "}")
+
 
 class Scatter(Node):
     pass
