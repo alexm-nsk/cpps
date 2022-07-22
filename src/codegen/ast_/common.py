@@ -19,8 +19,6 @@ class Init(Node):
             if o_p.label != target_port.label:
                 raise Exception("(internal) var names in "
                                 "init and body don't match")
-            new_variable = CppVariable(o_p.label, o_p.type.cpp_type)
-            #cpp_eval(o_p, block)
-            block.add_variable(new_variable)
+            new_variable = cpp_eval(o_p, block)
             o_p.value = new_variable
             target_port.value = new_variable
