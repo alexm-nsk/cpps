@@ -21,7 +21,9 @@ def to_cpp_method(fn):
             # label the ports:
             for index, o_p in enumerate(self.out_ports):
                 src_port = Edge.edge_to[o_p.id].from_
-                src_port.label = self.result_name + str(index)
+                src_port.label = (self.result_name +
+                                  (str(index) if len(self.out_ports) > 1
+                                   else ""))
 
             for o_p in self.out_ports:
                 if not o_p.label:

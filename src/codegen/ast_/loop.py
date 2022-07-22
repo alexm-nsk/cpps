@@ -9,7 +9,7 @@ from ..cpp.cpp_codegen import CppBlock, cpp_eval, CppVariable
 
 class LoopExpression(Node):
 
-    def to_cpp(self, block):
+    def to_cpp(self, block: CppBlock):
         result = CppVariable(self.out_ports[0].label, self.out_ports[0].type.cpp_type)
         self.out_ports[0].value = result
 
