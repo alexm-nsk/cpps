@@ -8,7 +8,7 @@ from codegen.load_graphml import load_graphml
 from codegen.parse_ir import parse_ir
 
 
-def get_piped():
+def get_piped_input():
     """Checks if source code is provided via pipe"""
     input_text = ""
     input_text = "".join(sys.stdin)
@@ -29,7 +29,7 @@ def main(args):
             elif file_name.lower().endswith(".gml"):
                 ir_ = load_graphml(input_text)
     else:
-        input_text = get_piped()
+        input_text = get_piped_input()
         ir_ = load_json(input_text)
         module_name = "piped_input"
 
