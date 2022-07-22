@@ -13,6 +13,7 @@ class LoopExpression(Node):
         result = CppVariable(self.out_ports[0].label,
                              self.out_ports[0].type.cpp_type)
         self.out_ports[0].value = result
+        self.range_gen.to_cpp(loop_object=self, block=block)
 
 
 class Condition(Node):
@@ -48,11 +49,11 @@ class OldValue(Node):
 
 
 class RangeGen(Node):
-    # for (auto&& element: cont) {
+    # for (auto&& element: array) {
     #     v.append(element);
     # }
-    pass
-
+    def to_cpp(self, loop_object: LoopExpression, block: CppBlock):
+        pass
 
 class Scatter(Node):
     pass
