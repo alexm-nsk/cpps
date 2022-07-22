@@ -46,6 +46,12 @@ class Node:
 
     node_index = {}
 
+    def name_child_ports(self):
+        # label child nodes' output ports:
+        for o_p in self.out_ports:
+            src_port = Edge.edge_to[o_p.id].from_
+            src_port.label = o_p.label
+
     @staticmethod
     def get_node(node_id):
         return Node.node_index[node_id]
