@@ -5,6 +5,7 @@ code generator init
 """
 from ..node import Node  # to_cpp_method
 from ..cpp.cpp_codegen import CppBlock, CppVariable
+from ..edge import Edge
 
 
 class Init(Node):
@@ -13,12 +14,16 @@ class Init(Node):
     # will be assigned to
     def to_cpp(self, block: CppBlock, target_ports):
 
+        # label child nodes' output ports:
+        for index, o_p in enumerate(self.out_ports):
+            src_port = Edge.edge_to[o_p.id].from_
+            src_port.label = o_p.label + str(index)
+
         for o_p, target_port in zip(self.out_ports, target_ports):
             if o_p.label != target_port.label:
-                raise Exception("(internal) var names in init and body don't match")
+                raise Exception("(internal) var names in "
+                                "init and body don't match")
             new_variable = CppVariable(o_p.label, o_p.type.cpp_type)
             block.add_variable(new_variable)
             o_p.value = new_variable
             target_port.value = new_variable
-
-        return "INIT"
