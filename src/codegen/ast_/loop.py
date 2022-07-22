@@ -55,8 +55,8 @@ class RangeGen(Node):
     def to_cpp(self, loop_object: LoopExpression, block: CppBlock):
         block.add_code("for (auto&& element: array)\n"
                        "{\n" +
-                       indent_cpp("v.append(element);\n") +
-                       "}")
+                       indent_cpp("v.append(element);") +
+                       "\n}")
 
 
 class Scatter(Node):
