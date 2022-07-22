@@ -159,12 +159,9 @@ class CppBlock:
         )
 
 
-def cpp_eval(in_port, block, name=None):
+def cpp_eval(in_port, block):
     port = Edge.edge_to[in_port.id].from_
     if not port.value:
-        if name:
-            port.node.to_cpp(block, name)
-        else:
-            port.node.to_cpp(block)
+        port.node.to_cpp(block)
     in_port.value = port.value
     return in_port.value
