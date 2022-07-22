@@ -3,12 +3,15 @@
 """
 code generator loop
 """
-from ..node import Node
+from ..node import Node, to_cpp_method
 from ..cpp.cpp_codegen import CppBlock, cpp_eval, CppVariable, indent_cpp
 
 
 class LoopExpression(Node):
 
+    copy_parent_input_values = True
+
+    @to_cpp_method
     def to_cpp(self, block: CppBlock):
         result = CppVariable(self.out_ports[0].label,
                              self.out_ports[0].type.cpp_type)

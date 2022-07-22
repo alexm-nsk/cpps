@@ -13,7 +13,8 @@ class Let(Node):
 
     @to_cpp_method
     def to_cpp(self, block: CppBlock):
-
+        for i_p, init_i_p in zip(self.in_ports, self.init.in_ports):
+            init_i_p.value = i_p.value
         self.init.to_cpp(block, self.body.in_ports)
         for o_p, b_o_p in zip(self.out_ports, self.body.out_ports):
             o_p.value = cpp_eval(b_o_p, block)
