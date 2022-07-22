@@ -4,7 +4,7 @@
 code generator init
 """
 from ..node import Node  # to_cpp_method
-from ..cpp.cpp_codegen import CppBlock, CppVariable, cpp_eval
+from ..cpp.cpp_codegen import CppBlock, cpp_eval, CppVariable
 
 
 class Init(Node):
@@ -20,5 +20,6 @@ class Init(Node):
                 raise Exception("(internal) var names in "
                                 "init and body don't match")
             new_variable = cpp_eval(o_p, block)
+
             o_p.value = new_variable
             target_port.value = new_variable

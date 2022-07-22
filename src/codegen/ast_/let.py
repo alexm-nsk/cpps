@@ -6,6 +6,7 @@ code generator let
 from ..node import Node, to_cpp_method
 from ..cpp.cpp_codegen import CppBlock, cpp_eval
 
+
 class Let(Node):
 
     copy_parent_input_values = True
