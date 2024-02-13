@@ -1,0 +1,7 @@
+function main(x, y: array[integer] returns integer)
+    for i in 1, size(x)
+    repeat
+        elt_prod := x[i] * y[i]
+        returns sum of elt_prod
+    end for
+end function

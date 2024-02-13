@@ -1,0 +1,7 @@
+function test(a,b,c: integer; d:real returns integer)
+    1+a*c
+end function
+
+function test1(a,b: integer returns integer, integer)
+    a,b
+end function

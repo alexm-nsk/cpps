@@ -1,0 +1,7 @@
+function main(a, b: integer returns integer)
+    let
+        x, y := a + 1, b - 1
+    in
+        x + y
+    end let
+end function

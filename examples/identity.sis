@@ -1,0 +1,3 @@
+function main(A : integer returns integer)
+    A
+end function

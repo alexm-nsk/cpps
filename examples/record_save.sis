@@ -1,0 +1,7 @@
+type T = array[record[A: array[integer]; n: integer]]
+
+function main(A: array[integer]; n: integer  returns T)
+   [record[
+   A: A;
+   n: n]]
+end function

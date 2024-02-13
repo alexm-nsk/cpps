@@ -1,0 +1,4 @@
+function main(M: integer returns integer, integer)
+    //$ timeout = 12
+    (M + 1, M + 2)
+end function

@@ -1,0 +1,5 @@
+type compl_ = array[record[A: array[integer]; n: integer]]
+
+function main(S:compl_ returns array[integer])
+   S[1].A
+end function

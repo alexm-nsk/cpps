@@ -1,0 +1,6 @@
+//$ timeout = 3
+function main( M : integer returns integer)
+  for i in 1, M
+    returns product of i
+  end for
+end function

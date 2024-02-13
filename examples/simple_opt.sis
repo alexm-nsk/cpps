@@ -1,0 +1,3 @@
+function main(returns integer)
+    1 + 2
+end function

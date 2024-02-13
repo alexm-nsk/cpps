@@ -1,0 +1,9 @@
+function main( M, N, K : integer returns integer, integer)
+    for i in 1,M+N-K
+       repeat
+           R1 := i + N;
+           R2 := i - K
+       returns
+          sum of R1 + i ; sum of R2 - i
+    end for
+end function

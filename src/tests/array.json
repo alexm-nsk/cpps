@@ -1,0 +1,361 @@
+{
+ "functions": [
+  {
+   "id": "node7",
+   "location": "1:0-7:12",
+   "pragmas": [],
+   "functionName": "main",
+   "name": "Lambda",
+   "inPorts": [],
+   "outPorts": [
+    {
+     "nodeId": "node7",
+     "type": {
+      "location": "1:22-1:36",
+      "element": {
+       "location": "1:28-1:35",
+       "name": "integer"
+      },
+      "multiType": "array"
+     },
+     "index": 0
+    }
+   ],
+   "nodes": [
+    {
+     "id": "node6",
+     "location": "2:3-6:10",
+     "name": "Let",
+     "init": {
+      "id": "node8",
+      "location": "not applicable",
+      "name": "Init",
+      "edges": [
+       {
+        "from": [
+         "node0",
+         0
+        ],
+        "to": [
+         "node3",
+         0
+        ]
+       },
+       {
+        "from": [
+         "node1",
+         0
+        ],
+        "to": [
+         "node3",
+         1
+        ]
+       },
+       {
+        "from": [
+         "node2",
+         0
+        ],
+        "to": [
+         "node3",
+         2
+        ]
+       },
+       {
+        "from": [
+         "node3",
+         0
+        ],
+        "to": [
+         "node8",
+         0
+        ]
+       }
+      ],
+      "inPorts": [],
+      "outPorts": [
+       {
+        "nodeId": "node8",
+        "type": {
+         "location": "3:6-3:7",
+         "element": {
+          "location": "3:27-3:28",
+          "name": "integer"
+         },
+         "multiType": "array"
+        },
+        "index": 0,
+        "label": "A"
+       }
+      ],
+      "nodes": [
+       {
+        "id": "node3",
+        "location": "3:11-3:35",
+        "name": "ArrayInit",
+        "inPorts": [
+         {
+          "nodeId": "node3",
+          "type": {
+           "location": "3:27-3:28",
+           "name": "integer"
+          },
+          "index": 0,
+          "label": "item#0"
+         },
+         {
+          "nodeId": "node3",
+          "type": {
+           "location": "3:30-3:31",
+           "name": "integer"
+          },
+          "index": 1,
+          "label": "item#1"
+         },
+         {
+          "nodeId": "node3",
+          "type": {
+           "location": "3:33-3:34",
+           "name": "integer"
+          },
+          "index": 2,
+          "label": "item#2"
+         }
+        ],
+        "outPorts": [
+         {
+          "nodeId": "node3",
+          "type": {
+           "location": "3:6-3:7",
+           "element": {
+            "location": "3:27-3:28",
+            "name": "integer"
+           },
+           "multiType": "array"
+          },
+          "index": 0,
+          "label": "initialized array"
+         }
+        ],
+        "pragmas": []
+       },
+       {
+        "id": "node0",
+        "location": "3:27-3:28",
+        "value": "1",
+        "name": "Literal",
+        "outPorts": [
+         {
+          "nodeId": "node0",
+          "type": {
+           "location": "3:27-3:28",
+           "name": "integer"
+          },
+          "index": 0
+         }
+        ],
+        "pragmas": []
+       },
+       {
+        "id": "node1",
+        "location": "3:30-3:31",
+        "value": "2",
+        "name": "Literal",
+        "outPorts": [
+         {
+          "nodeId": "node1",
+          "type": {
+           "location": "3:30-3:31",
+           "name": "integer"
+          },
+          "index": 0
+         }
+        ],
+        "pragmas": []
+       },
+       {
+        "id": "node2",
+        "location": "3:33-3:34",
+        "value": "3",
+        "name": "Literal",
+        "outPorts": [
+         {
+          "nodeId": "node2",
+          "type": {
+           "location": "3:33-3:34",
+           "name": "integer"
+          },
+          "index": 0
+         }
+        ],
+        "pragmas": []
+       }
+      ]
+     },
+     "body": {
+      "id": "node9",
+      "location": "not applicable",
+      "name": "Body",
+      "inPorts": [
+       {
+        "nodeId": "node9",
+        "type": {
+         "location": "3:6-3:7",
+         "element": {
+          "location": "3:27-3:28",
+          "name": "integer"
+         },
+         "multiType": "array"
+        },
+        "index": 0,
+        "label": "A"
+       }
+      ],
+      "outPorts": [
+       {
+        "nodeId": "node9",
+        "type": {
+         "location": "1:22-1:36",
+         "element": {
+          "location": "1:28-1:35",
+          "name": "integer"
+         },
+         "multiType": "array"
+        },
+        "index": 0
+       }
+      ],
+      "nodes": [
+       {
+        "id": "node5",
+        "location": "5:6-5:16",
+        "callee": "addh",
+        "name": "FunctionCall",
+        "pragmas": [],
+        "inPorts": [
+         {
+          "nodeId": "node5",
+          "type": {
+           "location": "not applicable",
+           "element": {
+            "location": "not applicable",
+            "name": "any"
+           },
+           "multiType": "array"
+          },
+          "index": 0,
+          "label": "a",
+          "location": "5:11-5:12"
+         },
+         {
+          "nodeId": "node5",
+          "type": {
+           "location": "not applicable",
+           "name": "any"
+          },
+          "index": 1,
+          "label": "b",
+          "location": "5:14-5:15"
+         }
+        ],
+        "outPorts": [
+         {
+          "nodeId": "node5",
+          "type": {
+           "location": "1:22-1:36",
+           "element": {
+            "location": "1:28-1:35",
+            "name": "integer"
+           },
+           "multiType": "array"
+          },
+          "index": 0
+         }
+        ]
+       },
+       {
+        "id": "node4",
+        "location": "5:14-5:15",
+        "value": "4",
+        "name": "Literal",
+        "outPorts": [
+         {
+          "nodeId": "node4",
+          "type": {
+           "location": "5:14-5:15",
+           "name": "integer"
+          },
+          "index": 0
+         }
+        ],
+        "pragmas": []
+       }
+      ],
+      "edges": [
+       {
+        "from": [
+         "node5",
+         0
+        ],
+        "to": [
+         "node9",
+         0
+        ]
+       },
+       {
+        "from": [
+         "node9",
+         0
+        ],
+        "to": [
+         "node5",
+         0
+        ]
+       },
+       {
+        "from": [
+         "node4",
+         0
+        ],
+        "to": [
+         "node5",
+         1
+        ]
+       }
+      ]
+     },
+     "pragmas": [],
+     "inPorts": [],
+     "outPorts": [
+      {
+       "nodeId": "node6",
+       "type": {
+        "location": "1:22-1:36",
+        "element": {
+         "location": "1:28-1:35",
+         "name": "integer"
+        },
+        "multiType": "array"
+       },
+       "index": 0
+      }
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": [
+      "node6",
+      0
+     ],
+     "to": [
+      "node7",
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "errors": []
+}
+

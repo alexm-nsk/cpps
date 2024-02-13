@@ -1,0 +1,7 @@
+function main(a,b : integer; r: real returns real, integer)
+    if a > 0 then
+        -r, a + b
+    else
+        2*r, a-b
+    end if
+end function

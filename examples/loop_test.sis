@@ -1,0 +1,10 @@
+function main(returns array[integer])
+    for i in 1,10
+    initial
+        s := 0;
+    repeat
+        s := old s + 1;
+    returns array of s
+    end for
+
+end function

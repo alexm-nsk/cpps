@@ -1,0 +1,8 @@
+function main(a,b:integer returns integer)
+    +let
+        c:= a+b;
+        d:=a-b + c;
+    in
+     c+d
+    end let
+end function

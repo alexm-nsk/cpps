@@ -1,0 +1,17 @@
+function sort(A: array of integer returns array of integer)
+  if (size(A) <= 1) then
+    A
+  else
+    let
+        Less := for a in A returns array of a when a < A[1] end for;
+        Same := for a in A returns array of a when a = A[1] end for;
+        More := for a in A returns array of a when a > A[1] end for;
+      in
+        sort(Less) || Same || sort(More)
+    end let
+  end if
+end function
+
+function main(A: array of integer returns array of integer)
+   sort(A)
+end function

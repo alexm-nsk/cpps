@@ -1,0 +1,10 @@
+function main(A, B: array[array[real]] returns array[real])
+   let N := size(A) in
+      for i in 1, N cross j in 1, N
+      returns array of
+         for k in 1, N
+            returns sum of A[i, k] * B[k, j]
+         end for
+      end for
+   end let
+end function

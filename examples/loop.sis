@@ -1,0 +1,10 @@
+function main( M : integer returns integer)
+  for i in 1, M
+  let
+    z := M + 1;
+  repeat
+    R := i + z;
+    S := i + R;
+  returns sum of R - S when R > 1
+  end for
+end function

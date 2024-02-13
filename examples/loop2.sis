@@ -1,0 +1,13 @@
+function main( A,B: array of array of integer; M,N,K: integer returns array of array of integer)
+    for i in 1,M
+    repeat
+        Ci := for j in 1,N
+                 repeat
+                     Cij := for k in 1,K repeat Sij := A[i][k]*B[k][j] returns sum of Sij end for
+                 returns
+                     array of Cij
+                 end for
+    returns
+        array of Ci
+    end for
+end function

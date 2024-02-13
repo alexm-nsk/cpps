@@ -1,0 +1,11 @@
+function main(x, y: array[integer] returns array[integer], array[integer])
+    for i in 1, size(x)
+    repeat
+    minimum, maximum := if x[i] < y[i] then
+                        x[i], y[i]
+                    else
+                        y[i], x[i]
+                    end if
+    returns array of maximum, array of minimum
+    end for
+end function

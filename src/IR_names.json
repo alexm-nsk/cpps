@@ -1,0 +1,7 @@
+{
+    "nodeNames": ["Lambda", "If", "Else", "ElseIf", "Then", "Branch", "Condition", "Binary", "Unary",
+    "FunctionCall", "Literal", "LoopExpression", "Init", "PreCondition", "PostCondition", "Body", "Returns",
+    "OldValue", "Reduction", "ArrayAccess", "BuiltInFunctionCall", "Let", "RangeGen", "Scatter"],
+    "subNodeNames": ["init", "body", "range_gen", "returns", "condition"],
+    "fieldNames": ["value", "operator", "function_name", "callee"]
+}

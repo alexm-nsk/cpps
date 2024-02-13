@@ -1,0 +1,64 @@
+Для работы транслятора нужно установить parsimonious:
+    pip install parsimonious
+
+Для преобразования программы в C++:
+    python sisal.py -i file_name.sis
+Если требуется только IR в JSON:
+    python sisal.py -i file_name.sis --json
+В GraphML:
+    python sisal.py -i file_name.sis --graphml
+
+в stdout выводится JSON:
+    {
+       "functions" : [<IR функций>],
+       "definitions": список пользовательских типов/ редукций
+       "errors": [<описания ошибок, если они есть>],
+       "warnings": [<предупреждения, если они есть>],
+    }
+
+Для передачи программы через Unix PIPE не указывать -i и имя файла (остальные аргументы не меняются):
+    cat program.sis | python sisal.py --json
+
+Для кодогенерации по IR (пока доступен только JSON):
+    python code_gen.py -i file_name.json
+Аналогично, чере PIPE:
+    cat ir.json | python code_gen.py
+    
+Для компиляции получаемых C++-программ нужна библиотека jsoncpp.
+Компилировать можно при помощи GCC:
+    g++ -Wall -c module_name.cpp -ljsoncpp -fconcepts -o module_name -O3
+или через PIPE:
+    cat module_name.cpp | g++ -xc++ -fconcepts -ljsoncpp -Wall -o module_name -O3
+    
+Получаемые программы ожидают на входе через PIPE значения в виде JSON:
+
+если имеем function main(A: array[integer], n: integer, x: real..., входные данные должны иметь следующий вид (порядок при этом не важен):
+{
+        "A": [1, 2 ,3 ,4],
+        "n": 1,
+        "x": 2.3
+}
+
+для запуска:
+
+echo '{"A": [1, 2 ,3 ,4], "n": 1, "x": 2.3}' | ./module_name
+
+На выходе будут результаты в JSON:
+
+{
+    "port0" : [4, 5, 6],
+    "port1" : 7
+    "port2" : 8.9
+    ...
+}
+
+"port0", "port1" - выходные порты функции main.
+
+Для визуализации графа IR нужно использовать параметр --drawgraph:
+    python sisal.py -i ../examples/qsort.sis --drawgraph > ~/qsort.svg
+
+Для применения оптимизатора на уровне IR - --opt:
+    python sisal.py -i ../examples/qsort.sis --opt --json
+
+Т.е. чтобы нарисовать оптимизированный IR:
+    python sisal.py -i ../examples/qsort.sis --opt --drawgraph > ~/qsort.svg

@@ -1,0 +1,12 @@
+function multi(returns integer, integer)
+    1, 2
+end function
+
+function main(a: integer returns integer)
+    let
+        x, y := multi()
+        c := 3 + x
+    in
+        x + y + a -c
+    end let
+end function
