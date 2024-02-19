@@ -143,6 +143,7 @@ class Function(Node):
         #collect return types in a list:
         ret_types = [port.type for port in self.out_ports]
 
+        # assign arguments to C++ vars:
         for port in self.in_ports:
             port.value = CppVariable(port.label, port.type)
 
