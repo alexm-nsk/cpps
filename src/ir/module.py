@@ -198,3 +198,6 @@ class Module:
         container.nodes.append(bin)
         bin.module = self
         return bin
+
+    def move_subgraph(self, src_nodes: list, src_edges: list, dst_node):
+        pass
