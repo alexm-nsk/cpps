@@ -140,7 +140,7 @@ class Function(Node):
         # reset variable index:
         CppVariable.variable_index = {}
 
-        #collect return types in a list:
+        # collect return types in a list:
         ret_types = [port.type for port in self.out_ports]
 
         # assign arguments to C++ vars:
