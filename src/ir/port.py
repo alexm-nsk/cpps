@@ -33,6 +33,10 @@ class Port:
         return [edge.to for edge in self.node.module.edges_from[self.id]]
 
     @property
+    def input_port(self):
+        return self.node.module.edge_to[self.id].from_
+
+    @property
     def input_node(self):
         """Returns the node connected to this port via one edge"""
         return self.node.module.edge_to[self.id].from_.node

@@ -68,7 +68,9 @@ class Module:
         node_to_delete = self.nodes[node] if node is str else node
         if del_from_parent:
             parent_node = node.parent_node
-            parent_node.nodes.remove(self.nodes[node.id])
+            # TODO make it more clear!
+            if parent_node:
+                parent_node.nodes.remove(self.nodes[node.id])
 
         if delete_attached_edges:
             self.delete_edges_attached_to_node(node)
@@ -80,7 +82,8 @@ class Module:
                 self.delete_edge(edge)
 
         self.deleted_nodes.append(node_to_delete.id)
-        del self.nodes[node_to_delete.id]
+        if(node_to_delete.id in self.nodes):
+            del self.nodes[node_to_delete.id]
 
     def delete_node(self, node: Node, delete_attached_edges=False):
         """Deletes a node from this module.
@@ -94,15 +97,17 @@ class Module:
         for subnode_name in SUBNODE_NAMES:
             if hasattr(node, subnode_name):
                 subnode = node.__dict__[subnode_name]
-                for n in subnode.nodes:
-                    self.__delete_node__(n, True, False)
-                self.__delete_node__(subnode, True, False)
+                if hasattr(subnode, "nodes"):
+                    for n in subnode.nodes:
+                        self.__delete_node__(n, True, False)
+                self.__delete_node__(subnode, False, False)
         # delete branches from Ifs:
         if hasattr(node, "branches"):
             for branch in node.branches:
-                for n in branch.nodes:
-                    self.__delete_node__(n, True, False)
-                self.__delete_node__(branch, True, False)
+                if hasattr(branch, "nodes"):
+                    for n in branch.nodes:
+                        self.__delete_node__(n, True, False)
+                self.__delete_node__(branch, False, False)
 
         self.__delete_node__(node, delete_attached_edges, True)
 
@@ -174,6 +179,40 @@ class Module:
         if self.deleted_nodes:
             return self.deleted_nodes.pop(0)
         return "node" + str(len(self.nodes))
+
+    def swap_complex_node(self, src_node, target_node):
+        '''replaces target_node with src_node making all necessary
+        connections, will only work with clusters (like cond, branch, etc.)'''
+
+        # node containing target_node:
+        parent = target_node.parent_node
+
+        # reconnect the inputs:
+        for i_p, sn_i_p in zip(target_node.in_ports, src_node.in_ports):
+            # ports connected to src_node in_ports
+            # (the ones that are first at the input
+            # and directly connected to it)
+            for border_port in sn_i_p.connected_ports:
+                self.edge_to[border_port.id].attach_origin(i_p.input_port)
+            self.delete_edge(self.edge_to[i_p.id])
+
+        # reconnect the outputs:
+        for t_o_p, sn_o_p in zip(target_node.out_ports, src_node.out_ports):
+            for out_port in t_o_p.connected_ports:
+                self.edge_to[out_port.id].attach_origin(sn_o_p.input_port)
+            self.delete_edge(self.edge_to[sn_o_p.id])
+
+        for edge in src_node.edges:
+            edge.containing_node = parent
+        parent.edges += src_node.edges
+        parent.nodes += src_node.nodes
+
+        src_node.edges = []
+        src_node.nodes = []
+
+        #parent.nodes.append(src_node)
+        self.delete_node(target_node, delete_attached_edges=False)
+        self.delete_node(src_node, delete_attached_edges=False)
 
     def Literal(self, value, type, container: Node):
         """Create a new literal node and put it inside the "container" node"""
