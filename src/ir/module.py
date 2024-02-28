@@ -68,9 +68,7 @@ class Module:
         node_to_delete = self.nodes[node] if node is str else node
         if del_from_parent:
             parent_node = node.parent_node
-            # TODO make it more clear!
-            if parent_node:
-                parent_node.nodes.remove(self.nodes[node.id])
+            parent_node.nodes.remove(self.nodes[node.id])
 
         if delete_attached_edges:
             self.delete_edges_attached_to_node(node)
@@ -109,7 +107,7 @@ class Module:
                         self.__delete_node__(n, True, False)
                 self.__delete_node__(branch, False, False)
 
-        self.__delete_node__(node, delete_attached_edges, True)
+        self.__delete_node__(node, delete_attached_edges, not node.is_cluster)
 
     def load_from_json(self, file_name):
         """Loads module from JSON file"""

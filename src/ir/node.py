@@ -250,6 +250,17 @@ class Node:
         return False
 
     @property
+    def is_cluster(self):
+        return self.name in ["Then",
+                             "ElseIf",
+                             "Else",
+                             "Condition",
+                             "Body",
+                             "RangeGen",
+                             "Init",
+                             "Returns"]
+
+    @property
     def num_subnodes(self):
         '''returns number of all nodes recursively contained in this node
         not memoized yet, because the graph may change and that would require additional handling'''
