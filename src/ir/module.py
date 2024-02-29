@@ -226,15 +226,28 @@ class Module:
 
     def Binary(self, operator, left_type, right_type, container):
         bin = alg.Binary()
+        bin.id = self.get_new_node_id()
         bin.operator = operator
         bin.in_ports = [Port(bin, left_type, 0, "left operand", True, ""),
                         Port(bin, right_type, 1, "right operand", True, "")]
-        #TODO use typemap
+        # TODO use typemap
         bin.out_ports = [Port(bin, left_type, 0, "output", False, "")]
         self.add_node(bin)
         container.nodes.append(bin)
         bin.module = self
         return bin
+
+    def Unary(self, operator, value_type, container):
+        un = alg.Unary()
+        un.id = self.get_new_node_id()
+        un.operator = operator
+        un.in_ports = [Port(un, value_type, 0, "input", True, "")]
+        # TODO also use typemap
+        un.out_ports = [Port(un, value_type, 0, "output", False, "")]
+        self.add_node(un)
+        container.nodes.append(un)
+        un.module = self
+        return un
 
     def move_subgraph(self, src_nodes: list, src_edges: list, dst_node):
         pass
