@@ -203,7 +203,9 @@ class Module:
         for edge in src_node.edges:
             edge.containing_node = parent
         parent.edges += src_node.edges
-        parent.nodes += src_node.nodes
+
+        if src_node.has_nodes():
+            parent.nodes += src_node.nodes
 
         src_node.edges = []
         src_node.nodes = []
