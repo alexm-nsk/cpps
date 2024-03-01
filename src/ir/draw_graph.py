@@ -70,7 +70,7 @@ def size_estimate(self: Node) -> (int, int):
             + SIDE_MARGIN
         )
         side_y = sum(
-            [max([size[1] for size in level]) for level in self.sizes]
+            [max([size[1] for size in level]) if level else 0 for level in self.sizes]
         ) + SIDE_MARGIN * (len(self.sizes) + 1)
     elif self.is_multi:  # if, let, loop
         # put them in a row for now
@@ -129,7 +129,7 @@ def draw_simple_internal_nodes(self, dwg, area_insert, area_size):
     bottom = area_insert[1] + area_size[1]  # Y of parent node internal area
 
     for Y, level in enumerate(self.levels):
-        level_height = max([size[1] for size in self.sizes[Y]])
+        level_height = max([size[1] for size in self.sizes[Y]]) if self.sizes[Y] else MINIMAL_NODE_HEIGHT
         level_width = sum([size[0] for size in self.sizes[Y]])
         h_offset = 0  # area_size[0] / 2 - level_width / 2
         v_offset += level_height + SIDE_MARGIN
