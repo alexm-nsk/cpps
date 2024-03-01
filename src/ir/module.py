@@ -186,19 +186,19 @@ class Module:
         parent = dst_node.parent_node
 
         # reconnect the inputs:
-        for i_p, sn_i_p in zip(dst_node.in_ports, src_node.in_ports):
+        for d_i_p, s_i_p in zip(dst_node.in_ports, src_node.in_ports):
             # ports connected to src_node in_ports
             # (the ones that are first at the input
             # and directly connected to it)
-            for border_port in sn_i_p.connected_ports:
-                border_port.input_edge.attach_origin(i_p.input_port)
-            self.delete_edge(i_p.input_edge)
+            for border_port in s_i_p.connected_ports:
+                border_port.input_edge.attach_origin(d_i_p.input_port)
+            self.delete_edge(d_i_p.input_edge)
 
         # reconnect the outputs:
-        for t_o_p, sn_o_p in zip(dst_node.out_ports, src_node.out_ports):
-            for out_port in t_o_p.connected_ports:
-                out_port.input_edge.attach_origin(sn_o_p.input_port)
-            self.delete_edge(sn_o_p.input_edge)
+        for d_o_p, s_o_p in zip(dst_node.out_ports, src_node.out_ports):
+            for out_port in d_o_p.connected_ports:
+                out_port.input_edge.attach_origin(s_o_p.input_port)
+            self.delete_edge(s_o_p.input_edge)
 
         for edge in src_node.edges:
             edge.containing_node = parent

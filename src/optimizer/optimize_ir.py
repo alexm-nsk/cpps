@@ -28,14 +28,8 @@ def optimize_ir(module: Module):
 
     for if_node in module.get_nodes("If"):
         output_node = if_node.condition.out_ports[0].input_node
-        function = if_node.parent_node
         if type(output_node) is Literal and output_node.value==True:
-            #module.swap_complex_node(if_node.branches[1], if_node)
-
-            module.delete_node(if_node, True)
-            Edge(function.in_ports[0], function.out_ports[0], function)
-            #print(function.module)
-
+            module.swap_complex_node(if_node.branches[0], if_node)
             break
 
     # iterate over all binary nodes:
