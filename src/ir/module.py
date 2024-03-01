@@ -191,14 +191,14 @@ class Module:
             # (the ones that are first at the input
             # and directly connected to it)
             for border_port in sn_i_p.connected_ports:
-                self.edge_to[border_port.id].attach_origin(i_p.input_port)
-            self.delete_edge(self.edge_to[i_p.id])
+                border_port.input_edge.attach_origin(i_p.input_port)
+            self.delete_edge(i_p.input_edge)
 
         # reconnect the outputs:
         for t_o_p, sn_o_p in zip(target_node.out_ports, src_node.out_ports):
             for out_port in t_o_p.connected_ports:
-                self.edge_to[out_port.id].attach_origin(sn_o_p.input_port)
-            self.delete_edge(self.edge_to[sn_o_p.id])
+                out_port.input_edge.attach_origin(sn_o_p.input_port)
+            self.delete_edge(sn_o_p.input_edge)
 
         for edge in src_node.edges:
             edge.containing_node = parent
