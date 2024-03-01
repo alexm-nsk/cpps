@@ -225,6 +225,11 @@ class Node:
             else:
                 parent = new_parent
 
+    def has_nodes(self):
+        if hasattr(self, "nodes"):
+            return len(self.nodes) > 0
+        return False
+
     @property
     def is_complex(self):
         if hasattr(self, "nodes"):
