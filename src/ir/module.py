@@ -10,7 +10,7 @@ from .port import Port
 from .ast_ import alg, literal
 from .error import IRProcessingError
 
-PORT_MISMATCH_TEXT = "port configuration mismatch when swapping nodes."
+PORT_MISMATCH_TEXT = "configuration mismatch when swapping nodes."
 
 
 class Module:
@@ -183,18 +183,18 @@ class Module:
 
     @staticmethod
     def check_ports_compatibility(src_node, dst_node):
-
         '''test if port configurations match'''
+        # TODO add compatible types and conversion nodes
         if len(src_node.in_ports) != len(dst_node.in_ports):
             raise IRProcessingError(
-                "Input " + PORT_MISMATCH_TEXT,
+                "Input port" + PORT_MISMATCH_TEXT,
                 (f"Trying to swap {src_node} with {dst_node}."),
             )
 
          # test if port configurations match:
         if len(src_node.out_ports) != len(dst_node.out_ports):
             raise IRProcessingError(
-                "Output " + PORT_MISMATCH_TEXT,
+                "Output port" + PORT_MISMATCH_TEXT,
                 (f"Trying to swap {src_node} with {dst_node}."),
             )
 
