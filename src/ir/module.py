@@ -10,6 +10,8 @@ from .port import Port
 from .ast_ import alg, literal
 from .error import IRProcessingError
 
+PORT_MISMATCH_TEXT = "port configuration mismatch when swapping nodes."
+
 
 class Module:
     def reset(self):
@@ -179,23 +181,40 @@ class Module:
             return self.deleted_nodes.pop(0)
         return "node" + str(len(self.nodes))
 
-    PORT_MISMATCH_TEXT = "port configuration mismatch when swapping nodes."
-
     @staticmethod
     def check_ports_compatibility(src_node, dst_node):
+
         '''test if port configurations match'''
         if len(src_node.in_ports) != len(dst_node.in_ports):
             raise IRProcessingError(
                 "Input " + PORT_MISMATCH_TEXT,
-                (f"Trying to swap {src_node.id} with {dst_node.id}."),
+                (f"Trying to swap {src_node} with {dst_node}."),
             )
 
          # test if port configurations match:
         if len(src_node.out_ports) != len(dst_node.out_ports):
             raise IRProcessingError(
                 "Output " + PORT_MISMATCH_TEXT,
-                (f"Trying to swap {src_node.id} with {dst_node.id}."),
+                (f"Trying to swap {src_node} with {dst_node}."),
             )
+
+        for src_ip, dst_ip in zip(src_node.in_ports, dst_node.in_ports):
+            if type(src_ip.type) != type(dst_ip.type):
+                raise IRProcessingError(
+                    "Input port type " + PORT_MISMATCH_TEXT,
+                    (f"Trying to swap {src_node} with {dst_node}."
+                     f"Input port {src_ip.index}({src_ip.type}) vs."
+                     f"Input port {dst_ip.index}({dst_ip.type})"),
+                )
+
+        for src_op, dst_op in zip(src_node.out_ports, dst_node.out_ports):
+            if type(src_op.type) != type(dst_op.type):
+                raise IRProcessingError(
+                    "Input port type " + PORT_MISMATCH_TEXT,
+                    (f"Trying to swap {src_node} with {dst_node}."
+                     f"Output port {src_op.index}({src_op.type}) vs."
+                     f"Output port {dst_op.index}({dst_op.type})"),
+                )
 
     def swap_complex_node(self, src_node, dst_node):
         """replaces dst_node with src_node making all necessary
