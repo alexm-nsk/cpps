@@ -5,7 +5,7 @@ code generator loop
 """
 from ..node import Node
 from ..edge import get_src_node
-from ..error import CodeGenError
+from ..error import IRProcessingError
 
 
 class LoopExpression(Node):

@@ -5,7 +5,7 @@ code generator record initialization
 """
 
 from ..node import Node
-from ..error import CodeGenError
+from ..error import IRProcessingError
 
 class RecordInit(Node):
     pass

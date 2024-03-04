@@ -8,6 +8,7 @@ from .node import Node, SUBNODE_NAMES
 from .type import get_type
 from .port import Port
 from .ast_ import alg, literal
+from .error import IRProcessingError
 
 
 class Module:
@@ -80,7 +81,7 @@ class Module:
                 self.delete_edge(edge)
 
         self.deleted_nodes.append(node_to_delete.id)
-        if(node_to_delete.id in self.nodes):
+        if node_to_delete.id in self.nodes:
             del self.nodes[node_to_delete.id]
 
     def delete_node(self, node: Node, delete_attached_edges=False):
@@ -178,9 +179,29 @@ class Module:
             return self.deleted_nodes.pop(0)
         return "node" + str(len(self.nodes))
 
+    PORT_MISMATCH_TEXT = "port configuration mismatch when swapping nodes."
+
+    @staticmethod
+    def check_ports_compatibility(src_node, dst_node):
+        '''test if port configurations match'''
+        if len(src_node.in_ports) != len(dst_node.in_ports):
+            raise IRProcessingError(
+                "Input " + PORT_MISMATCH_TEXT,
+                (f"Trying to swap {src_node.id} with {dst_node.id}."),
+            )
+
+         # test if port configurations match:
+        if len(src_node.out_ports) != len(dst_node.out_ports):
+            raise IRProcessingError(
+                "Output " + PORT_MISMATCH_TEXT,
+                (f"Trying to swap {src_node.id} with {dst_node.id}."),
+            )
+
     def swap_complex_node(self, src_node, dst_node):
-        '''replaces dst_node with src_node making all necessary
-        connections, will only work with clusters (like cond, branch, etc.)'''
+        """replaces dst_node with src_node making all necessary
+        connections, will only work with clusters (like cond, branch, etc.)"""
+
+        self.check_ports_compatibility(src_node, dst_node)
 
         # node containing dst_node:
         parent = dst_node.parent_node
@@ -210,7 +231,7 @@ class Module:
         src_node.edges = []
         src_node.nodes = []
 
-        #parent.nodes.append(src_node)
+        # parent.nodes.append(src_node)
         self.delete_node(dst_node, delete_attached_edges=False)
         self.delete_node(src_node, delete_attached_edges=False)
 
@@ -230,8 +251,10 @@ class Module:
         bin = alg.Binary()
         bin.id = self.get_new_node_id()
         bin.operator = operator
-        bin.in_ports = [Port(bin, left_type, 0, "left operand", True, ""),
-                        Port(bin, right_type, 1, "right operand", True, "")]
+        bin.in_ports = [
+            Port(bin, left_type, 0, "left operand", True, ""),
+            Port(bin, right_type, 1, "right operand", True, ""),
+        ]
         # TODO use typemap
         bin.out_ports = [Port(bin, left_type, 0, "output", False, "")]
         self.add_node(bin)

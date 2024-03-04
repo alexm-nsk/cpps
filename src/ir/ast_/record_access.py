@@ -5,7 +5,7 @@ code generator array access
 """
 
 from ..node import Node
-from ..error import CodeGenError
+from ..error import IRProcessingError
 
 
 class RecordAccess(Node):
