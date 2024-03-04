@@ -183,7 +183,8 @@ class Module:
 
     @staticmethod
     def check_ports_compatibility(src_node, dst_node):
-        '''test if port configurations match'''
+        '''test if port configurations (numbers of input and
+        output ports and their types) match'''
         # TODO add compatible types and conversion nodes
         if len(src_node.in_ports) != len(dst_node.in_ports):
             raise IRProcessingError(
