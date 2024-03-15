@@ -336,7 +336,13 @@ class Module:
             container_ports = []
             if in_ports and copy_in_ports_from_container:
                 for index, cont_port in enumerate(container.in_ports):
-                    let_port = deepcopy(cont_port)
+                    let_port = Port(
+                        node,
+                        deepcopy(cont_port.type),
+                        index,
+                        cont_port.label,
+                        cont_port.in_port,
+                    )
                     let_port.node = node
                     let_port.index += len(custom_ports)
                     container_ports.append(let_port)
