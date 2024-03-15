@@ -39,6 +39,12 @@ class Node:
         else:
             self.out_ports = []
 
+    def __init__(self):
+        # automatically add the name class field
+        # to each object
+        if hasattr(self, "name"):
+            self.name = self.name
+
     @classmethod
     def load_from_data(cls, data, module):
         """Builds this node from data provided.
