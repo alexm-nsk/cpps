@@ -306,40 +306,42 @@ class Module:
         output_values=None,
         copy_in_ports_from_container=True,
     ):
-        """input_values, output_values and variables are lists of tuples
-        like [(name, type), (name, type)...]."""
+        """output_values (outputs of the Let) and variables (values initialized in Let's Init)
+        are lists of tuples like [(name, type), (name, type)...]."""
+
         let_node = let.Let()
         let_node.id = self.get_new_node_id()
         let_node.module = self
-        container.nodes.append(let_node)
 
         body = let_node.body = let.Body()
-        init = let_node.init = common.Init()
-        body.module = self
-        init.module = self
-        init.id = self.get_new_node_id()
         body.id = self.get_new_node_id()
+        body.module = self
+        body.nodes = []
+        body.edges = []
 
-        if copy_in_ports_from_container:
-            num_in_ports = len(container.in_ports)
-        else:
-            num_in_ports = 0
+        init = let_node.init = common.Init()
+        init.id = self.get_new_node_id()
+        init.module = self
+        init.nodes = []
+        init.edges = []
+
+        container.nodes.append(let_node)
 
         def make_ports(node, values, in_ports):
+            custom_ports = [
+                Port(node, type_, index, label, in_ports, "")
+                for index, (label, type_) in enumerate(values)
+            ]
+
             container_ports = []
             if in_ports and copy_in_ports_from_container:
                 for index, cont_port in enumerate(container.in_ports):
                     let_port = deepcopy(cont_port)
                     let_port.node = node
+                    let_port.index += len(custom_ports)
                     container_ports.append(let_port)
 
-            custom_ports = [
-                Port(node, type_, index, label, in_ports, "")
-                for index, (label, type_) in enumerate(
-                    values, num_in_ports if in_ports else 0
-                )
-            ]
-            return container_ports + custom_ports
+            return custom_ports + container_ports
 
         let_node.in_ports = make_ports(let_node, [], True)
         let_node.out_ports = make_ports(let_node, output_values, False)
