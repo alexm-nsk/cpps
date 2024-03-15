@@ -7,8 +7,10 @@ from ..node import Node
 
 
 class Let(Node):
+    name = "Let"
     pass
 
 
-class LetBody(Node):
+class Body(Node):
+    name = "Body"
     pass

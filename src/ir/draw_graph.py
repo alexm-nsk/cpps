@@ -53,8 +53,9 @@ def size_estimate(self: Node) -> (int, int):
                 if hasattr(node, "in_ports"):
                     for o_p in node.in_ports:
                         in_node = o_p.input_node
-                        if not in_node in level and self != in_node:
-                            level.append(in_node)
+                        if in_node:
+                            if not in_node in level and self != in_node:
+                                level.append(in_node)
             if level:
                 self.levels.append(level)
 

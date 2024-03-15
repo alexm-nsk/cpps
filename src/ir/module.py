@@ -7,8 +7,9 @@ from .edge import Edge
 from .node import Node, SUBNODE_NAMES
 from .type import get_type
 from .port import Port
-from .ast_ import alg, literal
+from .ast_ import alg, literal, let, common
 from .error import IRProcessingError
+from copy import deepcopy
 
 PORT_MISMATCH_TEXT = "configuration mismatch when swapping nodes."
 
@@ -183,8 +184,8 @@ class Module:
 
     @staticmethod
     def check_ports_compatibility(src_node, dst_node):
-        '''test if port configurations (numbers of input and
-        output ports and their types) match'''
+        """test if port configurations (numbers of input and
+        output ports and their types) match"""
         # TODO add compatible types and conversion nodes
         if len(src_node.in_ports) != len(dst_node.in_ports):
             raise IRProcessingError(
@@ -192,7 +193,7 @@ class Module:
                 (f"Trying to swap {src_node} with {dst_node}."),
             )
 
-         # test if port configurations match:
+        # test if port configurations match:
         if len(src_node.out_ports) != len(dst_node.out_ports):
             raise IRProcessingError(
                 "Output port" + PORT_MISMATCH_TEXT,
@@ -203,18 +204,22 @@ class Module:
             if type(src_ip.type) != type(dst_ip.type):
                 raise IRProcessingError(
                     "Input port type " + PORT_MISMATCH_TEXT,
-                    (f"Trying to swap {src_node} with {dst_node}."
-                     f"Input port {src_ip.index}({src_ip.type}) vs."
-                     f"Input port {dst_ip.index}({dst_ip.type})"),
+                    (
+                        f"Trying to swap {src_node} with {dst_node}."
+                        f"Input port {src_ip.index}({src_ip.type}) vs."
+                        f"Input port {dst_ip.index}({dst_ip.type})"
+                    ),
                 )
 
         for src_op, dst_op in zip(src_node.out_ports, dst_node.out_ports):
             if type(src_op.type) != type(dst_op.type):
                 raise IRProcessingError(
                     "Input port type " + PORT_MISMATCH_TEXT,
-                    (f"Trying to swap {src_node} with {dst_node}."
-                     f"Output port {src_op.index}({src_op.type}) vs."
-                     f"Output port {dst_op.index}({dst_op.type})"),
+                    (
+                        f"Trying to swap {src_node} with {dst_node}."
+                        f"Output port {src_op.index}({src_op.type}) vs."
+                        f"Output port {dst_op.index}({dst_op.type})"
+                    ),
                 )
 
     def swap_complex_node(self, src_node, dst_node):
@@ -293,6 +298,59 @@ class Module:
         container.nodes.append(un)
         un.module = self
         return un
+
+    def Let(
+        self,
+        container,
+        variables=None,
+        output_values=None,
+        copy_in_ports_from_container=True,
+    ):
+        """input_values, output_values and variables are lists of tuples
+        like [(name, type), (name, type)...]."""
+        let_node = let.Let()
+        let_node.id = self.get_new_node_id()
+        let_node.module = self
+        container.nodes.append(let_node)
+
+        body = let_node.body = let.Body()
+        init = let_node.init = common.Init()
+        body.module = self
+        init.module = self
+        init.id = self.get_new_node_id()
+        body.id = self.get_new_node_id()
+
+        if copy_in_ports_from_container:
+            num_in_ports = len(container.in_ports)
+        else:
+            num_in_ports = 0
+
+        def make_ports(node, values, in_ports):
+            container_ports = []
+            if in_ports and copy_in_ports_from_container:
+                for index, cont_port in enumerate(container.in_ports):
+                    let_port = deepcopy(cont_port)
+                    let_port.node = node
+                    container_ports.append(let_port)
+
+            custom_ports = [
+                Port(node, type_, index, label, in_ports, "")
+                for index, (label, type_) in enumerate(
+                    values, num_in_ports if in_ports else 0
+                )
+            ]
+            return container_ports + custom_ports
+
+        let_node.in_ports = make_ports(let_node, [], True)
+        let_node.out_ports = make_ports(let_node, output_values, False)
+
+        init.in_ports = make_ports(init, [], True)
+        init.out_ports = make_ports(init, variables, False)
+
+        body.in_ports = make_ports(body, variables, True)
+        body.out_ports = make_ports(body, output_values, False)
+
+        return let_node
 
     def move_subgraph(self, src_nodes: list, src_edges: list, dst_node):
         pass

@@ -25,13 +25,27 @@ def printm(module):
 
 def optimize_ir(module: Module):
     # iterate over all IF nodes:
-
+    '''
     for if_node in module.get_nodes("If"):
         output_node = if_node.condition.out_ports[0].input_node
         if type(output_node) is Literal and output_node.value==True:
             module.swap_complex_node(if_node.branches[0], if_node)
             break
-
+    '''
+    for if_node in module.get_nodes("If"):
+        output_node = if_node.condition.out_ports[0].input_node
+        parent_node = if_node.parent_node
+        if type(output_node) is Literal and output_node.value==True:
+            module.delete_node(if_node, True)
+            #Edge(parent_node.in_ports[0], parent_node.out_ports[0], parent_node)
+            let = module.Let(parent_node,
+                             [("a", IntegerType()), ("b", IntegerType())],
+                             [("c", IntegerType())],
+                             True)
+            Edge(let.out_ports[0], parent_node.out_ports[0], parent_node)
+            Edge(parent_node.in_ports[0], let.in_ports[0], parent_node)
+            #Edge(parent_node.in_ports[0], let.in_ports[1], parent_node)
+    # printm(module)
     # iterate over all binary nodes:
     for bin in module.get_nodes("Binary"):
         # get left and right operand nodes:

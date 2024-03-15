@@ -39,7 +39,10 @@ class Port:
     @property
     def input_node(self):
         """Returns the node connected to this port via one edge"""
-        return self.node.module.edge_to[self.id].from_.node
+        if self.id in self.node.module.edge_to:
+            return self.node.module.edge_to[self.id].from_.node
+        else:
+            return None
 
     @property
     def target_nodes(self) -> list:
