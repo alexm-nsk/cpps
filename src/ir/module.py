@@ -339,12 +339,10 @@ class Module:
                     let_port = Port(
                         node,
                         deepcopy(cont_port.type),
-                        index,
+                        index + len(custom_ports),
                         cont_port.label,
                         cont_port.in_port,
                     )
-                    let_port.node = node
-                    let_port.index += len(custom_ports)
                     container_ports.append(let_port)
 
             return custom_ports + container_ports
