@@ -1,4 +1,5 @@
 """module optimizations"""
+
 import sys
 
 sys.path.append("..")
@@ -28,7 +29,7 @@ def optimize_ir(module: Module):
 
     for if_node in module.get_nodes("If"):
         output_node = if_node.condition.out_ports[0].input_node
-        if type(output_node) is Literal and output_node.value==True:
+        if type(output_node) is Literal and output_node.value == True:
             module.swap_complex_node(if_node.branches[0], if_node)
             break
 
@@ -60,3 +61,7 @@ def optimize_ir(module: Module):
             module.delete_node(bin, True)
 
     return module
+
+module=Module("bin.json")
+optimize_ir(module)
+printm(module)
