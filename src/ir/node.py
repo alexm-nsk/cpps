@@ -220,9 +220,9 @@ class Node:
 
     def get_containing_function(self):
         """returns the function that contains this node"""
-        parent = self.get_parent_node()
+        parent = self.parent_node
         while True:
-            new_parent = parent.get_parent_node()
+            new_parent = parent.parent_node
             if not new_parent:
                 if parent.name == "Lambda":
                     return parent
