@@ -7,7 +7,7 @@ from .edge import Edge
 from .node import Node, SUBNODE_NAMES
 from .type import get_type
 from .port import Port
-from .ast_ import alg, literal, let, common
+from .ast_ import alg, literal, let, common, function
 from .error import IRProcessingError
 from copy import deepcopy
 
@@ -70,9 +70,13 @@ class Module:
     def __delete_node__(self, node, delete_attached_edges, del_from_parent):
         """Used by delete_node, don't call from outside of Module class"""
         node_to_delete = self.nodes[node] if node is str else node
-        if del_from_parent:
-            parent_node = node.parent_node
-            parent_node.nodes.remove(self.nodes[node.id])
+
+        if type(node) is function.Function:
+            del self.functions[node.function_name]
+        else:
+            if del_from_parent:
+                parent_node = node.parent_node
+                parent_node.nodes.remove(self.nodes[node.id])
 
         if delete_attached_edges:
             self.delete_edges_attached_to_node(node)
