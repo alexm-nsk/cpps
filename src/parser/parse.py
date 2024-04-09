@@ -78,9 +78,11 @@ class ModuleVisitor(NodeVisitor):
     def visit_pragma(self, node, vc_):
         name = vc_[0]
         location = self.get_location(node)
+        '''
         if name not in known_pragmas:
             raise SisalError(
                 f"unknown pragma: \"{name}\" at {location}", location)
+        '''
         args = vc_[2][0][2] if not self.is_empty_node(vc_[2]) else []
         return {"name": name, "args": args}
 
