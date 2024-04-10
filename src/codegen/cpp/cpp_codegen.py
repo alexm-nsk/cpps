@@ -5,6 +5,7 @@
 from ..edge import Edge
 from ..type import AnyType, ArrayType, RecordType
 from string import Template
+from ..codegen_state import global_no_error
 import os
 
 GROUP_VARIABLES = True
@@ -126,7 +127,10 @@ class CppModule:
         m_h_template = Template(CPP_MODULE_HEADER)
         extra_headers_str = "\n".join([f"#include <{h}>" for h in self.extra_headers])
         path = os.path.dirname(os.path.abspath(__file__))
-        sisal_types_h_str = "\n" + open(path + "/sisal_types.h", "r").read()
+        if global_no_error:
+            sisal_types_h_str = ""
+        else:
+            sisal_types_h_str = "\n" + open(path + "/sisal_types.h", "r").read()
 
         module_header = m_h_template.substitute(
             extra_headers=extra_headers_str, sisal_types_h=sisal_types_h_str

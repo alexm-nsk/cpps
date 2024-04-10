@@ -88,7 +88,9 @@ def main(args):
             from ir.draw_graph import draw_graph
             draw_graph(json_names(parsed))
         else:
-            '''Parse and generate C++ program'''
+            '''Parse and generate a C++ program'''
+            import codegen.codegen_state
+            codegen.codegen_state.global_no_error = "--noerror" in args
             from code_gen import compile_ir
             module_name = ""  # args[1].split(".")[:-1]
             # convert it to JSON text:
