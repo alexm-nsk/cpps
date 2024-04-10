@@ -62,7 +62,7 @@ class RealType(Type):
 
 
 class BooleanType(Type):
-    __cpp_type__ = "boolean" if global_no_error else "bool"
+    __cpp_type__ = "bool" if global_no_error else "boolean"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asBool();"
