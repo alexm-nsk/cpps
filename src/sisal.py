@@ -12,6 +12,7 @@ from parser import parse
 from os import path
 from utils.system import get_piped_input
 from parser.parser_state import enable_debug, debug_enabled
+from copy import copy
 
 json_re = re.compile("_([a-z])")
 re_remove_ = re.compile("_(?=$)")
@@ -58,8 +59,9 @@ def main(args):
     if "--debug" in args:
         enable_debug()
 
-    parsed = parse.parse(src_code)
-    if not parsed["errors"]:
+    parsed_ir = parse.parse(src_code)
+    if not parsed_ir["errors"]:
+        parsed = copy(parsed_ir)
         parsed["functions"] = [
                 function.ir_() for function in parsed["functions"]
             ]
@@ -82,7 +84,7 @@ def main(args):
             '''Parse only and try to get an IR as GraphML'''
             import parser.graphml as graphml
 
-            gmlm = graphml.GraphMlModule(parsed)
+            gmlm = graphml.GraphMlModule(parsed_ir)
             print(gmlm)
         elif "--drawgraph" in args:
             from ir.draw_graph import draw_graph
