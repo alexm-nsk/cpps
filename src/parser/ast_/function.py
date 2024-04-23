@@ -9,6 +9,7 @@ from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
 from ..type import AnyType, ArrayType, IntegerType, RealType
+from ..edge import Edge
 
 
 class Function(Node):
@@ -105,7 +106,9 @@ class BuiltInFunction(Function):
 
 
 def array_combine_ports_setup(self):
-    pass
+    port_type = Edge.src_port(self.in_ports[0]).type
+    self.in_ports[0].type = port_type
+    self.outPorts[0].type = port_type
 
 
 Function.built_ins = dict(
