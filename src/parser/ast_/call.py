@@ -24,7 +24,8 @@ class Call(Node):
 
     @build_method
     def build(self, target_ports: list[Port], scope: SisalScope) -> SubIr:
-        self.copy_ports(self.called_function)
+        called_function = self.called_function
+        self.copy_ports(called_function)
 
         if self.args:
             for i_p, arg in zip(self.in_ports, self.args.expressions):
@@ -34,6 +35,8 @@ class Call(Node):
         else:
             args_ir = SubIr([], [], [])
         del self.args
+        if called_function.setup_ports:
+            called_function.setup_ports(self)
         return (
             SubIr(
                 [self],
