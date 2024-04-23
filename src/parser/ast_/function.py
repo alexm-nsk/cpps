@@ -130,9 +130,15 @@ Function.built_ins = dict(
         array_combine_ports_setup,
     ),
     remh=BuiltInFunction(
-        "remh", [["a", ArrayType(element=AnyType())]], [ArrayType(element=AnyType())]
+        "remh",
+        [["a", ArrayType(element=AnyType())]],
+        [ArrayType(element=AnyType())],
+        array_combine_ports_setup,
     ),
     reml=BuiltInFunction(
-        "reml", [["a", ArrayType(element=AnyType())]], [ArrayType(element=AnyType())]
+        "reml",
+        [["a", ArrayType(element=AnyType())]],
+        [ArrayType(element=AnyType())],
+        array_combine_ports_setup,
     ),
 )
