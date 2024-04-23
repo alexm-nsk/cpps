@@ -50,6 +50,7 @@ class Function(Node):
         self.pragmas = pragmas
         self.function_name = function_name
         self.name = "Lambda"
+        self.ports_setup = None
 
         self.in_ports = [
             Port(self.id, type_, port_index, identifier.name)
@@ -108,7 +109,7 @@ class BuiltInFunction(Function):
 def array_combine_ports_setup(self):
     port_type = Edge.src_port(self.in_ports[0]).type
     self.in_ports[0].type = port_type
-    self.outPorts[0].type = port_type
+    self.out_ports[0].type = port_type
 
 
 Function.built_ins = dict(
