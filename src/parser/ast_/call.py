@@ -35,8 +35,8 @@ class Call(Node):
         else:
             args_ir = SubIr([], [], [])
         del self.args
-        if called_function.setup_ports:
-            called_function.setup_ports(self)
+        if called_function.ports_setup != None:
+            called_function.ports_setup(self)
         return (
             SubIr(
                 [self],
