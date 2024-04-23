@@ -5,7 +5,7 @@ Type for code generator
 """
 import re
 import json
-
+from .codegen_state import global_no_error
 """Type classes have load_from_json_code and save_to_json_code
  methods. They return C++ code for those corresponding purposes
 """
@@ -41,25 +41,28 @@ class Type:
         return self.__cpp_type__
 
     def save_to_json_code(self, target_object, object_):
-        return f'if ({object_}.error) {target_object} = "ERROR"; else {target_object} = {object_};'
+        if global_no_error:
+            return f'{target_object} = {object_};'
+        else:
+            return f'if ({object_}.error) {target_object} = "ERROR"; else {target_object} = {object_};'
 
 
 class IntegerType(Type):
-    __cpp_type__ = "integer"
+    __cpp_type__ = "int" if global_no_error else "integer"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asInt();"
 
 
 class RealType(Type):
-    __cpp_type__ = "real"
+    __cpp_type__ = "float" if global_no_error else "real"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asFloat();"
 
 
 class BooleanType(Type):
-    __cpp_type__ = "boolean"
+    __cpp_type__ = "bool" if global_no_error else "boolean"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asBool();"
@@ -72,7 +75,10 @@ def remove_spec_symbols(string):
 class ArrayType(Type):
     @property
     def __cpp_type__(self):
-        return f"Array<{self.element.cpp_type}>"
+        if global_no_error:
+            return f"std::vector<{self.element.cpp_type}>"
+        else:
+            return f"Array<{self.element.cpp_type}>"
 
     def dimensions(self):
         return 1 + (
@@ -115,10 +121,10 @@ class ArrayType(Type):
         item_name = "item_for_" + remove_spec_symbols(target_object)
 
         return (
-            f"if ({object_}.error)"
-            "{\n"
-            + indent_cpp(f'{target_object}="ERROR";') +
-            "\n}\nelse\n"
+            (f"if ({object_}.error)"
+             "{\n"
+             + indent_cpp(f'{target_object}="ERROR";') +
+             "\n}\nelse\n") * (not global_no_error) +
             f"for(unsigned int {index} = 0;\n"
             f"    {index} < size({object_});"
             f"\n    ++{index})"
@@ -157,7 +163,7 @@ def get_struct_string(name: str, fields: list[str]):
         + ";\n".join([str(field) + ".set_error()" for field, _ in fields.items()])
         + ";\n}"
     )
-    extra = "bool error;" + set_error_code
+    extra = ("bool error;" + set_error_code) * (not global_no_error)
     field_defs = "\n".join(
         [f"{str(type_.cpp_type)} {str(field)};" for field, type_ in fields.items()]
     )

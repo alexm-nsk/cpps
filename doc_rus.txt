@@ -62,3 +62,5 @@ echo '{"A": [1, 2 ,3 ,4], "n": 1, "x": 2.3}' | ./module_name
 
 Т.е. чтобы нарисовать оптимизированный IR:
     python sisal.py -i ../examples/qsort.sis --opt --drawgraph > ~/qsort.svg
+
+чтобы отключить обработку ошибочных значений нужно использовать параметр --noerror
