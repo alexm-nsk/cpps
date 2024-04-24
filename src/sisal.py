@@ -113,7 +113,7 @@ def main(args):
                     raise (e)
                 return {"errors": [str(e)], "cpp_src": None}
     else:
-        return json.dumps(parsed)
+        return json.dumps(parsed_ir)
     return 0
 
 
