@@ -254,44 +254,6 @@ class Array{
         }
 };
 
-
-template <typename I>
-inline Array<I> addh (const Array<I> A, auto item)
-{
-  Array<I> result = A;
-  result.push_back(item);
-  return result;
-}
-
-template <typename I>
-inline Array<I> remh (const Array<I> A)
-{
-  Array<I> result = A;
-  result.pop_back();
-  return result;
-}
-
-template <typename I>
-inline Array<I> reml (const Array<I> A)
-{
-  Array<I> result = A;
-  result.pop_front();
-  return result;
-}
-
-template <typename I>
-inline Array<I> addl (const Array<I> A, auto item)
-{
-  Array<I> result = A;
-  result.push_front(item);
-  return result;
-}
-
-inline unsigned int size (Array<auto> A)
-{
-  return A.size();
-}
-
 typedef SisalType<int> integer;
 typedef SisalType<float> real;
 typedef SisalType<bool> boolean;
