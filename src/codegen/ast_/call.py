@@ -28,7 +28,7 @@ class FunctionCall(Node):
             # check if it isn't a built in function:
             if self.callee in Function.functions:
                 called_function = Function.functions[self.callee]
-                timeout_pragma = called_function.get_pragma("timeout")
+                timeout_pragma = called_function.get_pragma("max_time")
                 if timeout_pragma:
                     result_name, exec_code = time_limited_execution_cpp(
                                              Function.functions[self.callee],

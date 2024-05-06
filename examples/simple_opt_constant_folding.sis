@@ -1,0 +1,15 @@
+function func(Y: integer returns integer)
+	if (Y>3) then
+		Y
+	else
+		Y*Y
+	end if
+end function
+
+function main (X: integer returns integer)
+	let 
+		A:=X*0-5*2 
+	in
+		func(A)
+	end let
+end function

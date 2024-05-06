@@ -1,0 +1,7 @@
+function main(M,N:integer returns integer)
+   let
+      A, B, C := 1, N*M, M
+   in
+      A+B-C
+   end let
+end function

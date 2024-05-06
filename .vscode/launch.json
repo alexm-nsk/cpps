@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        
+        {
+            "name": "Python Debugger: Sisal.py with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/newt/Рабочий стол/cpps/src/sisal.py",
+            "console": "integratedTerminal",
+            "args": ["-i","/home/newt/Рабочий стол/cpps/examples/loop17.sis", "--llvm"],//"--llvmlitejit"
+            "justMyCode": false
+        }
+    ]
+}

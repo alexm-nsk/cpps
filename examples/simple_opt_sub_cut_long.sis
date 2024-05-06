@@ -1,0 +1,3 @@
+function main (M: integer returns integer)
+	0-M+M*0+0+0/M+M*1+M/1
+end function

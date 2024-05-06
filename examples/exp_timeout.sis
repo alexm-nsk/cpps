@@ -2,7 +2,7 @@ function Fib(M: integer returns integer)
     if (M < 2) then
         M
     else
-        //$ timeout = 3
+        //$ max_time = 3
         (Fib(M-1) + Fib(M-2))
     end if
 end function

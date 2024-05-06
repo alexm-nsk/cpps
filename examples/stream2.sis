@@ -1,0 +1,6 @@
+function main(returns stream[integer])
+   for i in 1, 10
+       returns
+          stream of i
+    end for
+end function

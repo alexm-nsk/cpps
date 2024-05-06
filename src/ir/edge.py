@@ -45,7 +45,7 @@ class Edge:
         self.from_ = None
 
     def detatch_target(self):
-        self.module.edge_to[self.from_.id] = None
+        self.module.edge_to[self.to.id] = None
         self.to = None
 
     def __repr__(self):

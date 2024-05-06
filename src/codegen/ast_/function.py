@@ -11,6 +11,7 @@ from ..cpp.cpp_codegen import (CppBlock,
                                cpp_eval)
 from ..error import CodeGenError
 from ..cpp import template
+from ..codegen_state import global_no_error
 
 
 def gen_time_limit_template(function):
@@ -43,7 +44,7 @@ def gen_time_limit_template(function):
     call_args = ", ".join([str(i_p.type.cpp_type) + " " + i_p.label
                            for i_p in function.in_ports])
 
-    set_error_value = "retval.set_error();"
+    set_error_value = "retval.set_error();" if not global_no_error else ""
 
     inserts = dict(write_retvals=write_retvals,
                    args=args,
@@ -65,7 +66,7 @@ def time_limited_execution_cpp(function, args: str):
     else:
         code = function.function_name.title() + "ExecutionManager"
     #TODO add error handling here (pragma not there etc.)
-    pragma_timeout = function.get_pragma("timeout")
+    pragma_timeout = function.get_pragma("max_time")
     time = pragma_timeout["args"][0]
     class_object_name = CppVariable.get_name("exec_man")
     code += f" {class_object_name}({args}, {time});"
@@ -128,7 +129,7 @@ class Function(Node):
 
     def process_timeout(self):
         if hasattr(self, "pragmas"):
-            time_out = next((p for p in self.pragmas if p["name"] == "timeout")
+            time_out = next((p for p in self.pragmas if p["name"] == "max_time")
                          , None)
             if time_out:
                 self.module.add_header("pthread.h")
@@ -237,7 +238,7 @@ def create_main():
     args = ", ".join([str(port.value)
                       for port in main.in_ports])
 
-    time_out = main.get_pragma("timeout")
+    time_out = main.get_pragma("max_time")
     if time_out:
         class_object_name, added_code = time_limited_execution_cpp(main, args)
         body += added_code + "\n"

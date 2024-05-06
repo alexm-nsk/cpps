@@ -26,9 +26,9 @@
     
 Для компиляции получаемых C++-программ нужна библиотека jsoncpp.
 Компилировать можно при помощи GCC:
-    g++ -Wall -c module_name.cpp -ljsoncpp -fconcepts -o module_name -O3
+    g++ -Wall -c module_name.cpp -ljsoncpp -fopenmp -fconcepts -Wall -o module_name -O3
 или через PIPE:
-    cat module_name.cpp | g++ -xc++ -fconcepts -ljsoncpp -Wall -o module_name -O3
+    cat module_name.cpp | g++ -xc++ - -ljsoncpp -fopenmp -fconcepts -Wall -o module_name -O3
     
 Получаемые программы ожидают на входе через PIPE значения в виде JSON:
 
@@ -64,3 +64,8 @@ echo '{"A": [1, 2 ,3 ,4], "n": 1, "x": 2.3}' | ./module_name
     python sisal.py -i ../examples/qsort.sis --opt --drawgraph > ~/qsort.svg
 
 чтобы отключить обработку ошибочных значений нужно использовать параметр --noerror
+
+Для генерации LLVM IR нужно использовать параметр --llvm. 
+Параметр --bitcode выводит LLVM биткод для машины-хоста.
+Параметр --llvmlitejit позволяет проинтерпретировать и выполнить программу средствами компилятора. После запуска команды с этим параметром, понадобится ввести в консоль входные данные в формате json.
+python sisal.py -i ../examples/fib.sis --llvm --llvmlitejit

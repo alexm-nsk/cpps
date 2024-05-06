@@ -1,0 +1,5 @@
+type T = record[A: integer; n: integer]
+
+function main(S: T returns integer)
+   S.A
+end function

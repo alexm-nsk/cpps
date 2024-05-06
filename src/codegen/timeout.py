@@ -35,7 +35,7 @@ def process_timeout():
        codegen/ast_/function.py. This is done at IR level'''
 
     for id_, node in Node.node_index.copy().items():
-        if node.name != "Lambda" and node.get_pragma("timeout"):
+        if node.name != "Lambda" and node.get_pragma("max_time"):
             # nodes - all the nodes involved in calculation
             # internal edges - all the edges between those nodes
             # input edges - all the edges pointing to nodes from the outside
@@ -106,7 +106,7 @@ def process_timeout():
 
             # remove the timeout from all the involved nodes
             for n in nodes:
-                n.remove_pragma("timeout")
+                n.remove_pragma("max_time")
                 # move nodes into the service function
                 new_function.nodes.append(n)
                 parent_node.nodes.remove(n)

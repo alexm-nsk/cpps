@@ -11,3 +11,4 @@ function main( A,B: array of array of integer; M,N,K: integer returns array of a
         array of Ci
     end for
 end function
+
