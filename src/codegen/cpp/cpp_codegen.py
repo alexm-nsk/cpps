@@ -41,6 +41,11 @@ $extra_headers\n"""
     return 1;\\
   }\\
 
+#pragma omp declare reduction (sis_product:integer:omp_out*=omp_in) initializer (omp_priv=1)
+#pragma omp declare reduction (sis_product:real : omp_out = omp_out * omp_in) initializer (omp_priv=1)
+#pragma omp declare reduction (sis_sum:integer:omp_out+=omp_in) initializer (omp_priv=0)
+#pragma omp declare reduction(sis_sum:real : omp_out = omp_out + omp_in) initializer(omp_priv = 0)
+
 template <typename I>
 inline Array<I> addh (const Array<I> A, auto item)
 {
