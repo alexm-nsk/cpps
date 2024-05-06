@@ -11,7 +11,8 @@ import os
 GROUP_VARIABLES = True
 
 CPP_INDENT = "  "
-CPP_MODULE_HEADER = """\
+CPP_MODULE_HEADER = (
+    """\
 #include <stdio.h>
 #include <omp.h>
 #include <vector>
@@ -20,9 +21,16 @@ CPP_MODULE_HEADER = """\
 #include <string>
 #include <json/json.h> // uses jsoncpp library
 $sisal_types_h
-$extra_headers
+$extra_headers"""
+    + """
+#define integer int
+#define real float
+#define boolean bool
+#define Array std::vector
 
-#define CHECK_INPUT_ARGUMENT(arg) if(root[arg].isNull())\\
+"""
+    * global_no_error
+    + """#define CHECK_INPUT_ARGUMENT(arg) if(root[arg].isNull())\\
   {\\
     Json::Value error;\\
     std::string message = arg;\\
@@ -72,9 +80,8 @@ inline unsigned int size (Array<auto> A)
 }
 
 //------------------------------------------------------------
-
-
 """
+)
 
 
 def indent_cpp(src_code, indent_level=1, indent_first=True):
