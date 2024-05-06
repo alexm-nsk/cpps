@@ -21,13 +21,12 @@ CPP_MODULE_HEADER = (
 #include <string>
 #include <json/json.h> // uses jsoncpp library
 $sisal_types_h
-$extra_headers"""
+$extra_headers\n"""
     + """
 #define integer int
 #define real float
 #define boolean bool
 #define Array std::vector
-
 """
     * global_no_error
     + """#define CHECK_INPUT_ARGUMENT(arg) if(root[arg].isNull())\\
