@@ -9,6 +9,7 @@ from ..port import Port
 from ..scope import SisalScope
 from ..error import SisalError
 from ..type import AnyType, ArrayType, IntegerType, RealType
+from ..edge import Edge
 
 
 class Function(Node):
@@ -23,7 +24,6 @@ class Function(Node):
 
     @classmethod
     def get_function(cls, name: str):
-
         if name in Function.functions:
             return Function.functions[name]
         if name in Function.built_ins:
@@ -50,6 +50,7 @@ class Function(Node):
         self.pragmas = pragmas
         self.function_name = function_name
         self.name = "Lambda"
+        self.ports_setup = None
 
         self.in_ports = [
             Port(self.id, type_, port_index, identifier.name)
@@ -57,8 +58,7 @@ class Function(Node):
         ]
 
         self.out_ports = [
-            Port(self.id, type_, port_index)
-            for port_index, type_ in enumerate(retvals)
+            Port(self.id, type_, port_index) for port_index, type_ in enumerate(retvals)
         ]
 
         self.body = body
@@ -69,7 +69,7 @@ class Function(Node):
 
     def analyze(self):
         """find recursions, estimate complexity etc."""
-        #print(self.function_name, self.find_sub_node("FunctionCall"))
+        # print(self.function_name, self.find_sub_node("FunctionCall"))
         pass
 
     def build(self):
@@ -86,13 +86,13 @@ class Function(Node):
 
 
 class BuiltInFunction(Function):
-
     no_id = True  # not needed but left in in case of future changes
 
-    def __init__(self, function_name: str, args: list, retvals: list):
+    def __init__(self, function_name: str, args: list, retvals: list, ports_setup=None):
         self.function_name = function_name
         self.name = "Lambda"
         self.is_built_in = True
+        self.ports_setup = ports_setup
 
         self.in_ports = [
             Port(None, type_, port_index, identifier)
@@ -100,11 +100,16 @@ class BuiltInFunction(Function):
         ]
 
         self.out_ports = [
-            Port(None, type_, port_index)
-            for port_index, type_ in enumerate(retvals)
+            Port(None, type_, port_index) for port_index, type_ in enumerate(retvals)
         ]
 
         Function.functions[self.function_name] = self
+
+
+def array_combine_ports_setup(self):
+    port_type = Edge.src_port(self.in_ports[0]).type
+    self.in_ports[0].type = port_type
+    self.out_ports[0].type = port_type
 
 
 Function.built_ins = dict(
@@ -112,18 +117,28 @@ Function.built_ins = dict(
         "size", [["array", ArrayType(element=AnyType())]], [IntegerType()]
     ),
     cos=BuiltInFunction("cos", [["x", RealType()]], [RealType()]),
-    addh=BuiltInFunction("addh",
-                         [["a", ArrayType(element=AnyType())],
-                          ["b", AnyType()]],
-                         [ArrayType(element=AnyType())]),
-    addl=BuiltInFunction("addl",
-                         [["a", ArrayType(element=AnyType())],
-                          ["b", AnyType()]],
-                         [ArrayType(element=AnyType())]),
-    remh=BuiltInFunction("remh",
-                         [["a", ArrayType(element=AnyType())]],
-                         [ArrayType(element=AnyType())]),
-    reml=BuiltInFunction("reml",
-                         [["a", ArrayType(element=AnyType())]],
-                         [ArrayType(element=AnyType())]),
+    addh=BuiltInFunction(
+        "addh",
+        [["a", ArrayType(element=AnyType())], ["b", AnyType()]],
+        [ArrayType(element=AnyType())],
+        array_combine_ports_setup,
+    ),
+    addl=BuiltInFunction(
+        "addl",
+        [["a", ArrayType(element=AnyType())], ["b", AnyType()]],
+        [ArrayType(element=AnyType())],
+        array_combine_ports_setup,
+    ),
+    remh=BuiltInFunction(
+        "remh",
+        [["a", ArrayType(element=AnyType())]],
+        [ArrayType(element=AnyType())],
+        array_combine_ports_setup,
+    ),
+    reml=BuiltInFunction(
+        "reml",
+        [["a", ArrayType(element=AnyType())]],
+        [ArrayType(element=AnyType())],
+        array_combine_ports_setup,
+    ),
 )

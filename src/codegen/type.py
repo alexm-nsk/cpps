@@ -48,21 +48,21 @@ class Type:
 
 
 class IntegerType(Type):
-    __cpp_type__ = "int" if global_no_error else "integer"
+    __cpp_type__ = "integer"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asInt();"
 
 
 class RealType(Type):
-    __cpp_type__ = "float" if global_no_error else "real"
+    __cpp_type__ = "real"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asFloat();"
 
 
 class BooleanType(Type):
-    __cpp_type__ = "bool" if global_no_error else "boolean"
+    __cpp_type__ = "boolean"
 
     def load_from_json_code(self, name, src_object):
         return f"{self.cpp_type} {name} = {src_object}.asBool();"
@@ -75,10 +75,7 @@ def remove_spec_symbols(string):
 class ArrayType(Type):
     @property
     def __cpp_type__(self):
-        if global_no_error:
-            return f"std::vector<{self.element.cpp_type}>"
-        else:
-            return f"Array<{self.element.cpp_type}>"
+        return f"Array<{self.element.cpp_type}>"
 
     def dimensions(self):
         return 1 + (
@@ -200,7 +197,7 @@ class RecordType(Type):
             )
         )
 
-    # declare struct and put it on the list
+    # declare struct and put it on the list "bool" if global_no_error else
     # use it as type
     def load_from_json_code(self, name, src_object):
         ret_str = "\n".join(

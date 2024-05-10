@@ -11,6 +11,7 @@ from ..cpp.cpp_codegen import (CppBlock,
                                cpp_eval)
 from ..error import CodeGenError
 from ..cpp import template
+from ..codegen_state import global_no_error
 
 
 def gen_time_limit_template(function):
@@ -43,7 +44,7 @@ def gen_time_limit_template(function):
     call_args = ", ".join([str(i_p.type.cpp_type) + " " + i_p.label
                            for i_p in function.in_ports])
 
-    set_error_value = "retval.set_error();"
+    set_error_value = "retval.set_error();" if not global_no_error else ""
 
     inserts = dict(write_retvals=write_retvals,
                    args=args,

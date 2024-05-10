@@ -11,7 +11,8 @@ import os
 GROUP_VARIABLES = True
 
 CPP_INDENT = "  "
-CPP_MODULE_HEADER = """\
+CPP_MODULE_HEADER = (
+    """\
 #include <stdio.h>
 #include <omp.h>
 #include <vector>
@@ -20,9 +21,15 @@ CPP_MODULE_HEADER = """\
 #include <string>
 #include <json/json.h> // uses jsoncpp library
 $sisal_types_h
-$extra_headers
-
-#define CHECK_INPUT_ARGUMENT(arg) if(root[arg].isNull())\\
+$extra_headers\n"""
+    + """
+#define integer int
+#define real float
+#define boolean bool
+#define Array std::vector
+"""
+    * global_no_error
+    + """#define CHECK_INPUT_ARGUMENT(arg) if(root[arg].isNull())\\
   {\\
     Json::Value error;\\
     std::string message = arg;\\
@@ -33,8 +40,52 @@ $extra_headers
     std::cout << std::endl;\\
     return 1;\\
   }\\
+
+#pragma omp declare reduction (sis_product:integer:omp_out*=omp_in) initializer (omp_priv=1)
+#pragma omp declare reduction (sis_product:real : omp_out = omp_out * omp_in) initializer (omp_priv=1)
+#pragma omp declare reduction (sis_sum:integer:omp_out+=omp_in) initializer (omp_priv=0)
+#pragma omp declare reduction(sis_sum:real : omp_out = omp_out + omp_in) initializer(omp_priv = 0)
+
+template <typename I>
+inline Array<I> addh (const Array<I> A, auto item)
+{
+  Array<I> result = A;
+  result.push_back(item);
+  return result;
+}
+
+template <typename I>
+inline Array<I> remh (const Array<I> A)
+{
+  Array<I> result = A;
+  result.pop_back();
+  return result;
+}
+
+template <typename I>
+inline Array<I> reml (const Array<I> A)
+{
+  Array<I> result = A;
+  result.pop_front();
+  return result;
+}
+
+template <typename I>
+inline Array<I> addl (const Array<I> A, auto item)
+{
+  Array<I> result = A;
+  result.push_front(item);
+  return result;
+}
+
+inline unsigned int size (Array<auto> A)
+{
+  return A.size();
+}
+
 //------------------------------------------------------------
 """
+)
 
 
 def indent_cpp(src_code, indent_level=1, indent_first=True):

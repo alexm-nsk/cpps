@@ -254,51 +254,8 @@ class Array{
         }
 };
 
-
-template <typename I>
-inline Array<I> addh (const Array<I> A, auto item)
-{
-  Array<I> result = A;
-  result.push_back(item);
-  return result;
-}
-
-template <typename I>
-inline Array<I> remh (const Array<I> A)
-{
-  Array<I> result = A;
-  result.pop_back();
-  return result;
-}
-
-template <typename I>
-inline Array<I> reml (const Array<I> A)
-{
-  Array<I> result = A;
-  result.pop_front();
-  return result;
-}
-
-template <typename I>
-inline Array<I> addl (const Array<I> A, auto item)
-{
-  Array<I> result = A;
-  result.push_front(item);
-  return result;
-}
-
-inline unsigned int size (Array<auto> A)
-{
-  return A.size();
-}
-
 typedef SisalType<int> integer;
 typedef SisalType<float> real;
 typedef SisalType<bool> boolean;
-
-#pragma omp declare reduction (sis_product:integer:omp_out*=omp_in) initializer (omp_priv=1)
-#pragma omp declare reduction (sis_product:real : omp_out = omp_out * omp_in) initializer (omp_priv=1)
-#pragma omp declare reduction (sis_sum:integer:omp_out+=omp_in) initializer (omp_priv=0)
-#pragma omp declare reduction (sis_sum:real : omp_out = omp_out + omp_in) initializer (omp_priv=0)
 
 #endif
