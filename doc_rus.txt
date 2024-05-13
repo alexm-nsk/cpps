@@ -26,9 +26,9 @@
     
 Для компиляции получаемых C++-программ нужна библиотека jsoncpp.
 Компилировать можно при помощи GCC:
-    g++ -Wall -c module_name.cpp -ljsoncpp -fconcepts -o module_name -O3
+    g++ -Wall -c module_name.cpp -ljsoncpp -fopenmp -fconcepts -Wall -o module_name -O3
 или через PIPE:
-    cat module_name.cpp | g++ -xc++ -fconcepts -ljsoncpp -Wall -o module_name -O3
+    cat module_name.cpp | g++ -xc++ - -ljsoncpp -fopenmp -fconcepts -Wall -o module_name -O3
     
 Получаемые программы ожидают на входе через PIPE значения в виде JSON:
 
