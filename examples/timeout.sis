@@ -1,4 +1,4 @@
-//$ timeout = 3
+//$ max_time = 3
 function Fib(M: integer returns integer)
     if (M < 2) then
         M
