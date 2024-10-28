@@ -3,6 +3,8 @@
 """
 base class for IR nodes
 """
+
+
 from .port import Port
 from .type import get_type
 from .edge import Edge
@@ -167,7 +169,7 @@ class Node:
         nodes = [self]
 
         for i_p in self.in_ports:
-            input_edge = Edge.edge_to[i_p.id]
+            input_edge = i_p.input_edge#self.module.edge_to[i_p.id]
             from_ = input_edge.from_
             if not from_.in_port:
                 new_nodes, new_edges, new_input_edges = from_.node.trace_back()
@@ -304,3 +306,17 @@ class Node:
 
         return clusters
 
+    def delete_port(self,port):
+        if port in self.in_ports:
+            self.in_ports.remove(port)
+        elif port in self.out_ports:
+            self.out_ports.remove(port)
+        else:
+            raise Exception("Port does not belong to the node")
+        
+    def get_in_ports_by_label(self,label):
+        ports=[]
+        for port in self.in_ports:
+            if port.label==label:
+                ports.append(port)
+        return ports

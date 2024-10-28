@@ -1,0 +1,9 @@
+function main(x, y: array[integer] returns array[integer])
+    for i in 1, size(x)
+    repeat
+    minimum:=1+let a:=x[i]; b:=y[i] in
+                        a+b
+                    end let
+    returns array of minimum
+    end for
+end function

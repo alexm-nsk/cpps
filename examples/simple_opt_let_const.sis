@@ -1,0 +1,7 @@
+function main(returns integer)
+   let
+      A := 1
+   in
+      A+1
+   end let
+end function
