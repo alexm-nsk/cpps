@@ -359,7 +359,3 @@ def optimize_ir (module):
     if settings['BASIC SETTINGS']['mode']=='default':
         module=default(module)
     return module
-
-module=Module("src/optimizer/sub_cut.json")
-default(module)
-printm(module)
