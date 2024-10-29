@@ -89,6 +89,12 @@ def main(args):
         elif "--drawgraph" in args:
             from ir.draw_graph import draw_graph
             draw_graph(json_names(parsed))
+        elif "--codegenex" in args:
+            from codegenex import codegen
+            from ir import module
+            module = module.Module()
+            module.load_from_json_data(json_names(parsed))
+            codegen.codegen(module)
         else:
             '''Parse and generate a C++ program'''
             import codegen.codegen_state
