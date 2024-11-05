@@ -47,8 +47,14 @@ class Module:
         to_port = edge.to
         # remove edge from all registries:
         self.edges.remove(edge)
-        if from_port.id in self.edges_from:
-            del self.edges_from[from_port.id]
+        if from_port.id in self.edges_from: 
+            """During transformations in the compiler a situation may appear 
+            when a few edges temporarily have origin in the same port, 
+            therefore precautions must be taken to only remove target edge from registers
+            and not the still-needed ones"""
+            self.edges_from[from_port.id].remove(edge)
+            if not self.edges_from[from_port.id]:
+                del self.edges_from[from_port.id]
         if to_port.id in self.edge_to:
             del self.edge_to[to_port.id]
         edge.containing_node.edges.remove(edge)
@@ -61,11 +67,12 @@ class Module:
                     self.delete_edge(self.edge_to[i_p.id])
         if hasattr(node, "out_ports"):
             for o_p in node.out_ports:
-                edges_to_delete = [
-                    edge_to_delete for edge_to_delete in self.edges_from[o_p.id]
-                ]
-                for edge in edges_to_delete:
-                    self.delete_edge(edge)
+                if o_p.output_edges:
+                    edges_to_delete = [
+                        edge_to_delete for edge_to_delete in o_p.output_edges
+                    ]
+                    for edge in edges_to_delete:
+                        self.delete_edge(edge)
 
     def __delete_node__(self, node, delete_attached_edges, del_from_parent):
         """Used by delete_node, don't call from outside of Module class"""
@@ -316,18 +323,21 @@ class Module:
         let_node = let.Let()
         let_node.id = self.get_new_node_id()
         let_node.module = self
+        self.add_node(let_node)
 
         body = let_node.body = let.Body()
         body.id = self.get_new_node_id()
         body.module = self
         body.nodes = []
         body.edges = []
+        self.add_node(body)
 
         init = let_node.init = common.Init()
         init.id = self.get_new_node_id()
         init.module = self
         init.nodes = []
         init.edges = []
+        self.add_node(init)
 
         container.nodes.append(let_node)
 

@@ -1,0 +1,7 @@
+function f(returns integer)
+    1 + 2
+end function
+
+function main(returns integer)
+    f()
+end function
