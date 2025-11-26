@@ -78,7 +78,8 @@ inline Array<I> addl (const Array<I> A, auto item)
   return result;
 }
 
-inline unsigned int size (Array<auto> A)
+template <typename I>
+inline unsigned int size (Array<I> A)
 {
   return A.size();
 }
