@@ -1,0 +1,6 @@
+function main(S:stream[integer] returns array[integer])
+   for i in 1, 10
+       returns
+          array of i
+    end for
+end function

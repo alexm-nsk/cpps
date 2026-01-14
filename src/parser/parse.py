@@ -38,7 +38,7 @@ from .ast_ import (
 )
 from .error import SisalError
 from .type import (
-    IntegerType, BooleanType, RealType, ArrayType, TypeDefinition, RecordType)
+    IntegerType, BooleanType, RealType, ArrayType, StreamType, TypeDefinition, RecordType)
 from .pre_check import pre_check
 from .known_pragmas import known_pragmas
 
@@ -390,6 +390,16 @@ class ModuleVisitor(NodeVisitor):
 
     def visit_multi_exp(self, node, vc_):
         return vc_[0]
+
+    # streams:
+    def visit_stream(self, node, vc_):
+        return vc_[0]
+
+    def visit_stream_of(self, node, vc_):
+        return StreamType(location=self.get_location(node), element=vc_[4])
+
+    def visit_stream_br(self, node, vc_):
+        return StreamType(location=self.get_location(node), element=vc_[4])
 
     # Arrays:
     def visit_array_init(self, node, vc_):
